@@ -1,0 +1,39 @@
+# Corrections learned on earlier episodes. Display text on the left, what the voice model is given on the right.
+replace:
+  "808": 八零八
+  二〇二四: 二零二四
+  国产 3A: 国产三A
+  国产3A: 国产三A
+  大镲: 大衩
+  "BPM": BPM
+# Always called out for a human ear in the review list.
+listen:
+  - 嗔
+  - 丑角
+  - 大镲
+  - 醒狮锣鼓
+  - 冥火
+  - 胡琴
+  - 呼麦
+  - 梦差
+# English words the voice has read acceptably, or that are standard in the narration.
+latin_ok:
+  - BPM
+  - Boss
+  - Techno
+  - Trance
+  - trap
+  - Trap
+  - flow
+  - hi
+  - hat
+  - breakdown
+  - build
+  - up
+  - drop
+  - SoundsGood
+  - Belleville
+  - Three
+  - AI
+  - A
+  - psytrance
