@@ -27,8 +27,13 @@ The voice key is read from a file named `elevenlabs.key` (attached to the chat, 
 | Graphics, picture, checks, export | `python3 -m sgv render EP` | machine |
 | Final listen, using `build/review.md` | | Jee |
 | Covers and publishing text | `python3 -m sgv pack EP` | Jee picks and posts |
+| Stage files for Jee's 成片 folder | `python3 -m sgv deliver EP`, then write each pair to the device | machine |
 
 `render` refuses to export if a check fails. `--force` writes a file marked `_DRAFT`. Changing any word of narration voids the script approval.
+
+## Jee's folders
+
+`~/Documents/SoundsGood/<视频名>/素材` holds the source footage Jee records; `<视频名>/成片` receives the finished videos, covers and publishing text. Earlier episodes (醉剑千笑, 师尊归位, 嗔恨修罗) only have finished files at the top of their folder. Episode media is linked into `episodes/<id>/assets/` and never committed.
 
 ## Tests
 

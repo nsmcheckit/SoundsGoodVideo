@@ -58,3 +58,31 @@ def publish_text(ep, tl=None):
     p = Path(ep.build / "publish.md")
     p.write_text("\n".join(lines), encoding="utf-8")
     return p
+
+
+DEVICE_ROOT = "/Users/aka.nsm/Documents/SoundsGood"
+DELIVER_NAMES = {
+    "16x9.mp4": "{title}_16x9.mp4", "9x16.mp4": "{title}_9x16.mp4",
+    "covers/zh_16x9.png": "封面_B站_中文_16x9.png", "covers/zh_4x3.png": "封面_B站_中文_4x3.png",
+    "covers/zh_3x4.png": "封面_抖音小红书_中文_3x4.png", "covers/en_16x9.png": "封面_YouTube_X_EN_16x9.png",
+    "covers/en_3x4.png": "封面_TikTok_EN_3x4.png", "publish.md": "发布文案.md",
+}
+
+
+def deliver(ep, staging="/mnt/user-data/outputs"):
+    """Copies finished files under their delivery names, ready to be written to <folder>/成片 on Jee's computer.
+    Draft exports are never delivered."""
+    import shutil
+    title = ep.data.get("title", ep.id)
+    folder = ep.data.get("folder", title)
+    out = Path(staging) / ep.id
+    out.mkdir(parents=True, exist_ok=True)
+    pairs = []
+    for rel, name in DELIVER_NAMES.items():
+        src = ep.build / (f"{ep.id}_{rel}" if rel.endswith(".mp4") else rel)
+        if not src.exists():
+            continue
+        dst = out / name.format(title=title)
+        shutil.copy2(src, dst)
+        pairs.append({"stagedPath": str(dst), "devicePath": f"{DEVICE_ROOT}/{folder}/成片/{dst.name}"})
+    return pairs

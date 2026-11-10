@@ -7,7 +7,7 @@ from .core import Episode, read_json, ts
 
 def main():
     ap = argparse.ArgumentParser(prog="sgv")
-    ap.add_argument("command", choices=["measure", "sheet", "answers", "approve", "plan", "voice", "placeholder", "mix", "gfx", "render", "qa", "pack", "all"])
+    ap.add_argument("command", choices=["measure", "sheet", "answers", "approve", "plan", "voice", "placeholder", "mix", "gfx", "render", "qa", "pack", "deliver", "all"])
     ap.add_argument("episode")
     ap.add_argument("--src", help="measure: one music source")
     ap.add_argument("--gate", choices=["script", "listening"], help="approve: which gate")
@@ -126,6 +126,12 @@ def cmd_pack(ep, a):
     print(pack.publish_text(ep))
     for p in pack.covers(ep):
         print(p)
+
+
+def cmd_deliver(ep, a):
+    import json
+    from . import pack
+    print(json.dumps(pack.deliver(ep), ensure_ascii=False, indent=1))
 
 
 def cmd_all(ep, a):

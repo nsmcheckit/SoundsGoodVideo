@@ -41,10 +41,13 @@ class Report:
 
 
 def _overlaps(ranges):
+    """Every pair that shares more than half a second, not just neighbours after sorting."""
     out = []
     ranges = sorted(ranges)
-    for (a0, a1, ai), (b0, b1, bi) in zip(ranges, ranges[1:]):
-        if b0 < a1 - 0.5:
+    for i, (a0, a1, ai) in enumerate(ranges):
+        for b0, b1, bi in ranges[i + 1:]:
+            if b0 >= a1 - 0.5:
+                break
             out.append((b0, min(a1, b1), ai, bi))
     return out
 
@@ -63,6 +66,8 @@ def check_script(ep, r):
             m = re.search(pat, t)
             if m:
                 r.fail("script.timecode", f"{p['id']} 口播里有时间码：{m.group(0)}")
+        if p.get("pending"):
+            r.fail("script.unconfirmed", f"{p['id']} 还在等听辨单的答案：{', '.join(p['pending']) if isinstance(p['pending'], list) else p['pending']}")
         if "⚠" in t or "⚠" in ep.spoken(p):
             r.fail("script.unconfirmed", f"{p['id']} 还带着未确认标记 ⚠️")
         claim = p.get("claim")
@@ -88,6 +93,8 @@ def check_script(ep, r):
 
 
 def check_timeline(ep, tl, r):
+    for e in tl.get("errors", []):
+        r.fail(e["rule"], e["msg"], e.get("t"))
     # Sources must exist and be long enough.
     for it in tl["bed"]:
         src = (ep.data["sources"].get("music", {}).get(it["src"]) or ep.data["sources"].get("video", {}).get(it["src"]))

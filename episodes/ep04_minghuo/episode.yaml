@@ -1,9 +1,262 @@
 id: ep04_minghuo
 title: 冥火流星
+folder: 冥火流星            # Jee's folder under Documents/SoundsGood; finished files go to <folder>/成片
+speech: {est_cps: 4.8}       # measured on this voice at 1.2x
+target_seconds: 330
+target_tolerance: 0.1
+owners:
+  - 游戏画面与音乐版权归 S-GAME 所有
+  - 《赛博朋克 2077》画面版权归 CD PROJEKT RED 所有，经授权使用
+
+lexicon:
+  replace:
+    "126": 一百二十六
+    "132": 一百三十二
+    G1: G一
+    49 赫兹: 四十九赫兹
+    6 dB: 六分贝
+    7 dB: 七分贝
+    12 dB: 十二分贝
+  listen: [G1, 冥火, 胡琴, 磷粉, 流星锤, 鬼差]
+  latin_ok: [G]
+
 sources:
   music:
-    A: {path: assets/A01_game.mp4}
+    A: {path: assets/A01_game.mp4, label: 实机录像原声}
   video:
     A01: {path: assets/A01_game.mp4}
-    B01: {path: assets/B01_nightcity.mp4}
-sections: []
+    B01: {path: assets/B01_nightcity.mp4, license: granted, note: "CDPR 授权；只用画面，不用 MV 的音乐"}
+
+structure:
+  source: A
+  segments:
+    - {start: 0, end: 27.3, label: 过场}
+    - {start: 27.3, end: 176.75, label: 一阶段}
+    - {start: 176.75, end: 205.4, label: 转阶段}
+    - {start: 205.4, end: 264.1, label: 二阶段}
+    - {start: 264.1, end: 270.7, label: ""}
+    - {start: 270.7, end: 300.6, label: 胡琴}
+    - {start: 300.6, end: 365.25, label: 第二轮}
+    - {start: 365.25, end: 394.4, label: 胡琴}
+    - {start: 394.4, end: 441.6, label: 第三轮}
+
+listening:
+  - {id: q1, src: A, label: 实机原声, in: 40.0, out: 56.0, question: 一阶段这段有没有底鼓？,
+     context: 决定第 04 段“我没测到稳定的四拍底鼓”和“这是 Trance 的思路”能说多硬。,
+     options: [没有四拍底鼓，推着走的是十六分音符低音, 有四拍底鼓，低音是 psytrance 写法（一下底鼓加三个十六分 bass）, 有四拍底鼓，但不是 psytrance 写法]}
+  - {id: q2, src: A, label: 实机原声, in: 70.0, out: 100.0, question: 这段里有没有一条十几秒的低频上升线，然后一条旋律从高处进来？,
+     context: 第 04 段第三句。, options: [有，和稿子写的一样, 有上升线，但旋律不是从高处进来, 没有]}
+  - {id: q2b, src: A, label: 实机原声, in: 70.0, out: 100.0, question: 同一段：这条旋律是哪个动机？,
+     context: 稿子目前没提旋律来源；如果能确认是已有主题，可以加一句。, options: [主题曲的旋律, 魂的动机, 沐小葵的动机, 新写的旋律，不是已有主题]}
+  - {id: q3, src: A, label: 实机原声, in: 213.0, out: 225.0, question: 二阶段的高频打击乐，是不是有不少地方三个十六分音符一组、和底鼓错开？,
+     context: 第 06 段“五拍子”那一句。, options: [是, 不是，就是普通的十六分]}
+  - {id: q4, src: A, label: 实机原声, in: 268.0, out: 290.0, question: 4:31 进来的主奏是什么乐器？,
+     context: 第 07 段。片段先是 breakdown，4:31 砸回来时进主奏。, options: [二胡, 高胡, 京胡, 合成器或采样]}
+  - {id: q5, src: A, label: 实机原声, in: 270.5, out: 290.0, question: 同一段：胡琴这条旋律是哪个动机？,
+     context: 稿子目前没提旋律来源；如果能确认，可以加一句。, options: [主题曲的旋律, 魂的动机, 沐小葵的动机, 新写的旋律，不是已有主题]}
+  - {id: q6, src: A, label: 实机原声, in: 292.0, out: 308.0, question: 这份录像里的音效是怎么去掉的？这段在 5:00 左右进入第二轮，音量会明显掉下去。,
+     context: 决定第 05 段“实机录音只保留了音乐”和整个第 09 段。如果是后期分离，第 09 段删掉。,
+     options: [游戏设置里关了音效，音乐是游戏原样输出, 后期用分离工具去掉的, 不确定]}
+  - {id: q7, question: 二阶段里，胡琴那段是不是每一轮都会来，跟 Boss 剩多少血无关？,
+     context: 第 09 段最后一句。录像里两轮都有胡琴，但看不出和血量有没有关系。, options: [是，每轮都来, 不是，和血量或阶段有关, 不确定]}
+  - {id: q8, question: 剧情说法对吗：火流星是鬼差的队长，受命拦魂，被人暗中操纵，害死了镇上的普通人，其中有玉儿；转阶段时他被人点燃，烧成绿色。,
+     context: 第 02、05 段。, options: [都对, 有错，写在备注里]}
+  - {id: q9, question: 火流星是不是被杀气改造过？, context: 决定第 08 段“赛博精神病”那一句能不能留。, options: [是, 不是, 不确定]}
+  - {id: q10, question: 第 05 段说“嗡”这一下“原声带里也有”。我手上没有原声带，核对不了。,
+     context: 实机录像里确认有，而且是全场最响的一刻。, options: [原声带里确实有, 原声带里没有, 删掉“原声带里也有”半句, 我发一份原声带过来]}
+  - {id: q11, question: 第 02 段原本要把火流星的台词“是谁……是谁在操纵我”压在口播下，但现在这份录像没有人声。,
+     options: [不用台词, 我补录一段带人声的过场]}
+
+sections:
+  - id: s01
+    chapter: 开场
+    structure: false
+    pre: 13.4
+    post: 0.4
+    paras:
+      - {id: p01, claim: opinion, text: 很贴，对吧？像夜之城的街头，像一家凌晨三点的俱乐部。,
+         en: ["Fits, right?", "Like a street in Night City, or a club at three in the morning."]}
+      - {id: p02, claim: official, text: 可这首曲子来自一部武侠游戏。《影之刃零》，庞镇第一战，火流星。曲名叫《冥火流星》。,
+         en: ["But this track comes from a wuxia game.", "Phantom Blade Zero, the first fight in Pang Town: Fire Meteor.", "It's called Nether Flame Meteor."]}
+    music:
+      - {src: A, sync: 205.8, at: start+12.6, lead: 12.6, free: true, reuse: 开场先放一次转阶段的“嗡”，第 05 段讲解时完整再听}
+    video:
+      - {src: B01, in: 1.0, at: start}
+      - {src: B01, in: 9.0, at: start+4.4}
+      - {src: B01, in: 77.0, at: start+8.6}
+      - {src: B01, in: 109.0, at: start+12.6}
+      - {src: B01, in: 113.0, at: p01@像一家}
+      - {src: A01, in: 349.0, at: p02}
+    gfx:
+      - {type: ask, at: start+0.4, until: start+12.3, params: {text: 猜猜这是哪个游戏的 Boss 曲？}}
+      - {type: tag, at: p02@曲名叫, dur: 4.2, params: {text: 冥火流星, en: NETHER FLAME METEOR}}
+
+  - id: s02
+    chapter: 一个被人牵着线的人
+    pre: 0.8
+    paras:
+      - {id: p03, claim: official, pending: [q8], text: 火流星是鬼差的队长。他受命来拦魂，却被人暗中操纵，害死了镇上的普通人，其中就有玉儿。,
+         en: ["Fire Meteor is a captain of the ghost reapers.", "Sent to stop Soul, he is secretly manipulated into killing ordinary townsfolk, Yu'er among them."]}
+      - {id: p04, claim: official, text: 他的武器是一对装满磷粉的流星锤，烧出来的是绿色的火。曲名里的“冥火流星”，大概就从这里来。,
+         en: ["His weapons are a pair of meteor hammers packed with phosphorus that burn with a green flame.", "That is probably where the track's name comes from."]}
+      - {id: p05, claim: opinion, text: 一个被人牵着线的人，一场替人讨回来的仗。记住这两件事，这首曲子就好懂了。,
+         en: ["A man on someone else's strings, and a fight to settle a debt for others.", "Keep those two things in mind and the track makes sense."]}
+    music:
+      - {src: A, in: 0.0, at: start, free: true}
+    video:
+      - {src: A01, follow: A, at: start}
+    gfx:
+      - {type: tag, at: start+0.3, dur: 4.0, params: {text: 庞镇 · 火流星, en: PANG TOWN · FIRE METEOR}}
+
+  - id: s03
+    chapter: Techno 和 Trance
+    pre: 0.3
+    post: 0.4
+    paras:
+      - {id: p06, claim: opinion, text: 很多人听完说这是 Techno，也有人说是 Trance。这两个词常被混着用，其实是两种思路。,
+         en: ["Many people call this techno; others say trance.", "The two words get mixed up, but they are two different ideas."]}
+      - {id: p07, claim: official, pause_after: 4.3, text: Techno 生在上世纪八十年代的底特律，一座汽车城。三个高中同学在地下室里用鼓机和合成器做出了这种声音，后来被叫作 Belleville Three。它的地基是四拍底鼓：每一拍都踩一下大鼓，从头踩到尾。它几乎只用机器，声音冷、硬、一遍遍重复，靠一层层加减往前推。听 Techno，听的是音色和律动，不是旋律。,
+         en: ["Techno was born in 1980s Detroit, a car city.", "Three high-school friends made this sound with drum machines and synths in a basement, and became known as the Belleville Three.", "Its foundation is four on the floor: a kick on every beat, start to finish.", "It is almost all machines: cold, hard, repetitive, driven forward by adding and removing layers.", "In techno you listen for timbre and groove, not melody."]}
+      - {id: p08, claim: official, text: Trance 是 Techno 传到欧洲后长出来的一支，名字的意思是“出神”。它保留了四拍的骨架，却把重心挪到了旋律上：琶音一圈圈地转，乐句拉得更长。最典型的是 breakdown，把鼓整个抽掉，只留旋律，再一口气砸回来。,
+         en: ["Trance grew out of techno once it reached Europe, named for the state it puts you in.", "It keeps the four-beat frame but moves the weight to melody: arpeggios spinning, phrases stretched longer.", "Its signature is the breakdown: pull the drums out, keep the melody, then slam everything back in."]}
+      - {id: p09, claim: opinion, text: 一句话：Techno 推着你的身体走，Trance 拽着你的情绪走。,
+         en: ["In short: techno pushes your body, trance pulls your emotions."]}
+    music:
+      - {src: A, at: start}
+    clips:
+      - {src: A, in: 319.763, dur: 3.636, at: p08-4.05}   # two bars of the second pass, which no other section uses
+    video:
+      - {src: A01, follow: A, at: start}
+    gfx:
+      - {type: steps, at: p07, until: p08, full: true, params: {title: 四拍底鼓, kicker: TECHNO · FOUR ON THE FLOOR, bpm: 132, note: 每一拍都踩一下,
+         rows: [{name: 底鼓, hits: [0, 4, 8, 12], hot: true}, {name: 踩镲, hits: [2, 6, 10, 14]}]}}
+      - {type: compare, at: p08, until: end, full: true, params: {title: 两种思路, kicker: TECHNO VS TRANCE, cols: [
+          {name: Techno, en: DETROIT · 1980S, points: [四拍底鼓从头踩到尾, 几乎只用机器, 靠音色和律动往前推], foot: 推着身体走},
+          {name: Trance, en: EUROPE · 1990S, points: [保留四拍的骨架, 重心挪到旋律, breakdown 抽掉鼓再砸回来], foot: 拽着情绪走}]}}
+
+  - id: s04
+    chapter: 一阶段
+    pre: 0.4
+    paras:
+      - {id: p10, claim: measured, text: 开场过场的最后，音乐先给了一条上升音效，等真正开打，一阶段才进来，速度每分钟 126 拍。,
+         en: ["At the end of the opening cutscene, a rising effect leads in; only when the fight starts does phase one arrive, at 126 BPM."]}
+      - {id: p11, claim: measured, pending: [q1], text: 有意思的是，一阶段里我没测到稳定的四拍底鼓。推着它走的，是低音一刻不停的十六分音符，和合成器琶音的“嘟嘟嘟”。这是 Trance 的思路：靠音型和旋律往前拱，而不是靠鼓。,
+         en: ["Interestingly, I couldn't measure a steady four-on-the-floor kick in phase one.", "What drives it is a relentless sixteenth-note bass and a ticking synth arpeggio.", "That's the trance way: pushing forward with patterns and melody, not drums."]}
+      - {id: p12, claim: measured, pending: [q2], text: 打到一半，低频里会拉出一条十几秒的上升线，像在蓄力；然后一条旋律从高处进来。这一整段大约一分半，你打得慢，它就从头再来一遍。,
+         en: ["Midway, a rising line stretches through the low end for over ten seconds, like charging up, before a melody comes in from above.", "The whole section runs about a minute and a half; fight slowly and it starts over."]}
+    music:
+      - {src: A, at: start}
+    video:
+      - {src: A01, follow: A, at: start}
+    gfx:
+      - {type: number, at: p10@速度, dur: 3.6, params: {from: 126, to: 126, unit: BPM · 一阶段}}
+
+  - id: s05
+    chapter: 转阶段
+    pre: 8.0
+    paras:
+      - {id: p13, claim: official, pending: [q8], text: 转阶段是一段过场。火流星被人点燃，整个人烧成了绿色。,
+         en: ["The phase change is a cutscene.", "Fire Meteor is set alight and burns green."]}
+      - {id: p14, claim: measured, text: 一阶段的音乐在过场里慢慢淡出，接着是二十多秒的铺垫：声音越来越亮、越来越响，像一个滤波器被一点点拧开。然后，声音突然塌下去半秒。再然后——“嗡”。,
+         en: ["Phase one's music fades out in the cutscene, then comes twenty-odd seconds of build: brighter and louder, like a filter slowly opening.", "Then the sound suddenly caves in for half a second.", "And then: the drop."]}
+      - {id: p15, claim: measured, pending: [q6, q10], text: 这一下不是音效。我拿到的实机录音只保留了音乐，它还在；原声带里也有。它是整场战斗最响的一刻。,
+         en: ["This isn't a sound effect.", "My recording keeps only the music, and it's still there; it's on the soundtrack too.", "It is the loudest moment of the whole fight."]}
+      - {id: p16, claim: opinion, text: 能卡得这么准，是因为转阶段是一段固定长度的过场：玩家打断不了，作曲就可以照着画面，一秒一秒地把蓄力写进去。,
+         en: ["It lands this precisely because the phase change is a fixed-length cutscene: the player can't interrupt it, so the composer can write the build second by second to the picture."]}
+    music:
+      - {src: A, sync: 205.8, at: p14@嗡+0.1, lead: start, free: true}
+    video:
+      - {src: A01, follow: A, at: start}
+    gfx:
+      - {type: curve, at: p14, until: p14@然后声音, full: true, params: {title: 转阶段的响度, kicker: LOUDNESS · 实测, unit: dB · 0.3 秒窗口,
+         values: [-19.1, -19.6, -21.1, -20.5, -20.4, -20.0, -19.9, -19.9, -20.7, -20.7, -20.6, -20.4, -21.4, -23.6, -25.7, -26.7, -29.5, -29.9, -31.0, -30.5, -31.2, -32.4, -33.0, -33.5, -35.0, -36.1, -35.3, -37.0, -38.0, -38.8, -39.8, -41.3, -41.1, -40.3, -39.8, -39.2, -39.4, -40.2, -41.2, -41.9, -40.8, -41.3, -42.6, -42.6, -42.9, -42.4, -40.4, -41.2, -41.0, -39.4, -38.9, -38.5, -38.9, -37.1, -36.5, -37.1, -35.9, -36.2, -35.8, -36.3, -35.2, -35.1, -34.8, -33.8, -33.9, -33.8, -35.1, -35.1, -33.7, -32.3, -31.6, -32.0, -33.9, -33.5, -33.6, -34.8, -35.5, -34.0, -33.6, -33.3, -32.0, -31.0, -30.4, -30.2, -29.5, -27.8, -29.1, -29.3, -30.5, -31.6, -31.5, -30.6, -31.1, -30.4, -28.5, -27.6, -26.5, -26.0, -25.6, -25.4, -25.7, -25.3, -24.6, -24.4, -24.0, -24.5, -25.2, -24.3, -24.8, -25.2, -25.6, -25.1, -24.7, -24.4, -24.4, -24.7, -24.5, -25.0, -24.4, -24.0, -23.7, -23.7, -23.4, -22.6, -22.5, -22.3, -22.6, -22.1, -21.9, -21.3, -20.0, -20.1, -20.6, -20.3, -19.7, -19.3, -19.5, -18.5, -17.9, -17.9, -17.8, -18.3, -18.4, -18.4, -18.0, -17.9, -17.5, -17.7, -19.6, -25.4, -30.2, -27.7, -15.2, -10.5, -8.8, -9.0, -10.4, -11.9, -13.3, -13.5, -14.3, -13.3, -13.8, -14.3, -13.9], marks: [{at: 0.911, text: 塌下去半秒}, {at: 0.94, text: 嗡}]}}
+
+  - id: s06
+    chapter: 二阶段
+    pre: 0.3
+    paras:
+      - {id: p17, claim: measured, text: 二阶段才是真正的 Techno。, en: ["Phase two is the real techno."]}
+      - {id: p18, claim: measured, text: 速度从 126 提到 132，每一拍都踩着底鼓。低音沉到了 G1，大约 49 赫兹，比一阶段低了将近一个八度，整体响了约 6 dB。声像收得全场最窄，声音几乎全压在正中间——这是俱乐部的做法，让低音稳稳地砸在胸口上。,
+         en: ["The tempo rises from 126 to 132, with a kick on every beat.", "The bass sinks to G1, about 49 hertz, nearly an octave below phase one, and the whole thing is about 6 dB louder.", "The stereo image is the narrowest of the fight, almost everything in the centre: a club move that lands the bass squarely in your chest."]}
+      - {id: p19, claim: measured, pending: [q3], text: 高频的打击乐却有不少地方三个十六分音符一组，和底鼓错开。弹幕里有人问“这是五拍子吗”，其实还是四拍，只是这层错位让人站不稳。,
+         en: ["Yet the high percussion often groups three sixteenth notes, offset against the kick.", "One viewer asked whether it was in five; it's still four, but that offset keeps you off balance."]}
+      - {id: p20, claim: measured, text: 底鼓踩了将近一分钟，鼓和低音突然全部撤掉，只剩一条往上爬的音效，六秒半。这是 Trance 式的 breakdown。,
+         en: ["After nearly a minute of kick, the drums and bass vanish, leaving only a rising effect for six and a half seconds.", "That's a trance-style breakdown."]}
+    music:
+      - {src: A, at: start}
+    video:
+      - {src: A01, follow: A, at: start}
+    gfx:
+      - {type: number, at: p18, dur: 3.6, params: {from: 126, to: 132, unit: BPM}}
+      - {type: tag, at: p18@低音沉到, dur: 5.0, params: {text: 低音 G1 ≈ 49 Hz, en: SUB BASS · MEASURED}}
+
+  - id: s07
+    chapter: 胡琴进来
+    align: {src: A, time: 270.672}   # first line lands on the slam after the breakdown
+    paras:
+      - {id: p21, claim: ear, pending: [q4], text: 再砸回来的时候，除了鼓，还多了一把胡琴。二阶段里，带着滑音的旋律第一次站到了最前面。,
+         en: ["When it slams back in, there's a huqin alongside the drums.", "For the first time in phase two, a sliding melody takes the front."]}
+      - {id: p22, claim: quote, text: Techno 的老规矩是几乎只用机器。作曲人薄彩生偏偏把一把胡琴放了进去。他说过，他的做法是以中式音乐为骨，西式音乐为肉；去掉中国乐器那一层，音乐就立不住。,
+         en: ["Techno's old rule is machines, almost only.", "Composer Bo Caisheng put a huqin in anyway.", "He has said he uses Chinese music as the bones and Western music as the flesh; take away the Chinese instruments and the music can't stand."]}
+      - {id: p23, claim: opinion, text: 底鼓是机器，胡琴是人。冷冰冰的四拍踩了一分钟，直到胡琴开口，这首曲子才回到武侠。,
+         en: ["The kick is the machine, the huqin is the human.", "After a minute of cold four-on-the-floor, only when the huqin speaks does the track return to wuxia."]}
+    music:
+      - {src: A, at: start}
+    video:
+      - {src: A01, follow: A, at: start}
+    gfx:
+      - {type: quote, at: p22@他说过, until: p23-0.2, params: {text: 以中式音乐为骨，西式音乐为肉；去掉中国乐器那一层，音乐就立不住。, source: 薄彩生，中国日报专访}}
+      - {type: layers, at: p23, until: end, full: true, params: {title: 三层声音, kicker: LAYERS · 实测, seconds: 38,
+         layers: [{name: 底鼓, spans: [[0, 1.4], [7.3, 38]]}, {name: 低音, spans: [[0, 1.4], [7.3, 38]]}, {name: 胡琴, spans: [[7.3, 38]], hot: true}],
+         marks: [{t: 1.4, text: 鼓和低音撤掉}, {t: 7.3, text: 胡琴开口}]}}
+
+  - id: s08
+    chapter: 回到实验
+    pre: 4.5
+    paras:
+      - {id: p24, claim: opinion, text: 回到开头那个实验。同样的音乐，放进夜之城很贴，放回庞镇也很贴。,
+         en: ["Back to the opening experiment.", "The same music fits Night City, and it fits Pang Town."]}
+      - {id: p25, claim: opinion, text: 西式的肉，让它进得了夜之城；中式的骨，让它留在庞镇。,
+         en: ["The Western flesh gets it into Night City; the Chinese bones keep it in Pang Town."]}
+      - {id: p26, claim: opinion, optional: true, pending: [q9], text: 火流星本身，也像一个错进了武侠的赛博朋克角色：被改造、被操纵、最后彻底失控。有弹幕说，杀气改造就像赛博精神病。冷、机械、一遍遍重复的 Techno，正是“被操纵”的声音。,
+         en: ["Fire Meteor himself is like a cyberpunk character who wandered into wuxia: modified, manipulated, finally out of control.", "One viewer compared the killing-intent modification to cyberpsychosis.", "Cold, mechanical, endlessly repeating techno is the sound of being controlled."]}
+    music:
+      - {src: A, in: 365.215, at: start}
+    video:
+      - {src: A01, follow: A, look: split, with: B01, with_in: 41.0, at: start}
+      - {src: A01, follow: A, look: split, with: B01, with_in: 87.0, at: p25}
+      - {src: A01, follow: A, at: p26}
+    gfx:
+      - {type: big, at: p25, dur: 4.8, params: {lines: [西式为肉 ｜ 中式为骨], size: 64}}
+
+  - id: s09
+    chapter: 只在游戏里听得到的细节
+    pre: 0.3
+    paras:
+      - {id: p27, claim: opinion, optional: true, text: 最后说一个只有在游戏里才听得到的细节。, en: ["One last detail you only hear in the game."]}
+      - {id: p28, claim: measured, optional: true, pending: [q6], text: 二阶段的音乐大约九十五秒一循环。第一轮底鼓最重、低频最满；绕回来的第二轮，整体小了约 7 dB，低频少了 12 dB 以上。最狠的那一下，只给你一次。在我看来，这是让音乐在长战斗里退一步，把位置让给刀剑和磷火。,
+         en: ["Phase two loops about every ninety-five seconds.", "The first pass has the heaviest kick and the fullest low end; on the second pass it's about 7 dB quieter overall, with over 12 dB less low end.", "The hardest hit, you only get once.", "As I see it, this lets the music step back in a long fight and make room for blades and phosphorus fire."]}
+      - {id: p29, claim: opinion, optional: true, pending: [q7], text: 胡琴那段每一轮都会来，跟 Boss 剩多少血无关。真正对着画面卡准的，是过场里的那几下，最狠的转阶段就在其中，因为那是玩家打断不了的地方。,
+         en: ["The huqin section comes back every pass, whatever the boss's health.", "What's locked to the picture are the moments in the cutscenes, the phase change among them, because those are the parts the player can't interrupt."]}
+    music:
+      - {src: A, at: start}
+    video:
+      - {src: A01, follow: A, at: start}
+    gfx:
+      - {type: loops, at: p28, until: p29, full: true, params: {title: 同一段循环，一轮比一轮轻, kicker: LOOP · 实测, note: 最狠的那一下，只给你一次,
+         bars: [{label: 第一轮, v: 0.92, value: "-11.5"}, {label: 第二轮, v: 0.6, value: "-18.1"}, {label: 第三轮, v: 0.59, value: "-18.2"}]}}
+
+  - id: s10
+    chapter: 收尾
+    pre: 0.3
+    post: 3.5
+    paras:
+      - {id: p30, claim: opinion, text: 说它是国产 3A 里第一首 Techno Boss 曲，也许没错。可国产 3A 至今寥寥几部，这个“第一”意义不大。更值得说的是：它让一首能进夜店的电子乐，在武侠故事里讲清楚了一个人。,
+         en: ["Calling it the first techno boss theme in a Chinese AAA game may well be true.", "But there are only a handful of Chinese AAA games so far, so being first means little.", "What matters more: it takes club music and uses it to tell one man's story in a wuxia tale."]}
+      - {id: p31, text: 更多游戏声音拆解，关注 SoundsGood。, en: ["More game audio breakdowns: follow SoundsGood."]}
+    music:
+      - {src: A, at: start}
+    video:
+      - {src: A01, follow: A, at: start}
+    gfx:
+      - {type: end, at: p31, until: end, full: true, params: {owners: [游戏画面与音乐版权归 S-GAME 所有, 《赛博朋克 2077》画面版权归 CD PROJEKT RED 所有，经授权使用]}}

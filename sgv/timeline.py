@@ -97,6 +97,40 @@ class Resolver:
         return t + off
 
 
+def _align_pre(ep, res, sec, t_now, errors):
+    target = float(sec["align"]["time"]) - float(sec["align"].get("before", 0.0))
+    src = sec["align"]["src"]
+    last = None
+    for s in ep.sections:
+        if s["id"] == sec["id"]:
+            break
+        for m in s.get("music") or []:
+            if m["src"] == src and (m.get("sync") is not None or m.get("in", "continue") != "continue"):
+                last = (m, s)
+    if last is None:
+        errors.append({"rule": "timing.align", "msg": f"{sec['id']} 要对齐 {src}，但前面没有可参照的音乐入点", "t": t_now})
+        return 0.0
+    m, s = last
+    if m.get("sync") is not None:
+        source_now = float(m["sync"]) + (t_now - res(m["at"], s))
+    else:
+        source_now = float(m["in"]) + (t_now - res(m.get("at", "start"), s))
+    wait = target - source_now
+    if wait < 0:
+        errors.append({"rule": "timing.align", "t": t_now,
+                       "msg": f"{sec['id']} 第一句要落在原曲 {target:.1f} 秒，但前面的口播长了 {-wait:.1f} 秒，音乐已经过了那里"})
+        return 0.0
+    return wait
+
+
+def _follow(bed, src, t):
+    """Source time of `src` heard at timeline time t, so picture and sound from one recording stay in sync."""
+    for b in bed:
+        if b["src"] == src and not b["clip"] and b["t"] - 1e-6 <= t < b["t"] + b["dur"] - 1e-6:
+            return b["in"] + (t - b["t"])
+    return None
+
+
 def _collect(ep, res, key):
     items = []
     for s in ep.sections:
@@ -113,10 +147,15 @@ def _music_len(ep, src):
 def build(ep, vo=None):
     vo = vo or real_vo(ep) or estimated_vo(ep)
     res = Resolver(ep, vo)
-    t, sections, vo_track = 0.0, [], []
+    t, sections, vo_track, errors = 0.0, [], [], []
     for s in ep.sections:
         s0 = t
-        t += s.get("pre", 0.0)
+        res.sec[s["id"]] = {"start": s0, "end": s0}
+        pre = s.get("pre", 0.0)
+        if s.get("align"):
+            # Wait for a moment of the continuing music before the first line, so words and music meet.
+            pre = _align_pre(ep, res, s, t, errors)
+        t += pre
         paras = s.get("paras") or []
         for i, p in enumerate(paras):
             v = vo[p["id"]]
@@ -132,6 +171,14 @@ def build(ep, vo=None):
 
     # ---- music bed ------------------------------------------------------
     music, clips = _collect(ep, res, "music"), _collect(ep, res, "clips")
+    for m in music:
+        if "sync" in m:
+            # `at` is where the source moment `sync` must be heard; the cut happens `lead` seconds before it,
+            # or at the start of the section with lead: start.
+            lead = m.get("lead", 4.0)
+            lead = m["t"] - res.sec[m["section"]]["start"] if lead == "start" else float(lead)
+            m["t"] -= lead
+            m["in"] = float(m["sync"]) - lead
     for c in clips:
         c["clip"] = True
     merged = sorted(music + clips, key=lambda x: x["t"])
@@ -159,11 +206,14 @@ def build(ep, vo=None):
             bar = nearest(gp["bars"], prev_out)
             if not (len(gp["bars"]) and abs(bar - prev_out) > 2.5):
                 it["t"] = it["t"] + (bar - prev_out)
+                if "sync" in it:
+                    it["in"] = it["in"] + (bar - prev_out)
         if out:
             prev = out[-1]
             prev["dur"] = round(it["t"] - prev["t"], 3)
             prev["out"] = round(prev["in"] + prev["dur"], 3)
-            cursor[prev["src"]] = prev["out"]
+            if not prev["clip"]:
+                cursor[prev["src"]] = prev["out"]
         pos = it.get("in", "continue")
         if pos == "continue":
             pos = cursor.get(src, 0.0)
@@ -177,6 +227,7 @@ def build(ep, vo=None):
             "src": src, "t": round(it["t"], 3), "in": round(pos, 3), "dur": 0.0, "out": 0.0,
             "clip": bool(it.get("clip")), "section": it["section"], "explicit": explicit,
             "free": bool(it.get("free")), "reuse": it.get("reuse"), "through": it.get("through"),
+            "sync": it.get("sync"),
             "xf": max(MIN_XF, float(it.get("xf", DEFAULT_XF))) if not it.get("clip") else CLIP_FADE,
         }
         if it.get("xf") is not None and float(it["xf"]) < MIN_XF and not it.get("clip"):
@@ -213,12 +264,19 @@ def build(ep, vo=None):
 
     # ---- picture track --------------------------------------------------
     shots = sorted(_collect(ep, res, "video"), key=lambda x: x["t"])
+    for sh in shots:
+        if sh.get("follow"):
+            own = [b["t"] for b in out if b["src"] == sh["follow"] and not b["clip"] and b["section"] == sh["section"]]
+            if own and sh["t"] < own[0] < sh["t"] + 2.5:
+                sh["t"] = own[0]
     blocks = [{"t": g["t"], "dur": g["dur"], "kind": "gfx", "id": g["id"]} for g in gfx if g["full"]]
     blocks += [{"t": c["t"], "dur": c["dur"], "kind": "clip", "src": c["src"], "in": c["in"], "look": c["look"]}
                for c in out if c["clip"] and c.get("video")]
     blocks.sort(key=lambda b: b["t"])
     video, vcur = [], {}
-    marks = sorted({0.0, total} | {s["t"] for s in shots} | {b["t"] for b in blocks} | {b["t"] + b["dur"] for b in blocks})
+    follows = {s["follow"] for s in shots if s.get("follow")}
+    cuts = {b["t"] for b in out if b["src"] in follows}
+    marks = sorted({0.0, total} | {s["t"] for s in shots} | {b["t"] for b in blocks} | {b["t"] + b["dur"] for b in blocks} | cuts)
     marks = [m for m in marks if 0.0 <= m <= total]
     for a, b in zip(marks, marks[1:]):
         if b - a < 1e-3:
@@ -244,11 +302,15 @@ def build(ep, vo=None):
             continue
         src, speed = shot["src"], float(shot.get("speed", 1.0))
         prev = video[-1] if video else None
-        if prev is not None and prev.get("shot") == id(shot):
+        if prev is not None and prev.get("shot") == id(shot) and not shot.get("follow"):
             prev["dur"] = round(prev["dur"] + b - a, 3)
             vcur[src] = shot["_pos"] = prev["in"] + prev["dur"] * speed
             continue
-        if shot.get("_started"):
+        if shot.get("follow"):
+            pos = _follow(out, shot["follow"], a)
+            if pos is None:
+                raise ValueError(f"shot at {a:.2f}s follows {shot['follow']}, but that source is not playing")
+        elif shot.get("_started"):
             pos = shot["_pos"]
         else:
             pos = shot.get("in", "continue")
@@ -256,6 +318,14 @@ def build(ep, vo=None):
             shot["_started"] = True
         rec = {"t": round(a, 3), "dur": round(b - a, 3), "src": src, "in": round(pos, 3), "look": shot.get("look", "raw"),
                "speed": speed, "reuse": shot.get("reuse"), "shot": id(shot)}
+        if shot.get("with"):
+            # Split screen: the second picture keeps its own running position.
+            key = "with:" + shot["with"]
+            w_pos = shot["_wpos"] if shot.get("_started_w") else float(shot.get("with_in", vcur.get(shot["with"], 0.0)))
+            shot["_started_w"] = True
+            rec.update({"with": shot["with"], "with_in": round(w_pos, 3)})
+            shot["_wpos"] = w_pos + (b - a)
+            vcur[shot["with"]] = shot["_wpos"]
         video.append(rec)
         shot["_pos"] = pos + (b - a) * speed
         vcur[src] = shot["_pos"]
@@ -265,20 +335,21 @@ def build(ep, vo=None):
             shot = next(s for s in shots if id(s) == v["shot"])
             v.pop("shot")
     for s in shots:
-        s.pop("_started", None)
-        s.pop("_pos", None)
+        for k in ("_started", "_pos", "_started_w", "_wpos"):
+            s.pop(k, None)
 
     # ---- structure bar --------------------------------------------------
     st = ep.data.get("structure")
     mapping = []
     if st:
         hidden = [(g["t"], g["t"] + g["dur"]) for g in gfx if g["full"]]
+        hidden += [(x["start"], x["end"]) for x, s0 in zip(sections, ep.sections) if s0.get("structure") is False]
         for b in out:
             if b["src"] == st["source"] and not b["clip"]:
                 mapping.append({"t": b["t"], "dur": b["dur"], "in": b["in"]})
         mapping = {"items": mapping, "hidden": hidden}
 
     tl = {"total": total, "sections": sections, "vo": vo_track, "bed": out, "video": video, "gfx": gfx,
-          "map": mapping, "estimated": all(not v.get("file") for v in vo.values())}
+          "map": mapping, "errors": errors, "estimated": all(not v.get("file") for v in vo.values())}
     write_json(ep.build / "timeline.json", tl)
     return tl, vo

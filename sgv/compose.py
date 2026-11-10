@@ -40,28 +40,41 @@ def segment(ep, tl, render, idx, bounds, orient, folder):
             overlays.append((render["scenes"][g["id"]], (a - f0) / FPS))
     gfx_full = item["src"].startswith("gfx:")
     src = render["scenes"][item["src"][4:]] if gfx_full else str(_input_for(ep, item))
-    key = digest(orient, file_key(src), item["in"], nf, item["look"], item.get("speed", 1.0),
+    key = digest(orient, file_key(src), item["in"], nf, item["look"], item.get("speed", 1.0), item.get("with"), item.get("with_in"),
                  *[f"{Path(o[0]).name}@{o[1]:.3f}" for o in overlays])
     out = folder / f"seg_{key}.mp4"
     if out.exists():
         return out
     speed = float(item.get("speed", 1.0))
-    inputs, parts = [], []
+    inputs, parts, n_in = [], [], 1
     if gfx_full:
         inputs += ["-i", src]
         canvas = {"h": "0x070605", "v": "0x070605"}[orient]
         w, h = (1920, 1080) if orient == "h" else (1080, 1920)
         parts.append(f"color=c={canvas}:s={w}x{h}:r={FPS}:d={dur + 0.2:.3f}[bgc];"
                      f"[0:v]fps={FPS},setpts=PTS-STARTPTS[fg];[bgc][fg]overlay=0:0:eof_action=repeat,setsar=1[base]")
+    elif item["look"] == "split":
+        other = str(ep.path(ep.video(item["with"])["path"]))
+        inputs += ["-ss", f"{item['in']:.3f}", "-t", f"{dur + 0.3:.3f}", "-i", src,
+                   "-ss", f"{item['with_in']:.3f}", "-t", f"{dur + 0.3:.3f}", "-i", other]
+        if orient == "h":
+            half = "scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,crop=960:1080:480:0,setsar=1"
+            parts.append(f"[1:v:0]fps={FPS},setpts=PTS-STARTPTS,{half}[sl];[0:v:0]fps={FPS},setpts=PTS-STARTPTS,{half}[sr];"
+                         "[sl][sr]hstack=2,drawbox=x=958:y=0:w=4:h=1080:color=0xE6C27A:t=fill,tpad=stop=-1:stop_mode=clone[base]")
+        else:
+            half = "scale=-2:960,crop=1080:960,setsar=1"
+            parts.append(f"[1:v:0]fps={FPS},setpts=PTS-STARTPTS,{half}[sl];[0:v:0]fps={FPS},setpts=PTS-STARTPTS,{half}[sr];"
+                         "[sl][sr]vstack=2,drawbox=x=0:y=958:w=1080:h=4:color=0xE6C27A:t=fill,tpad=stop=-1:stop_mode=clone[base]")
+        n_in = 2
     else:
         inputs += ["-ss", f"{item['in']:.3f}", "-t", f"{dur * speed + 0.3:.3f}", "-i", src]
         chain = f"fps={FPS},setpts=(PTS-STARTPTS)/{speed},{LOOKS[item['look']]}"
         body = _vertical(chain) if orient == "v" else chain
-        parts.append(f"[0:v]{body},tpad=stop=-1:stop_mode=clone[base]")
+        parts.append(f"[0:v:0]{body},tpad=stop=-1:stop_mode=clone[base]")
     label = "base"
     for j, (mov, rel) in enumerate(overlays):
         inputs += ["-i", mov]
-        k = j + 1
+        k = j + n_in
         trim = f"trim=start={-rel:.3f}," if rel < 0 else ""
         shift = f"+{max(rel, 0):.3f}/TB"
         parts.append(f"[{k}:v]{trim}setpts=PTS-STARTPTS{shift}[o{k}];[{label}][o{k}]overlay=0:0:eof_action=pass[l{k}]")
