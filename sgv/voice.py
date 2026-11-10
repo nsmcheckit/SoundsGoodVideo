@@ -85,15 +85,45 @@ def _py(s):
     return lazy_pinyin(s, style=Style.TONE3, neutral_tone_with_five=True, errors="ignore")
 
 
+def _split(syl):
+    return (syl[:-1], syl[-1]) if syl and syl[-1].isdigit() else (syl, "5")
+
+
+def _sandhi(tones):
+    """Third tone before third tone is spoken as a second tone (底鼓 is said dí gǔ)."""
+    out = list(tones)
+    for i in range(len(out) - 1):
+        if out[i] == "3" and out[i + 1] == "3":
+            out[i] = "2"
+    return out
+
+
 def compare_reading(expected, heard):
-    """Compares by pronunciation, tones included, so a homophone typed by the recogniser is not a false alarm."""
+    """Compares by pronunciation, so a homophone typed by the recogniser is not a false alarm.
+
+    Syllables are matched without tones first, then tones are checked one by one. A sandhi second tone
+    heard as a first tone is let through: the recogniser cannot separate them and picks the commoner word
+    (it hears 底鼓 as 低谷). Every other tone difference is reported.
+    """
     a, b = _py(clean_text(expected)), _py(clean_text(heard))
-    sm = difflib.SequenceMatcher(None, a, b, autojunk=False)
-    issues = []
+    a_base, a_tone = zip(*[_split(s) for s in a]) if a else ((), ())
+    b_base, b_tone = zip(*[_split(s) for s in b]) if b else ((), ())
+    spoken = _sandhi(a_tone)
+    sm = difflib.SequenceMatcher(None, list(a_base), list(b_base), autojunk=False)
+    issues, matched = [], 0
     for tag, i1, i2, j1, j2 in sm.get_opcodes():
         if tag != "equal":
             issues.append({"expected": " ".join(a[i1:i2]), "heard": " ".join(b[j1:j2])})
-    return round(sm.ratio(), 3), issues
+            continue
+        for i, j in zip(range(i1, i2), range(j1, j2)):
+            t = b_tone[j]
+            ok = t in (a_tone[i], spoken[i], "5") or (spoken[i] == "2" and a_tone[i] == "3" and t == "1")
+            if ok:
+                matched += 1
+            else:
+                issues.append({"expected": a[i], "heard": b[j]})
+    total = len(a) + len(b)
+    return (round(2 * matched / total, 3) if total else 1.0), issues
 
 
 def _quietest(x, t0, t1, frame=0.01):

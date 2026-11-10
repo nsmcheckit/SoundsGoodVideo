@@ -103,6 +103,10 @@ wrong, none = compare_reading("丑角", "愁角")
 expect("reading check catches a wrong tone", wrong < 1.0, wrong)
 same, none = compare_reading("是", "事")
 expect("reading check accepts exact homophones", same == 1.0, same)
+sandhi, issues = compare_reading("底鼓踩了将近一分钟", "低谷踩了将近一分钟")
+expect("reading check allows third-tone sandhi heard as first tone", sandhi == 1.0 and not issues, issues)
+missing, issues = compare_reading("底鼓踩了", "踩了")
+expect("reading check still catches a dropped word", missing < 1.0 and issues, issues)
 
 
 def bbox_case(params, rule, orient):

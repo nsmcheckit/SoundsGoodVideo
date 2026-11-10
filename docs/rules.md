@@ -19,4 +19,6 @@
 | `layout.subtitle_clash`, `layout.offscreen`, `layout.safe_zone`, `layout.over_full` | Captions colliding with subtitles; Xiaohongshu 3:4 crop |
 | `gate.listening`, `gate.script` | The order Jee set: confirm by ear, then script, then video |
 
+`voice.reading` matches syllables first and tones second. A third tone spoken as a second tone before another third tone (底鼓 → dí gǔ) is allowed to come back as a first tone, because the recogniser cannot tell them apart and prefers the commoner word (低谷). Checked on 2026-11-10 by pitch: the take rose about 2 semitones, like the reference 底鼓 and 笛鼓 readings, while 低谷 stayed level or fell.
+
 Thresholds for `mix.vocal_masking` have not been calibrated against an approved mix yet. Treat it as a prompt to listen.
