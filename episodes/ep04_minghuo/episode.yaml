@@ -6,7 +6,6 @@ target_seconds: 330
 target_tolerance: 0.1
 owners:
   - 游戏画面与音乐版权归 S-GAME 所有
-  - 《赛博朋克 2077》画面版权归 CD PROJEKT RED 所有，经授权使用
 
 lexicon:
   replace:
@@ -259,4 +258,4 @@ sections:
     video:
       - {src: A01, follow: A, at: start}
     gfx:
-      - {type: end, at: p31, until: end, full: true, params: {owners: [游戏画面与音乐版权归 S-GAME 所有, 《赛博朋克 2077》画面版权归 CD PROJEKT RED 所有，经授权使用]}}
+      - {type: end, at: p31, until: end, full: true, params: {owners: [游戏画面与音乐版权归 S-GAME 所有]}}
