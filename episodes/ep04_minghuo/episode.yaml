@@ -1,0 +1,9 @@
+id: ep04_minghuo
+title: 冥火流星
+sources:
+  music:
+    A: {path: assets/A01_game.mp4}
+  video:
+    A01: {path: assets/A01_game.mp4}
+    B01: {path: assets/B01_nightcity.mp4}
+sections: []

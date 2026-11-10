@@ -170,6 +170,28 @@ def tempo_map(y, sr, cuts):
     return grids
 
 
+def bass_pitch(y, sr, lo=25.0, hi=200.0):
+    """Strongest low pitch, from a long FFT. A 2048-point frame is about 11 Hz wide, too coarse to tell G1 from A1."""
+    n = 32768
+    if len(y) < n:
+        return None
+    hop = n // 2
+    frames = [np.abs(np.fft.rfft(y[k: k + n] * np.hanning(n))) ** 2 for k in range(0, len(y) - n, hop)]
+    if not frames:
+        return None
+    spec = np.mean(frames, 0)
+    freqs = np.fft.rfftfreq(n, 1 / sr)
+    band = (freqs >= lo) & (freqs <= hi)
+    k = np.argmax(spec[band])
+    f, p = freqs[band], spec[band]
+    # Parabolic interpolation on the log magnitude for a sub-bin estimate.
+    if 0 < k < len(p) - 1:
+        l, c, r = np.log(p[k - 1] + 1e-20), np.log(p[k] + 1e-20), np.log(p[k + 1] + 1e-20)
+        shift = 0.5 * (l - r) / (l - 2 * c + r + 1e-12)
+        return float(f[k] + shift * (f[1] - f[0]))
+    return float(f[k])
+
+
 def note_name(hz):
     return librosa.hz_to_note(hz) if hz and hz > 0 else None
 
@@ -208,11 +230,10 @@ def analyze(wav_path, out_json, out_png):
         row["percussive_pct"] = round(100 * float(perc[:, i:j].sum() / (perc[:, i:j].sum() + harm[:, i:j].sum() + 1e-12)), 1)
         m, s = seg.mean(1), (seg[:, 0] - seg[:, 1]) / 2
         row["width"] = round(float(np.sqrt((s ** 2).mean() / ((m ** 2).mean() + 1e-12))), 3)
-        low_band = S[freqs < 200][:, i:j]
-        if low_band.size:
-            idx = np.argmax(low_band.mean(1))
-            row["bass_hz"] = round(float(freqs[freqs < 200][idx]), 1)
-            row["bass_note"] = note_name(row["bass_hz"]) if row["bass_hz"] > 20 else None
+        hz = bass_pitch(y[int(a * sr): int(b * sr)], sr)
+        if hz:
+            row["bass_hz"] = round(hz, 1)
+            row["bass_note"] = note_name(hz)
         sections.append(row)
 
     st_win = int(3.0 * sr_st)
