@@ -11,7 +11,7 @@ import numpy as np
 import soundfile as sf
 from pypinyin import Style, lazy_pinyin
 
-from .core import ASR_MODEL, SR, TTS_MODEL, TTS_SPEED, VOICE_ZH, clean_text, probe_duration, read_json, run, write_json
+from .core import ASR_MODEL, SR, TTS_MODEL, TTS_SPEED, VOICE_ZH, clean_text, probe_duration, read_json, run, spoken_chars, write_json
 
 
 def _config(ep):
@@ -96,6 +96,17 @@ def compare_reading(expected, heard):
     return round(sm.ratio(), 3), issues
 
 
+def _quietest(x, t0, t1, frame=0.01):
+    """Centre of the lowest-energy 10 ms frame between t0 and t1."""
+    a, b = max(0, int(t0 * SR)), min(len(x), int(t1 * SR))
+    n = int(frame * SR)
+    if b - a < 2 * n:
+        return (t0 + t1) / 2
+    k = (b - a) // n
+    energy = (x[a: a + k * n].reshape(k, n) ** 2).mean(1)
+    return (a + int(np.argmin(energy)) * n + n // 2) / SR
+
+
 def _cut(ep, base, speed):
     """Speeds the take up, then cuts paragraph files from the character timing."""
     folder = base.parent
@@ -107,22 +118,26 @@ def _cut(ep, base, speed):
     en = [x / speed for x in A["character_end_times_seconds"]]
     text = "".join(ch)
     x, _ = sf.read(str(wav), dtype="float32")
-    paras, pos, out = ep.paras, 0, []
+    paras, pos, spans = ep.paras, 0, []
     spoken = [ep.spoken(p) for p in paras]
     tail = int(0.012 * SR)
-    for n, (p, s) in enumerate(zip(paras, spoken)):
+    for p, s in zip(paras, spoken):
         i = text.find(s, pos)
         if i < 0:
             raise SystemExit(f"take does not contain paragraph {p['id']}: the model changed the text")
-        j = i + len(s)
-        pos = j
-        idx = [k for k in range(i, j) if re.match(r"\w", ch[k])]
-        a = max(st[idx[0]] - 0.06, (en[i - 1] + 0.02) if i > 0 else 0.0)
-        b = en[idx[-1]] + 0.12
-        if n + 1 < len(paras):
-            nx = text.find(spoken[n + 1], j)
-            first = [k for k in range(nx, nx + len(spoken[n + 1])) if re.match(r"\w", ch[k])][0]
-            b = min(b, st[first] - 0.04)
+        pos = i + len(s)
+        words = [k for k in range(i, pos) if re.match(r"\w", ch[k])]
+        spans.append((i, pos, words[0], words[-1]))
+    # The model's character times run late against the audio, so cutting just before a word can clip it.
+    # Each boundary goes at the quietest point between the last word of one paragraph and the first of the next.
+    cuts = [max(0.0, st[spans[0][2]] - 0.15)]
+    for (_, _, _, last), (_, _, first, _) in zip(spans, spans[1:]):
+        cuts.append(_quietest(x, en[last] - 0.05, st[first] + 0.05))
+    cuts.append(min(len(x) / SR, en[spans[-1][3]] + 0.3))
+    out = []
+    for n, (p, s) in enumerate(zip(paras, spoken)):
+        i, j = spans[n][0], spans[n][1]
+        a, b = cuts[n], cuts[n + 1]
         seg = x[int(a * SR): int(b * SR)].copy()
         seg[:tail] *= np.linspace(0, 1, tail)
         seg[-tail:] *= np.linspace(1, 0, tail)
@@ -139,7 +154,8 @@ def score_take(ep, paras, engine):
     for p in paras:
         y, _ = sf.read(str(folder / p["file"]), dtype="float32")
         y16 = np.interp(np.arange(0, len(y), 3), np.arange(len(y)), y).astype(np.float32)
-        heard = transcribe(engine, y16)
+        pad = np.zeros(4000, np.float32)  # a quarter second of silence so the first syllable is not dropped
+        heard = transcribe(engine, np.concatenate([pad, y16, pad]))
         ratio, issues = compare_reading(p["text"], heard)
         report.append({"id": p["id"], "ratio": ratio, "heard": heard, "issues": issues})
         total += ratio * len(p["text"])
@@ -162,7 +178,7 @@ def build(ep, seeds=None):
     write_json(ep.build / "vo" / "reading.json", {
         "take": best["take"], "score": best["score"], "report": best["report"],
         "others": [{"take": r["take"], "score": r["score"], "seconds": r["seconds"]} for r in results]})
-    voiced = sum(len(clean_text(p["text"])) for p in best["paras"])
+    voiced = sum(spoken_chars(p["text"]) for p in best["paras"])
     write_json(ep.build / "vo" / "pace.json", {"chars_per_second": round(voiced / best["seconds"], 2), "seconds": best["seconds"]})
     return best
 
