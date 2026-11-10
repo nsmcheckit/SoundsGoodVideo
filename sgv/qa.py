@@ -15,6 +15,11 @@ EARLIER_EPISODE = ["上一期", "上期", "前几期", "前两期", "之前那�
 TIMECODE = [r"\d+\s*分\s*\d+\s*秒", r"\d+:\d{2}", r"第\s*[一二三四五六七八九十\d]+\s*分[钟]?[第的]", r"[一二三四五六七八九十两]+分[一二三四五六七八九十]+秒"]
 ENDING = "更多游戏声音拆解，关注 SoundsGood"
 PERSONAL_MARKS = ["在我看来", "在我听来", "我的理解", "我听着", "我感觉"]
+# Hard arrangement specs in the narration. Jee (ep04 v2): the details were too fine-grained; the story carries the
+# episode and a few specs back it up. BPM is not counted: it is shown on screen and anchors the story.
+SPEC_PATTERNS = [r"\d+(?:\.\d+)?\s*(?:Hz|赫兹|dB|分贝)", r"[一二三四五六七八九十百千两]+\s*(?:赫兹|分贝)", r"(?<![A-Za-z])[A-G][#b♯♭]?\d(?!\d)",
+                 "八度", "声像", "十六分", "三连音", "附点", "五拍子"]
+MAX_SPECS = 3
 BAR_TOL = 0.035
 
 
@@ -79,6 +84,11 @@ def check_script(ep, r):
         for w in set(re.findall(r"[A-Za-z][A-Za-z\-]*", spoken)):
             if w not in ep.lexicon["latin_ok"] and w.lower() not in [x.lower() for x in ep.lexicon["latin_ok"]]:
                 r.warn("voice.latin", f"{p['id']} 配音里有未验证过的英文词：{w}")
+    specs = [(p["id"], m.group(0)) for p in paras for pat in SPEC_PATTERNS for m in re.finditer(pat, p["text"])]
+    limit = ep.data.get("max_specs", MAX_SPECS)
+    if len(specs) > limit:
+        r.fail("script.spec_density", f"口播里有 {len(specs)} 处编曲参数（上限 {limit}），讲故事为主、参数只留最关键的："
+               + "，".join(f"{pid} {s}" for pid, s in specs))
     if not any(ENDING.replace(" ", "") in p["text"].replace(" ", "") for p in paras):
         r.fail("script.ending", f"缺少固定结尾句：{ENDING}")
     from .subs import sentences

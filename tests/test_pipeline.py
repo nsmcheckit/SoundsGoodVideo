@@ -78,6 +78,7 @@ CASES = {
     "script.unconfirmed": lambda m: para(m, "p01").update(text="这里是电吉他。⚠️"),
     "script.ear_claim": lambda m: para(m, "p02").update(text="这条底鼓用的是古筝。"),
     "script.ending": lambda m: para(m, "p06").update(text="谢谢观看。"),
+    "script.spec_density": lambda m: para(m, "p01").update(text="低音在 G1，大约四十九赫兹，低了将近一个八度，声像最窄，高频是十六分音符。"),
     "voice.digits": lambda m: para(m, "p01").update(text="速度是 126，满能量。"),
     "subs.en_count": lambda m: para(m, "p01").update(en=["One.", "Two."]),
     "duration": lambda m: m.update(target_seconds=20, target_tolerance=0.05),

@@ -13,6 +13,7 @@
 | `script.timecode` | Jee: tell it as a story, no timestamps in narration |
 | `script.names` | Jee: do not name other creators |
 | `script.earlier` | Jee: do not refer to earlier episodes |
+| `script.spec_density` | Nether Flame Meteor v2: Jee found the arrangement details too fine-grained (Hz, note names, octaves, stereo width, sixteenths). The story carries the episode; at most three hard specs, BPM not counted. An episode can raise the cap with `max_specs` |
 | `script.unconfirmed`, `script.ear_claim` | Suona and electric guitar confused; guqin or guzheng disputed in comments |
 | `script.ending`, `end.card`, `end.owners` | Series format and rights lines |
 | `license.pending` | Third-party footage needs a decision from Jee |
