@@ -16,7 +16,7 @@ lexicon:
     6 dB: 六分贝
     7 dB: 七分贝
     12 dB: 十二分贝
-  listen: [G1, 冥火, 胡琴, 磷粉, 流星锤, 鬼差]
+  listen: [G1, 冥火, 弦乐, 磷粉, 流星锤, 鬼差]
   latin_ok: [G]
 
 sources:
@@ -34,9 +34,9 @@ structure:
     - {start: 176.75, end: 205.4, label: 转阶段}
     - {start: 205.4, end: 264.1, label: 二阶段}
     - {start: 264.1, end: 270.7, label: ""}
-    - {start: 270.7, end: 300.6, label: 胡琴}
+    - {start: 270.7, end: 300.6, label: 弦乐}
     - {start: 300.6, end: 365.25, label: 第二轮}
-    - {start: 365.25, end: 394.4, label: 胡琴}
+    - {start: 365.25, end: 394.4, label: 弦乐}
     - {start: 394.4, end: 441.6, label: 第三轮}
 
 listening:
@@ -65,6 +65,12 @@ listening:
      context: 实机录像里确认有，而且是全场最响的一刻。, options: [原声带里确实有, 原声带里没有, 删掉“原声带里也有”半句, 我发一份原声带过来]}
   - {id: q11, question: 第 02 段原本要把火流星的台词“是谁……是谁在操纵我”压在口播下，但现在这份录像没有人声。,
      options: [不用台词, 我补录一段带人声的过场]}
+  - {id: q12, src: A, label: 实机原声, in: 268.0, out: 290.0, question: 4:31 的弦乐主奏，是西洋弦乐组，还是胡琴类？,
+     context: 你在对话里说“主奏是弦乐”。第 07 段用版本 A（胡琴）还是版本 B（弦乐、骨在旋律上）取决于这一条。,
+     options: [西洋弦乐组（小提琴等）, 胡琴类（二胡、高胡或京胡）, 两者齐奏]}
+  - {id: q13, question: 实机这 7 分 23 秒里，哪里有中国乐器？,
+     context: 决定第 07 段能不能引“去掉中国乐器那一层，音乐就立不住”，以及第 08 段“中式的骨，让它留在庞镇”。,
+     options: [有，乐器和时间写在备注里, 没有]}
 
 sections:
   - id: s01
@@ -158,8 +164,8 @@ sections:
          en: ["The phase change is a cutscene.", "Fire Meteor is set alight and burns green."]}
       - {id: p14, claim: measured, text: 一阶段的音乐在过场里慢慢淡出，接着是二十多秒的铺垫：声音越来越亮、越来越响，像一个滤波器被一点点拧开。然后，声音突然塌下去半秒。再然后——“嗡”。,
          en: ["Phase one's music fades out in the cutscene, then comes twenty-odd seconds of build: brighter and louder, like a filter slowly opening.", "Then the sound suddenly caves in for half a second.", "And then: the drop."]}
-      - {id: p15, claim: measured, pending: [q6, q10], text: 这一下不是音效。我拿到的实机录音只保留了音乐，它还在；原声带里也有。它是整场战斗最响的一刻。,
-         en: ["This isn't a sound effect.", "My recording keeps only the music, and it's still there; it's on the soundtrack too.", "It is the loudest moment of the whole fight."]}
+      - {id: p15, claim: measured, text: 这一下不是音效。这份录像里没有音效，只有音乐，它还在。它是整场战斗最响的一刻。,
+         en: ["This isn't a sound effect.", "This recording has no sound effects, only music, and it's still there.", "It is the loudest moment of the whole fight."]}
       - {id: p16, claim: opinion, text: 能卡得这么准，是因为转阶段是一段固定长度的过场：玩家打断不了，作曲就可以照着画面，一秒一秒地把蓄力写进去。,
          en: ["It lands this precisely because the phase change is a fixed-length cutscene: the player can't interrupt it, so the composer can write the build second by second to the picture."]}
     music:
@@ -190,24 +196,24 @@ sections:
       - {type: tag, at: p18@低音沉到, dur: 5.0, params: {text: 低音 G1 ≈ 49 Hz, en: SUB BASS · MEASURED}}
 
   - id: s07
-    chapter: 胡琴进来
+    chapter: 弦乐进来
     align: {src: A, time: 270.672}   # first line lands on the slam after the breakdown
     paras:
-      - {id: p21, claim: ear, pending: [q4], text: 再砸回来的时候，除了鼓，还多了一把胡琴。二阶段里，带着滑音的旋律第一次站到了最前面。,
-         en: ["When it slams back in, there's a huqin alongside the drums.", "For the first time in phase two, a sliding melody takes the front."]}
-      - {id: p22, claim: quote, text: Techno 的老规矩是几乎只用机器。作曲人薄彩生偏偏把一把胡琴放了进去。他说过，他的做法是以中式音乐为骨，西式音乐为肉；去掉中国乐器那一层，音乐就立不住。,
-         en: ["Techno's old rule is machines, almost only.", "Composer Bo Caisheng put a huqin in anyway.", "He has said he uses Chinese music as the bones and Western music as the flesh; take away the Chinese instruments and the music can't stand."]}
-      - {id: p23, claim: opinion, text: 底鼓是机器，胡琴是人。冷冰冰的四拍踩了一分钟，直到胡琴开口，这首曲子才回到武侠。,
-         en: ["The kick is the machine, the huqin is the human.", "After a minute of cold four-on-the-floor, only when the huqin speaks does the track return to wuxia."]}
+      - {id: p21, claim: ear, confirmed_by: q4, text: 再砸回来的时候，除了鼓，还多了一组弦乐。二阶段里，带着滑音的旋律第一次站到了最前面。,
+         en: ["When it slams back in, there are strings alongside the drums.", "For the first time in phase two, a sliding melody takes the front."]}
+      - {id: p22, claim: quote, pending: [q12, q13], text: Techno 的老规矩是几乎只用机器，这里偏偏让一组真实的弦乐来唱。作曲人薄彩生说过，他的做法是以中式音乐为骨，西式音乐为肉。在我听来，这一段的骨不在乐器上，在旋律的走法上：一个音滑到下一个音，像胡琴的拉法。,
+         en: ["Techno's old rule is machines, almost only; here real strings carry the tune.", "Composer Bo Caisheng has said he uses Chinese music as the bones and Western music as the flesh.", "To my ear, the bones here aren't in the instrument but in how the melody moves: sliding from note to note, the way a huqin is bowed."]}
+      - {id: p23, claim: opinion, pending: [q12, q13], text: 底鼓是机器，弦乐是人。冷冰冰的四拍踩了一分钟，直到这条旋律开口，这首曲子才回到武侠。,
+         en: ["The kick is the machine, the strings are the human.", "After a minute of cold four-on-the-floor, only when this melody speaks does the track return to wuxia."]}
     music:
       - {src: A, at: start}
     video:
       - {src: A01, follow: A, at: start}
     gfx:
-      - {type: quote, at: p22@他说过, until: p23-0.2, params: {text: 以中式音乐为骨，西式音乐为肉；去掉中国乐器那一层，音乐就立不住。, source: 薄彩生，中国日报专访}}
+      - {type: quote, at: p22@作曲人, until: p23-0.2, params: {text: 以中式音乐为骨，西式音乐为肉。, source: 薄彩生，中国日报专访}}
       - {type: layers, at: p23, until: end, full: true, params: {title: 三层声音, kicker: LAYERS · 实测, seconds: 38,
-         layers: [{name: 底鼓, spans: [[0, 1.4], [7.3, 38]]}, {name: 低音, spans: [[0, 1.4], [7.3, 38]]}, {name: 胡琴, spans: [[7.3, 38]], hot: true}],
-         marks: [{t: 1.4, text: 鼓和低音撤掉}, {t: 7.3, text: 胡琴开口}]}}
+         layers: [{name: 底鼓, spans: [[0, 1.4], [7.3, 38]]}, {name: 低音, spans: [[0, 1.4], [7.3, 38]]}, {name: 弦乐, spans: [[7.3, 38]], hot: true}],
+         marks: [{t: 1.4, text: 鼓和低音撤掉}, {t: 7.3, text: 弦乐开口}]}}
 
   - id: s08
     chapter: 回到实验
@@ -215,7 +221,7 @@ sections:
     paras:
       - {id: p24, claim: opinion, text: 回到开头那个实验。同样的音乐，放进夜之城很贴，放回庞镇也很贴。,
          en: ["Back to the opening experiment.", "The same music fits Night City, and it fits Pang Town."]}
-      - {id: p25, claim: opinion, text: 西式的肉，让它进得了夜之城；中式的骨，让它留在庞镇。,
+      - {id: p25, claim: opinion, pending: [q13], text: 西式的肉，让它进得了夜之城；中式的骨，让它留在庞镇。,
          en: ["The Western flesh gets it into Night City; the Chinese bones keep it in Pang Town."]}
       - {id: p26, claim: opinion, optional: true, pending: [q9], text: 火流星本身，也像一个错进了武侠的赛博朋克角色：被改造、被操纵、最后彻底失控。有弹幕说，杀气改造就像赛博精神病。冷、机械、一遍遍重复的 Techno，正是“被操纵”的声音。,
          en: ["Fire Meteor himself is like a cyberpunk character who wandered into wuxia: modified, manipulated, finally out of control.", "One viewer compared the killing-intent modification to cyberpsychosis.", "Cold, mechanical, endlessly repeating techno is the sound of being controlled."]}
@@ -235,8 +241,8 @@ sections:
       - {id: p27, claim: opinion, optional: true, text: 最后说一个只有在游戏里才听得到的细节。, en: ["One last detail you only hear in the game."]}
       - {id: p28, claim: measured, optional: true, pending: [q6], text: 二阶段的音乐大约九十五秒一循环。第一轮底鼓最重、低频最满；绕回来的第二轮，整体小了约 7 dB，低频少了 12 dB 以上。最狠的那一下，只给你一次。在我看来，这是让音乐在长战斗里退一步，把位置让给刀剑和磷火。,
          en: ["Phase two loops about every ninety-five seconds.", "The first pass has the heaviest kick and the fullest low end; on the second pass it's about 7 dB quieter overall, with over 12 dB less low end.", "The hardest hit, you only get once.", "As I see it, this lets the music step back in a long fight and make room for blades and phosphorus fire."]}
-      - {id: p29, claim: opinion, optional: true, pending: [q7], text: 胡琴那段每一轮都会来，跟 Boss 剩多少血无关。真正对着画面卡准的，是过场里的那几下，最狠的转阶段就在其中，因为那是玩家打断不了的地方。,
-         en: ["The huqin section comes back every pass, whatever the boss's health.", "What's locked to the picture are the moments in the cutscenes, the phase change among them, because those are the parts the player can't interrupt."]}
+      - {id: p29, claim: opinion, optional: true, pending: [q6, q7], text: 弦乐那段每一轮都会来，跟 Boss 剩多少血无关。真正对着画面卡准的，是过场里的那几下，最狠的转阶段就在其中，因为那是玩家打断不了的地方。,
+         en: ["The string section comes back every pass, whatever the boss's health.", "What's locked to the picture are the moments in the cutscenes, the phase change among them, because those are the parts the player can't interrupt."]}
     music:
       - {src: A, at: start}
     video:
