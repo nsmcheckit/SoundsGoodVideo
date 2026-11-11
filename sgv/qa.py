@@ -20,6 +20,10 @@ PERSONAL_MARKS = ["在我看来", "在我听来", "我的理解", "我听着", "
 SPEC_PATTERNS = [r"\d+(?:\.\d+)?\s*(?:Hz|赫兹|dB|分贝)", r"[一二三四五六七八九十百千两]+\s*(?:赫兹|分贝)", r"(?<![A-Za-z])[A-G][#b♯♭]?\d(?!\d)",
                  "八度", "声像", "十六分", "三连音", "附点", "五拍子"]
 MAX_SPECS = 3
+# Jee, ep04 v4: "一句话：Techno 推着你的身体走……" read as AI. Templated connectives and summary formulas give it away.
+AI_TONE = ["一句话：", "一句话总结", "一言以蔽之", "总而言之", "综上所述", "值得一提的是", "不难发现", "毋庸置疑", "某种意义上", "从某种程度上说"]
+COLD_OPEN = 4.0     # Jee, ep04 v4: the music sat alone too long; narration starts about three seconds in
+MIN_CPS = 4.5       # Jee, ep04 v4: 4.3 characters a second felt slow
 BAR_TOL = 0.035
 
 
@@ -84,6 +88,9 @@ def check_script(ep, r):
         for w in set(re.findall(r"[A-Za-z][A-Za-z\-]*", spoken)):
             if w not in ep.lexicon["latin_ok"] and w.lower() not in [x.lower() for x in ep.lexicon["latin_ok"]]:
                 r.warn("voice.latin", f"{p['id']} 配音里有未验证过的英文词：{w}")
+    tone = [(p["id"], w) for p in paras for w in AI_TONE if w in p["text"]]
+    if tone:
+        r.fail("script.ai_tone", "口播里有模板化的说法，听起来像 AI，换成口语：" + "，".join(f"{pid}「{w}」" for pid, w in tone))
     specs = [(p["id"], m.group(0)) for p in paras for pat in SPEC_PATTERNS for m in re.finditer(pat, p["text"])]
     limit = ep.data.get("max_specs", MAX_SPECS)
     if len(specs) > limit:
@@ -105,6 +112,10 @@ def check_script(ep, r):
 def check_timeline(ep, tl, r):
     for e in tl.get("errors", []):
         r.fail(e["rule"], e["msg"], e.get("t"))
+    if tl["vo"]:
+        first = min(v["t"] for v in tl["vo"])
+        if first > ep.data.get("cold_open", COLD_OPEN):
+            r.fail("timing.cold_open", f"开场 {first:.1f} 秒才开口，音乐单放太久；三秒左右就该进口播", 0.0)
     # Sources must exist and be long enough.
     for it in tl["bed"]:
         src = (ep.data["sources"].get("music", {}).get(it["src"]) or ep.data["sources"].get("video", {}).get(it["src"]))
@@ -218,9 +229,18 @@ def check_reading(ep, r):
     if not f.exists():
         return
     d = read_json(f)
+    pace = ep.build / "vo" / "pace.json"
+    if pace.exists():
+        cps = read_json(pace).get("chars_per_second", 99)
+        if cps < ep.data.get("min_cps", MIN_CPS):
+            r.fail("voice.pace", f"语速每秒 {cps} 字，偏慢（下限 {MIN_CPS}）；调高 speech.speed 再配")
     for row in d["report"]:
+        dropped = [i for i in row["issues"] if len(i["heard"].split()) < len(i["expected"].split())]
         if row["ratio"] < 0.82:
             r.fail("voice.reading", f"{row['id']} 和稿子差异太大（{row['ratio']}），听到：{row['heard'][:40]}")
+        elif dropped:
+            # ep04 v4: 国产 3A came out as 干三A. A tone the recogniser mishears is usually noise; a lost syllable is not.
+            r.fail("voice.dropped", f"{row['id']} 可能吞字：" + "；".join(f"{i['expected']}→{i['heard']}" for i in dropped[:3]) + f"，听到：{row['heard'][:40]}")
         elif row["issues"]:
             detail = "；".join(f"{i['expected']}→{i['heard']}" for i in row["issues"][:3])
             r.warn("voice.reading", f"{row['id']} 可能读错：{detail}")

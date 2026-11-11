@@ -1,7 +1,7 @@
 id: ep04_minghuo
 title: 冥火流星
 folder: 冥火流星            # Jee's folder under Documents/SoundsGood; finished files go to <folder>/成片
-speech: {est_cps: 4.8}       # measured on this voice at 1.2x
+speech: {speed: 1.3, est_cps: 4.65}   # Jee, v4: 1.2x (4.3 字/秒) felt slow
 target_seconds: 285
 target_tolerance: 0.05     # Jee: keep it under five minutes
 owners:
@@ -12,6 +12,7 @@ lexicon:
     "126": 一百二十六
     "132": 一百三十二
     中国的 3A: 中国的三A
+    国产的 3A: 国产的三A
     岑参: 岑深
   listen: [冥火, 胡琴, 鬼差, 岑参, 饮归客, 羌笛]
   latin_ok: [G]
@@ -75,25 +76,22 @@ sections:
   - id: s01
     chapter: 开场
     structure: false
-    pre: 13.4
+    pre: 3.0          # Jee, v4: three seconds of music, then talk
     post: 0.4
     paras:
-      - {id: p01, claim: opinion, text: 很贴，对吧？像夜之城的街头，像一家凌晨三点的俱乐部。,
-         en: ["Fits, right?", "Like a street in Night City, or a club at three in the morning."]}
-      - {id: p02, claim: official, text: 可这首曲子来自一部武侠游戏。《影之刃零》，庞镇第一战，火流星。曲名叫《冥火流星》。,
-         en: ["But this track comes from a wuxia game.", "Phantom Blade Zero, the first fight in Pang Town: Fire Meteor.", "It's called Nether Flame Meteor."]}
+      - {id: p01, claim: opinion, text: 最近爆火的《影之刃零》里，有一首 Boss 曲，听起来根本就是赛博朋克。,
+         en: ["Phantom Blade Zero is everywhere right now, and one of its boss themes sounds like pure cyberpunk."]}
+      - {id: p02, claim: opinion, text: 它叫《冥火流星》，庞镇第一战，火流星。直到听到这首曲子，我才明白武侠朋克的“朋克”到底是什么意思。,
+         en: ["It's called Nether Flame Meteor: the first fight in Pang Town, Fire Meteor.", "Only when I heard it did I understand what the 'punk' in wuxia-punk really means."]}
     music:
-      - {src: A, sync: 205.8, at: start+12.6, lead: 12.6, free: true, reuse: 开场先放一次转阶段的“嗡”，第 05 段讲解时完整再听}
+      - {src: A, in: 88.3, at: start, free: true, reuse: 开场用一阶段高潮（88.3 秒的镲进来、旋律往上走）配夜之城，第 04 段讲一阶段时再听到}
     video:
       - {src: B01, in: 1.0, at: start}
-      - {src: B01, in: 9.0, at: start+4.4}
-      - {src: B01, in: 77.0, at: start+8.6}
-      - {src: B01, in: 109.0, at: start+12.6}
-      - {src: B01, in: 113.0, at: p01@像一家}
+      - {src: B01, in: 77.0, at: p01@有一首}
+      - {src: B01, in: 113.0, at: p01@听起来}
       - {src: A01, in: 349.0, at: p02}
     gfx:
-      - {type: ask, at: start+0.4, until: start+12.3, params: {text: 猜猜这是哪个游戏的 Boss 曲？}}
-      - {type: tag, at: p02@曲名叫, dur: 4.2, params: {text: 冥火流星, en: NETHER FLAME METEOR}}
+      - {type: tag, at: p02@它叫, dur: 4.2, params: {text: 冥火流星, en: NETHER FLAME METEOR}}
 
   - id: s02
     chapter: 一个被人牵着线的人
@@ -101,10 +99,10 @@ sections:
     paras:
       - {id: p03, claim: official, confirmed_by: q8, text: 火流星是鬼差的队长。他受命来拦魂，却被人暗中操纵，害死了镇上的普通人，其中就有玉儿。,
          en: ["Fire Meteor is a captain of the ghost reapers.", "Sent to stop Soul, he is secretly manipulated into killing ordinary townsfolk, Yu'er among them."]}
-      - {id: p05, claim: opinion, text: 一个被人牵着线的人，一场替人讨回来的仗。记住这两件事，这首曲子就好懂了。,
-         en: ["A man on someone else's strings, and a fight to settle a debt for others.", "Keep those two things in mind and the track makes sense."]}
+      - {id: p05, claim: opinion, text: 说到底，他也只是一个被人牵着线的人；而这一仗，是替玉儿他们讨回来的。带着这两件事去听，这首曲子就好懂了。,
+         en: ["In the end he is just a man on someone else's strings, and this fight settles the debt for Yu'er and the others.", "Listen with those two things in mind and the track makes sense."]}
     music:
-      - {src: A, in: 0.0, at: start, free: true}
+      - {src: A, sync: 27.3, at: end, lead: start, free: true}   # Jee, v4: phase 1 has to be playing by the Techno/Trance line, so the cutscene's riser lands on the section end
     video:
       - {src: A01, follow: A, at: start}
     gfx:
@@ -112,7 +110,7 @@ sections:
 
   - id: s03
     chapter: Techno 和 Trance
-    pre: 0.3
+    pre: 1.0          # let the phase-1 downbeat land before the first word
     post: 0.4
     paras:
       - {id: p06, claim: opinion, text: 很多人听完说这是 Techno，也有人说是 Trance。这两个词常被混着用，其实是两种思路。,
@@ -121,8 +119,8 @@ sections:
          en: ["Techno was born in 1980s Detroit, a car city.", "Its foundation is four on the floor: a kick on every beat, start to finish.", "It is almost all machines: cold, hard, repetitive.", "In techno you listen for timbre and groove, not melody."]}
       - {id: p08, claim: official, text: Trance 是 Techno 传到欧洲后长出来的一支，名字的意思是“出神”。它保留了四拍的骨架，却把重心挪到了旋律上，琶音一圈圈地转。最典型的是 breakdown：把鼓整个抽掉，再一口气砸回来。,
          en: ["Trance grew out of techno once it reached Europe, named for the state it puts you in.", "It keeps the four-beat frame but moves the weight to melody, arpeggios spinning round.", "Its signature is the breakdown: pull the drums out, then slam everything back in."]}
-      - {id: p09, claim: opinion, text: 一句话：Techno 推着你的身体走，Trance 拽着你的情绪走。,
-         en: ["In short: techno pushes your body, trance pulls your emotions."]}
+      - {id: p09, claim: opinion, text: 而《冥火流星》有意思的地方在于，这两样它都有。,
+         en: ["What makes Nether Flame Meteor interesting is that it has both."]}
     music:
       - {src: A, at: start}
     clips:
@@ -130,11 +128,15 @@ sections:
     video:
       - {src: A01, follow: A, at: start}
     gfx:
-      - {type: steps, at: p07, until: p08, full: true, params: {title: 四拍底鼓, kicker: TECHNO · FOUR ON THE FLOOR, bpm: 132, note: 每一拍都踩一下,
+      # Jee, v4: a Techno-only animation over phase-1 music read as "phase 1 is Techno". Both patterns get a turn here,
+      # and each phase later shows its own (s04 Trance, s06 Techno).
+      - {type: steps, at: p07@它的地基, until: p08, full: true, params: {title: Techno：四拍底鼓, kicker: TECHNO · 示意, bpm: 130, note: 每一拍都踩一下，几乎只有节奏,
          rows: [{name: 底鼓, hits: [0, 4, 8, 12], hot: true}, {name: 踩镲, hits: [2, 6, 10, 14]}]}}
-      - {type: compare, at: p08, until: end, full: true, params: {title: 两种思路, kicker: TECHNO VS TRANCE, cols: [
-          {name: Techno, en: DETROIT · 1980S, points: [四拍底鼓从头踩到尾, 几乎只用机器, 靠音色和律动往前推], foot: 推着身体走},
-          {name: Trance, en: EUROPE · 1990S, points: [保留四拍的骨架, 重心挪到旋律, breakdown 抽掉鼓再砸回来], foot: 拽着情绪走}]}}
+      - {type: steps, at: p08@它保留了, until: p09, full: true, params: {title: Trance：骨架不变，旋律到前面, kicker: TRANCE · 示意, bpm: 130, note: 底鼓照踩，琶音一圈圈地转,
+         rows: [{name: 底鼓, hits: [0, 4, 8, 12]}, {name: 琶音, hits: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], hot: true}]}}
+      - {type: compare, at: p09, until: end, full: true, params: {title: 两种思路, kicker: TECHNO VS TRANCE, cols: [
+          {name: Techno, en: DETROIT · 1980S, points: [四拍底鼓从头踩到尾, 几乎只用机器, 靠音色和律动往前推], foot: 靠律动},
+          {name: Trance, en: EUROPE · 1990S, points: [保留四拍的骨架, 重心挪到旋律, breakdown 抽掉鼓再砸回来], foot: 靠旋律}]}}
 
   - id: s04
     chapter: 一阶段
@@ -147,7 +149,9 @@ sections:
     video:
       - {src: A01, follow: A, at: start}
     gfx:
-      - {type: number, at: p11@每分钟, dur: 3.6, params: {from: 126, to: 126, unit: BPM · 一阶段}}
+      - {type: number, at: p11@每分钟, until: p11@但真正, params: {from: 126, to: 126, unit: BPM · 一阶段}}
+      - {type: steps, at: p11@但真正, until: end, full: true, params: {title: 一阶段：更像 Trance, kicker: PHASE 1 · 126 BPM · 示意, bpm: 126, note: 底鼓垫着，琶音在前面拽着走,
+         rows: [{name: 底鼓, hits: [0, 4, 8, 12]}, {name: 琶音, hits: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], hot: true}]}}
 
   - id: s05
     chapter: 转阶段
@@ -181,7 +185,9 @@ sections:
     video:
       - {src: A01, follow: A, at: start}
     gfx:
-      - {type: number, at: p18, dur: 3.6, params: {from: 126, to: 132, unit: BPM}}
+      - {type: number, at: p18, until: p18@每一拍, params: {from: 126, to: 132, unit: BPM}}
+      - {type: steps, at: p18@每一拍, until: p19-2.5, full: true, params: {title: 二阶段：Techno, kicker: PHASE 2 · 132 BPM · 示意, bpm: 132, note: 每一拍都踩着底鼓,
+         rows: [{name: 底鼓, hits: [0, 4, 8, 12], hot: true}]}}
 
   - id: s06b
     chapter: 一针比一针高
@@ -234,18 +240,18 @@ sections:
          marks: [{t: 1.4, text: 鼓和低音撤掉}, {t: 7.3, text: 胡琴接住}]}}
 
   - id: s08
-    chapter: 回到实验
+    chapter: 回到夜之城
     pre: 3.0
     paras:
-      - {id: p24, claim: opinion, text: 回到开头那个实验。同样的音乐，放进夜之城很贴，放回庞镇也很贴。,
-         en: ["Back to the opening experiment.", "The same music fits Night City, and it fits Pang Town."]}
+      - {id: p24, claim: opinion, text: 再回到开头的夜之城。同一段音乐，放在赛博朋克的街头毫不违和，放回庞镇，也一样成立。,
+         en: ["Back to Night City from the opening.", "The same music sits naturally on a cyberpunk street, and it works just as well back in Pang Town."]}
       - {id: p25, claim: opinion, text: 西式的肉，让它进得了夜之城；中式的骨，让它留在庞镇。,
          en: ["The Western flesh gets it into Night City; the Chinese bones keep it in Pang Town."]}
     music:
-      - {src: A, in: 365.215, at: start}
+      - {src: A, in: 213.07, at: start, reuse: 二阶段开头没有胡琴的一段（底鼓和低音，之后是“针”），Jee v4：带胡琴的那段配赛博朋克不合适}
     video:
-      - {src: A01, follow: A, look: split, with: B01, with_in: 41.0, at: start}
-      - {src: A01, follow: A, look: split, with: B01, with_in: 87.0, at: p25}
+      - {src: A01, in: 330.0, look: split, with: B01, with_in: 41.0, at: start}   # fight footage nobody else uses; the music under it is the phase-2 opening
+      - {src: A01, in: 343.0, look: split, with: B01, with_in: 87.0, at: p25}
     gfx:
       - {type: big, at: p25, dur: 4.8, params: {lines: [西式为肉 ｜ 中式为骨], size: 64}}
 
@@ -256,15 +262,15 @@ sections:
     paras:
       - {id: p29, claim: official, text: 唐代岑参写过一场边塞军宴：中军置酒饮归客，胡琴琵琶与羌笛。胡琴的“胡”，本来就是外来的意思。一千多年前，它也是从塞外传进中原的新声音。,
          en: ["The Tang poet Cen Shen wrote of a frontier banquet: wine in the commander's tent for the departing guest, with huqin, pipa and Qiang flute.", "The hu in huqin simply means foreign.", "Over a thousand years ago, it too was a new sound brought in from beyond the frontier."]}
-      - {id: p30, claim: opinion, text: 一千多年后，它成了中式的骨，又和底特律的底鼓、欧洲的 breakdown 站进了同一场仗，谁也没压过谁。中西从来不是二选一，音乐本来就没有国界。,
-         en: ["A thousand years on, it has become the Chinese bones, standing in one fight with Detroit's kick and Europe's breakdown, none drowning out the others.", "East and West were never a choice of one; music has no borders."]}
+      - {id: p30, claim: opinion, text: 一千多年后，它成了中式的骨，又和底特律的底鼓、欧洲的 breakdown 站进了同一场仗。我理解的武侠朋克，就是这样：几种声音放在一起，谁也没压过谁。中西从来不是二选一，音乐本来就没有国界。,
+         en: ["A thousand years on, it has become the Chinese bones, standing in one fight with Detroit's kick and Europe's breakdown.", "That's what wuxia-punk means to me: different sounds side by side, none drowning out the others.", "East and West were never a choice of one; music has no borders."]}
       - {id: p31, claim: opinion, text: 更难得的是，它还在讲故事：被操纵的人，配上机器的节奏；替人讨债的人，由胡琴开口。,
          en: ["Rarer still, it tells the story: the man on strings gets the machine's rhythm, and the one settling the debt speaks through the huqin."]}
-      - {id: p32, claim: opinion, text: 国产 3A 还屈指可数，一首 Boss 曲也代表不了全部。但《冥火流星》说明了一件事：中国的 3A 游戏，已经有能力用一首足够强的音乐，撑起一段叙事。,
+      - {id: p32, claim: opinion, text: 国产的 3A 游戏还屈指可数，一首 Boss 曲也代表不了全部。但《冥火流星》说明了一件事：中国的 3A 游戏，已经有能力用一首足够强的音乐，撑起一段叙事。,
          en: ["Chinese AAA games are still few, and one boss theme can't speak for all of them.", "But Nether Flame Meteor shows one thing: Chinese AAA games can now hold up a story with music strong enough to carry it."]}
       - {id: p33, text: 更多游戏声音拆解，关注 SoundsGood。, en: ["More game audio breakdowns: follow SoundsGood."]}
     music:
-      - {src: A, at: start}
+      - {src: A, in: 365.215, at: start}   # the second huqin pass under the poem
     video:
       - {src: A01, follow: A, at: start}
     gfx:

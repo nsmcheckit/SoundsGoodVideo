@@ -16,7 +16,7 @@ ASR_MODEL = REPO / ".models" / "sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-
 VOICE_ZH = "5eoK8NqMBsMdqUmImHNs"
 VOICE_EN = "UgBBYS2sOqTuMpoF3BR0"
 TTS_MODEL = "eleven_v3"
-TTS_SPEED = 1.2
+TTS_SPEED = 1.3   # Jee, ep04: 1.2 (4.3 字/秒) felt slow
 # Measured at 1.2x on the lion-dance episode. The old 5.4 figure ran long every time.
 EST_CPS = 4.6
 

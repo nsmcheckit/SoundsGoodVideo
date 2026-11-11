@@ -14,6 +14,10 @@
 | `script.names` | Jee: do not name other creators |
 | `script.earlier` | Jee: do not refer to earlier episodes |
 | `script.spec_density` | Nether Flame Meteor v2: Jee found the arrangement details too fine-grained (Hz, note names, octaves, stereo width, sixteenths). The story carries the episode; at most three hard specs, BPM not counted. An episode can raise the cap with `max_specs` |
+| `script.ai_tone` | Nether Flame Meteor v4: "一句话：Techno 推着你的身体走……" read as AI; templated summaries and connectives are banned |
+| `timing.cold_open` | Nether Flame Meteor v4: the music sat alone 13 s before the first word; narration starts within about 3 s (override with `cold_open`) |
+| `voice.dropped` | Nether Flame Meteor v4: "国产 3A" came out as "干三A" and only warned; a lost syllable now fails, a misheard tone still warns |
+| `voice.pace` | Nether Flame Meteor v4: 4.3 字/秒 felt slow; below 4.5 fails, default speed raised to 1.3 (override with `min_cps`) |
 | `script.unconfirmed`, `script.ear_claim` | Suona and electric guitar confused; guqin or guzheng disputed in comments |
 | `script.ending`, `end.card`, `end.owners` | Series format and rights lines |
 | `license.pending` | Third-party footage needs a decision from Jee |

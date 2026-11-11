@@ -80,6 +80,8 @@ CASES = {
     "script.ending": lambda m: para(m, "p06").update(text="谢谢观看。"),
     "script.spec_density": lambda m: para(m, "p01").update(text="低音在 G1，大约四十九赫兹，低了将近一个八度，声像最窄，高频是十六分音符。"),
     "voice.digits": lambda m: para(m, "p01").update(text="速度是 126，满能量。"),
+    "script.ai_tone": lambda m: para(m, "p01").update(text="一句话：这首满能量。"),
+    "timing.cold_open": lambda m: section(m, "open").update(pre=6.0),
     "subs.en_count": lambda m: para(m, "p01").update(en=["One.", "Two."]),
     "duration": lambda m: m.update(target_seconds=20, target_tolerance=0.05),
     "end.owners": lambda m: m["owners"].append("别的版权方"),
@@ -98,6 +100,16 @@ para_file = e.file
 para_file.write_text(para_file.read_text(encoding="utf-8").replace("满能量", "满功率"), encoding="utf-8")
 e2 = Episode(e.dir)
 expect("script approval goes stale when words change", not e2.approved("script"))
+
+# ep04 v4: "国产 3A" came out as "干三A" and passed as a warning; a lost syllable must stop the export.
+e, tl, r = run_case(lambda m: None, "dropped")
+write_json(e.build / "vo" / "reading.json", {"report": [{"id": "p01", "ratio": 0.97, "heard": "感三A还屈指可数",
+                                                         "issues": [{"expected": "guo2 chan3", "heard": "gan3"}]}]})
+expect("stops voice.dropped", fired(qa.run_all(e, tl), "voice.dropped"))
+write_json(e.build / "vo" / "reading.json", {"report": [{"id": "p01", "ratio": 0.97, "heard": "曾参", "issues": [{"expected": "cen2 shen1", "heard": "ceng2 can1"}]}]})
+expect("a misheard tone stays a warning", not fired(qa.run_all(e, tl), "voice.dropped"))
+write_json(e.build / "vo" / "pace.json", {"chars_per_second": 4.29, "seconds": 254.1})
+expect("stops voice.pace", fired(qa.run_all(e, tl), "voice.pace"))
 
 a, issues = compare_reading("大衩", "大差")
 wrong, none = compare_reading("丑角", "愁角")
