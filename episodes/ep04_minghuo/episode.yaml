@@ -270,3 +270,68 @@ sections:
     gfx:
       - {type: quote, at: p29@中军, until: p30-0.2, params: {text: 中军置酒饮归客，胡琴琵琶与羌笛。, source: 岑参《白雪歌送武判官归京》}}
       - {type: end, at: p33, until: end, full: true, params: {owners: [游戏画面与音乐版权归 S-GAME 所有]}}
+
+cover:
+  images: [assets/cover_nightcity.png, assets/cover_pangtown.png]   # 夜之城 | 庞镇: the opening experiment, frames at B01 2.0 s and A01 203.0 s
+  fx: 0.5
+  fy: 0.45
+  fx2: 0.45
+  fy2: 0.4
+  seal: 胡
+  zh: {title: 冥火流星, sub: Techno × 胡琴, kicker: BOSS 战音乐拆解, game: 影之刃零 · 火流星}
+  en: {title: FIRE METEOR, sub: TECHNO × HUQIN, kicker: BOSS THEME BREAKDOWN, game: PHANTOM BLADE ZERO, seal: ""}   # the long Latin title runs into the seal on 3:4
+
+publish:
+  B站:
+    titles:
+      - 像赛博朋克夜店曲？其实是《影之刃零》的 Boss 战｜冥火流星音乐拆解
+      - Techno 底鼓 × 胡琴：《影之刃零》火流星这首 Boss 曲凭什么这么燃
+      - 一针比一针高，胡琴接住全场：拆解《影之刃零》冥火流星
+    body: |
+      《影之刃零》庞镇第一战，火流星。这首《冥火流星》到底是 Techno 还是 Trance？二阶段一针比一针高的合成器、breakdown 之后接住情绪的胡琴，还有作曲人薄彩生说的“以中式音乐为骨，西式音乐为肉”。
+
+      章节
+      {chapters}
+
+      速度、响度、音高为实机录像原声实测；“在我听来”的部分是个人听感。
+      薄彩生原话出自中国日报专访；开场与对比画面为《赛博朋克 2077》Night City 素材（CDPR 授权）。
+      {owners}
+    tags: [影之刃零, 冥火流星, 火流星, 游戏音乐, 游戏配乐, Techno, Trance, 胡琴, 薄彩生, SoundsGood]
+  抖音:
+    titles:
+      - 这首 Boss 曲放进夜之城也贴？《影之刃零》冥火流星
+      - Techno 底鼓配胡琴，《影之刃零》这一战太燃了
+      - 一针比一针高，最后胡琴接住了全场
+    body: |
+      《影之刃零》火流星战音乐拆解：Techno、Trance 和一把胡琴。
+      {owners}
+    tags: ["#影之刃零", "#冥火流星", "#游戏音乐", "#Techno", "#胡琴"]
+  小红书:
+    titles:
+      - 武侠游戏里的 Techno？拆解《影之刃零》冥火流星
+      - 底鼓是机器，胡琴是人｜影之刃零 Boss 曲拆解
+      - 以中式为骨，西式为肉：这首 Boss 曲怎么做到的
+    body: |
+      《影之刃零》庞镇第一战·火流星。二阶段八下一针比一针高的合成器把情绪顶上去，breakdown 之后胡琴把它接住。中西从来不是二选一，音乐本来就没有国界。
+      {owners}
+    tags: [影之刃零, 游戏音乐, 冥火流星, 电子音乐, 胡琴, 国产3A]
+  YouTube:
+    titles:
+      - "Techno Kick × Huqin: Breaking Down Phantom Blade Zero's Fire Meteor Boss Theme"
+      - "Why a Wuxia Boss Fight Sounds Like a Night City Club | Phantom Blade Zero"
+      - "Eight Needles and a Huqin: Phantom Blade Zero Boss Music Breakdown"
+    body: |
+      Phantom Blade Zero, Pang Town, Fire Meteor. Is this techno or trance? Eight rising synth stabs push the tension up bar by bar; after the breakdown, the huqin catches it. Composer Bo Caisheng: Chinese music as the bones, Western music as the flesh.
+
+      Chapters
+      {chapters}
+
+      Tempo, loudness and pitch measured from the in-game recording. Night City footage courtesy of CDPR.
+      Game footage and music © S-GAME.
+    tags: [Phantom Blade Zero, game music, boss theme, techno, trance, huqin, erhu, Bo Caisheng, SoundsGood]
+
+pinned_comment: |
+  几个可能有争议的点，先说明：
+  1. 二阶段那段旋律，有人听成二胡，有人听成京胡、板胡。我们实测它的音域、揉弦和滑音都是胡琴的拉法，而且像几件乐器一起齐奏，所以视频里统一叫“胡琴”（拉弦乐器的统称）。如果你知道原声带的演奏署名，欢迎补充。
+  2. 岑参诗里的“胡琴”泛指当时从西域、北方传来的乐器，不一定是今天的二胡；引用它只是想说，“胡”本来就是外来的意思。
+  3. 一阶段更像 Trance、二阶段是 Techno，这是我们的分析和听感，欢迎讨论。
