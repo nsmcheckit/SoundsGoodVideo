@@ -155,7 +155,7 @@ sections:
 
   - id: s05
     chapter: 转阶段
-    pre: 2.0
+    pre: 5.5          # starts the bed at ~177 s so phase 1 audibly fades into the cutscene (2.0 cut in at the trough: -17.5 LU)
     paras:
       - {id: p13, claim: official, confirmed_by: q8, text: 转阶段是一段过场。火流星被人点燃，整个人烧成了绿色。,
          en: ["The phase change is a cutscene.", "Fire Meteor is set alight and burns green."]}
