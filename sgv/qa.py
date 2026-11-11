@@ -61,7 +61,23 @@ def _overlaps(ranges):
     return out
 
 
+def check_script_dub(ep, r):
+    """A translated cut inherits the Chinese script's checks; what is left is its own ending and stray marks."""
+    ending = ep.data.get("ending", "")
+    for p in ep.paras:
+        if "⚠" in p["text"]:
+            r.fail("script.unconfirmed", f"{p['id']} 还带着未确认标记 ⚠️")
+        for pat in TIMECODE:
+            m = re.search(pat, p["text"])
+            if m:
+                r.fail("script.timecode", f"{p['id']} 口播里有时间码：{m.group(0)}")
+    if ending and not any(ending.lower().rstrip(".") in p["text"].lower() for p in ep.paras):
+        r.fail("script.ending", f"缺少固定结尾句：{ending}")
+
+
 def check_script(ep, r):
+    if ep.lang != "zh":
+        return check_script_dub(ep, r)
     paras = ep.paras
     for p in paras:
         t = p["text"]
@@ -229,6 +245,14 @@ def check_reading(ep, r):
     if not f.exists():
         return
     d = read_json(f)
+    if ep.lang != "zh":
+        from .voice import DUB_MIN_RATIO
+        for row in d["report"]:
+            if row["ratio"] < DUB_MIN_RATIO:
+                r.fail("voice.reading", f"{row['id']} 和译文差异太大（{row['ratio']}），听到：{row['heard'][:60]}")
+            elif row["ratio"] < 0.9:
+                r.warn("voice.reading", f"{row['id']} 听到：{row['heard'][:60]}")
+        return
     pace = ep.build / "vo" / "pace.json"
     if pace.exists():
         cps = read_json(pace).get("chars_per_second", 99)

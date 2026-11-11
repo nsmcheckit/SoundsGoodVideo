@@ -69,10 +69,23 @@ def generate(ep, seeds=None):
     return done
 
 
-def asr_engine():
+def asr_engine(lang="zh"):
     import sherpa_onnx
     return sherpa_onnx.OfflineRecognizer.from_sense_voice(
-        model=str(ASR_MODEL / "model.int8.onnx"), tokens=str(ASR_MODEL / "tokens.txt"), use_itn=False, language="zh")
+        model=str(ASR_MODEL / "model.int8.onnx"), tokens=str(ASR_MODEL / "tokens.txt"), use_itn=False, language=lang)
+
+
+def compare_words(expected, heard):
+    """English counterpart of compare_reading: word-level match, numbers and punctuation ignored."""
+    def words(s):
+        return re.findall(r"[a-z']+", s.lower().replace("’", "'"))
+    a, b = words(expected), words(heard)
+    sm = difflib.SequenceMatcher(None, a, b, autojunk=False)
+    matched = sum(bl.size for bl in sm.get_matching_blocks())
+    issues = [{"expected": " ".join(a[i1:i2]), "heard": " ".join(b[j1:j2])}
+              for tag, i1, i2, j1, j2 in sm.get_opcodes() if tag != "equal"]
+    total = len(a) + len(b)
+    return (round(2 * matched / total, 3) if total else 1.0), issues
 
 
 def transcribe(engine, y16):
@@ -232,16 +245,50 @@ def score_take(ep, paras, engine):
         y16 = np.interp(np.arange(0, len(y), 3), np.arange(len(y)), y).astype(np.float32)
         pad = np.zeros(4000, np.float32)  # a quarter second of silence so the first syllable is not dropped
         heard = transcribe(engine, np.concatenate([pad, y16, pad]))
-        ratio, issues = compare_reading(p["text"], heard)
+        ratio, issues = (compare_reading if ep.lang == "zh" else compare_words)(p["text"], heard)
         report.append({"id": p["id"], "ratio": ratio, "heard": heard, "issues": issues})
         total += ratio * len(p["text"])
     return total / max(1, sum(len(p["text"]) for p in paras)), report
 
 
-def hard_errors(report):
+def hard_errors(report, lang="zh"):
     """Lines the export check would refuse: far off the script, or with a syllable missing."""
+    if lang != "zh":
+        # Pinyin names come back as whatever English words the recogniser guesses; only a line far off counts.
+        return sum(1 for row in report if row["ratio"] < DUB_MIN_RATIO)
     return sum(1 for row in report if row["ratio"] < 0.82
                or any(len(i["heard"].split()) < len(i["expected"].split()) for i in row["issues"]))
+
+
+DUB_MIN_RATIO = 0.72
+DUB_MAX_FIT = 1.12   # a translated paragraph may be sped up this much to fit its Chinese slot, no more
+
+
+def _fit_slots(ep, paras):
+    """Speeds up, one paragraph at a time and only as far as DUB_MAX_FIT, any translated paragraph that would
+    run past the start of the next Chinese paragraph."""
+    from .timeline import DUB_MARGIN, build as build_timeline
+    zh = ep.zh()
+    tl_zh, _ = build_timeline(zh)
+    order = [v["id"] for v in tl_zh["vo"]]
+    start = {v["id"]: v["t"] for v in tl_zh["vo"]}
+    slot = {pid: (start[order[i + 1]] if i + 1 < len(order) else tl_zh["total"]) - start[pid] - DUB_MARGIN - 0.05
+            for i, pid in enumerate(order)}
+    folder = ep.build / "vo"
+    fits = {}
+    for p in paras:
+        f = p["dur"] / max(0.5, slot[p["id"]])
+        if f <= 1.0:
+            continue
+        f = round(min(f + 0.005, DUB_MAX_FIT), 3)
+        src = folder / p["file"]
+        tmp = src.with_name(src.stem + "_fit.wav")
+        run(["ffmpeg", "-v", "error", "-y", "-i", src, "-af", f"atempo={f}", "-ar", SR, "-ac", 1, tmp])
+        tmp.replace(src)
+        p["dur"] = round(probe_duration(src), 3)
+        p["chars"] = [[c, round(a / f, 3), round(b / f, 3)] for c, a, b in p["chars"]]
+        fits[p["id"]] = f
+    return paras, fits
 
 
 def _pace(paras):
@@ -251,30 +298,33 @@ def _pace(paras):
 def build(ep, seeds=None):
     """Generates takes, scores each one and installs the best as the episode narration."""
     bases = generate(ep, seeds)
-    engine = asr_engine()
+    engine = asr_engine(ep.lang)
     results = []
     for b in bases:
         speed, short = take_speed(ep, b)
         paras = _cut(ep, b, speed)
         target, cap = _config(ep)["target_cps"], _config(ep)["max_speed"]
         cps = _pace(paras)
-        if target and not short and abs(cps - target) > 0.03 * target:
+        fits = {}
+        if ep.lang != "zh":
+            paras, fits = _fit_slots(ep, paras)
+        elif target and not short and abs(cps - target) > 0.03 * target:
             # The cut adds a little air around each paragraph, so correct once against the measured pace.
             want = speed * float(target) / cps
             speed, short = round(min(max(want, 1.0), cap), 3), want > cap
             paras = _cut(ep, b, speed)
         score, report = score_take(ep, paras, engine)
         results.append({"take": b.name, "score": round(score, 4), "seconds": round(sum(p["dur"] for p in paras), 1),
-                        "speed": speed, "short": short, "paras": paras, "report": report})
+                        "speed": speed, "short": short, "fits": fits, "paras": paras, "report": report})
     for r in results:
-        r["hard"] = hard_errors(r["report"])
+        r["hard"] = hard_errors(r["report"], ep.lang)
     # A take that swallows a syllable loses to a slightly lower-scoring one that does not (ep04 v5: seed 7 scored
     # higher but said "这下" for "这一下"); voice.dropped would refuse to export it anyway.
     best = min(results, key=lambda r: (r["hard"], r["short"], -r["score"]))
     write_json(ep.build / "vo" / "paras.json", best["paras"])
     write_json(ep.build / "vo" / "reading.json", {
         "take": best["take"], "score": best["score"], "report": best["report"],
-        "speed": best["speed"],
+        "speed": best["speed"], "fits": best["fits"],
         "others": [{"take": r["take"], "score": r["score"], "hard": r["hard"], "speed": r["speed"], "seconds": r["seconds"]} for r in results]})
     write_json(ep.build / "vo" / "pace.json", {"chars_per_second": round(_pace(best["paras"]), 2), "seconds": best["seconds"], "speed": best["speed"]})
     return best

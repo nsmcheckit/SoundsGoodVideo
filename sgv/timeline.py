@@ -3,7 +3,7 @@ import re
 
 import numpy as np
 
-from .core import EST_CPS, clean_text, read_json, spoken_chars, write_json
+from .core import EST_CPS, EST_WPS, clean_text, read_json, spoken_chars, write_json
 
 DEFAULT_GAP = 0.3
 MIN_XF = 1.0
@@ -15,10 +15,14 @@ ANCHOR = re.compile(r"^(start|end|[A-Za-z]\w*?)(?:@(.+?))?([+-]\d+(?:\.\d+)?)?$"
 def estimated_vo(ep):
     """Pretend narration from character counts, so the edit can be checked before paying for a voice."""
     cps = ep.data.get("speech", {}).get("est_cps", EST_CPS)
+    wps = ep.data.get("speech", {}).get("est_wps", EST_WPS)
     out = {}
     for p in ep.paras:
         text = ep.spoken(p)
-        dur = spoken_chars(text) / cps
+        if ep.lang == "zh":
+            dur = spoken_chars(text) / cps
+        else:
+            dur = len(re.findall(r"[A-Za-z0-9'’-]+", text)) / wps + 0.15
         chars = list(text)
         step = dur / max(1, len(chars))
         out[p["id"]] = {
@@ -28,8 +32,8 @@ def estimated_vo(ep):
     return out
 
 
-def real_vo(ep):
-    f = ep.build / "vo" / "paras.json"
+def real_vo(ep, build=None):
+    f = (build or ep.build) / "vo" / "paras.json"
     return {p["id"]: p for p in read_json(f)} if f.exists() else None
 
 
@@ -61,8 +65,9 @@ def nearest(arr, x):
 
 
 class Resolver:
-    def __init__(self, ep, vo):
+    def __init__(self, ep, vo, lexicon=None):
         self.ep, self.vo = ep, vo
+        self.lexicon = lexicon or ep.lexicon
         self.para_t, self.sec = {}, {}
 
     def __call__(self, spec, sec):
@@ -88,13 +93,33 @@ class Resolver:
                 flat += c
                 idx += [i] * len(c)
             needle = clean_text(phrase)
-            for k in sorted(self.ep.lexicon["replace"], key=len, reverse=True):
-                needle = needle.replace(clean_text(k), clean_text(self.ep.lexicon["replace"][k]))
+            for k in sorted(self.lexicon["replace"], key=len, reverse=True):
+                needle = needle.replace(clean_text(k), clean_text(self.lexicon["replace"][k]))
             j = flat.find(needle)
             if j < 0:
                 raise ValueError(f"phrase {phrase!r} not found in {name}")
             t += v["chars"][idx[j]][1]
         return t + off
+
+
+DUB_MARGIN = 0.12
+
+
+def _dub(ep, vo_track, dub, total, errors):
+    """Moves each paragraph of the translated narration into the slot its Chinese paragraph had.
+    A paragraph marked `dub_align: end` finishes where the Chinese one did (for lines that end on a music hit)."""
+    paras = {p["id"]: p for p in ep.paras}
+    prev_end = 0.0
+    for i, v in enumerate(vo_track):
+        d = dub[v["id"]]["dur"]
+        slot_end = vo_track[i + 1]["t"] if i + 1 < len(vo_track) else total
+        t = v["t"] + v["dur"] - d if paras[v["id"]].get("dub_align") == "end" else v["t"]
+        t = max(t + float(paras[v["id"]].get("dub_offset", 0.0)), prev_end + 0.1)
+        if t + d > slot_end - DUB_MARGIN:
+            errors.append({"rule": "dub.overflow", "t": t,
+                           "msg": f"{v['id']} 译文配音 {d:.1f} 秒，超出中文段落的位置 {t + d - slot_end + DUB_MARGIN:.1f} 秒；缩短这一段译文"})
+        v["t"], v["dur"] = round(t, 3), d
+        prev_end = t + d
 
 
 def _align_pre(ep, res, sec, t_now, errors):
@@ -145,8 +170,14 @@ def _music_len(ep, src):
 
 
 def build(ep, vo=None):
+    dub = None
+    if ep.lang != "zh" and vo is None:
+        # A dubbed cut keeps the Chinese edit: lay out with the Chinese narration, then drop each translated
+        # paragraph into its Chinese paragraph's place.
+        dub = real_vo(ep) or estimated_vo(ep)
+        vo = real_vo(ep, ep.base_build) or estimated_vo(ep.zh())
     vo = vo or real_vo(ep) or estimated_vo(ep)
-    res = Resolver(ep, vo)
+    res = Resolver(ep, vo, ep.zh_lexicon if dub is not None else None)
     t, sections, vo_track, errors = 0.0, [], [], []
     for s in ep.sections:
         s0 = t
@@ -168,6 +199,8 @@ def build(ep, vo=None):
         sections.append({"id": s["id"], "chapter": s.get("chapter"), "start": round(s0, 3), "end": round(t, 3)})
         res.sec[s["id"]] = {"start": s0, "end": t}
     total = round(t, 3)
+    if dub is not None:
+        _dub(ep, vo_track, dub, total, errors)
 
     # ---- music bed ------------------------------------------------------
     music, clips = _collect(ep, res, "music"), _collect(ep, res, "clips")
@@ -349,7 +382,8 @@ def build(ep, vo=None):
                 mapping.append({"t": b["t"], "dur": b["dur"], "in": b["in"]})
         mapping = {"items": mapping, "hidden": hidden}
 
+    spoken = dub if dub is not None else vo
     tl = {"total": total, "sections": sections, "vo": vo_track, "bed": out, "video": video, "gfx": gfx,
-          "map": mapping, "errors": errors, "estimated": all(not v.get("file") for v in vo.values())}
+          "map": mapping, "errors": errors, "estimated": all(not v.get("file") for v in spoken.values())}
     write_json(ep.build / "timeline.json", tl)
     return tl, vo

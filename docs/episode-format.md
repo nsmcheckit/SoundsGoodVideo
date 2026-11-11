@@ -58,3 +58,37 @@ sections:
 **Scenes**: `tag` `ask` `title` `big` `stamps` `quote` `compare` `layers` `steps` `curve` `number` `spectro` `loops` `roles` `end`. Add `full: true` for a full-screen scene. One-off scenes go in `sgv/gfx/engine.html`; keep one or two per episode so the series does not turn into a template.
 
 **Exceptions** must state a reason: `reuse: "..."` to replay source material, `through: "..."` to cross a switch point. `free: true` lets a cut ignore the bar grid. `lock: true` keeps a music entry at its exact anchor.
+
+## The English cut (`--lang en`)
+
+An English cut dubs the finished Chinese edit: the same picture, music bed and graphic timing, with English narration dropped into each Chinese paragraph's slot, English-only subtitles, its own mix (`lufs: -14`) and outputs under `build/en/`. Run it after the Chinese cut has its voice:
+
+```
+python3 -m sgv approve --lang en --gate script episodes/<id>
+python3 -m sgv voice   --lang en episodes/<id>
+python3 -m sgv plan    --lang en episodes/<id>      # dub.overflow lists any paragraph that still runs long
+python3 -m sgv mix     --lang en episodes/<id>
+python3 -m sgv render  --lang en episodes/<id>
+python3 -m sgv deliver --lang en episodes/<id>
+```
+
+Per paragraph:
+
+```yaml
+- {id: p14, text: …, en: [subtitle lines for the Chinese cut], en_dub: "tighter spoken English",   # en_dub wins; en is the fallback
+   dub_align: end,      # finish where the Chinese paragraph finished (lines that end on a music hit)
+   dub_offset: -0.5}    # nudge the English start; the line still may not overlap the one before
+```
+
+Chinese is denser than spoken English, so the spoken lines are usually shorter than the subtitle translation. Each take is cut, then any paragraph longer than its slot is sped up on its own, at most 12%; past that `dub.overflow` fails and the line has to be shortened. The English script has its own approval (`script_en`).
+
+The `en_cut` block overrides anything at the top level (title, lufs, owners, ending, speech, lexicon) and localizes the picture:
+
+```yaml
+en_cut:
+  title: MingHuoLiuXing_EN          # delivery file names
+  speech: {voice: UgBBYS2sOqTuMpoF3BR0, speed: 1.0, target_cps: null, est_wps: 2.85, seeds: [7, 19]}
+  lexicon: {replace: {huqin: hoo-chin, Bo Caisheng: Baw Tsai-shung}}   # pinyin spelled so the voice says it the Chinese way
+  labels: {一阶段: Phase 1}           # song-structure bar
+  gfx: {s03: {0: {title: "Techno: four on the floor"}}}   # params merged into the gfx item at that index in that section
+```

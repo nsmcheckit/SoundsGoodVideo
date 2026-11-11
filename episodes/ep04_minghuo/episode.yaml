@@ -79,9 +79,9 @@ sections:
     pre: 3.0          # Jee, v4: three seconds of music, then talk
     post: 0.4
     paras:
-      - {id: p01, claim: opinion, text: 最近爆火的《影之刃零》里，有一首 Boss 曲，听起来根本就是赛博朋克。,
+      - {id: p01, en_dub: "Phantom Blade Zero is everywhere, and this boss theme sounds like pure cyberpunk.", claim: opinion, text: 最近爆火的《影之刃零》里，有一首 Boss 曲，听起来根本就是赛博朋克。,
          en: ["Phantom Blade Zero is everywhere right now, and one of its boss themes sounds like pure cyberpunk."]}
-      - {id: p02, claim: opinion, text: 它叫《冥火流星》，庞镇第一战，火流星。直到听到这首曲子，我才明白武侠朋克的“朋克”到底是什么意思。,
+      - {id: p02, en_dub: "It's Nether Flame Meteor, from the first fight in Pang Town. Hearing it, I finally got what the 'punk' in wuxia-punk means.", claim: opinion, text: 它叫《冥火流星》，庞镇第一战，火流星。直到听到这首曲子，我才明白武侠朋克的“朋克”到底是什么意思。,
          en: ["It's called Nether Flame Meteor: the first fight in Pang Town, Fire Meteor.", "Only when I heard it did I understand what the 'punk' in wuxia-punk really means."]}
     music:
       - {src: A, in: 88.3, at: start, free: true, reuse: 开场用一阶段高潮（88.3 秒的镲进来、旋律往上走）配夜之城，第 04 段讲一阶段时再听到}
@@ -97,9 +97,9 @@ sections:
     chapter: 一个被人牵着线的人
     pre: 0.8
     paras:
-      - {id: p03, claim: official, confirmed_by: q8, text: 火流星是鬼差的队长。他受命来拦魂，却被人暗中操纵，害死了镇上的普通人，其中就有玉儿。,
+      - {id: p03, en_dub: "Fire Meteor leads the ghost reapers. Sent to stop Soul, he's secretly manipulated into killing townsfolk, Yu'er among them.", claim: official, confirmed_by: q8, text: 火流星是鬼差的队长。他受命来拦魂，却被人暗中操纵，害死了镇上的普通人，其中就有玉儿。,
          en: ["Fire Meteor is a captain of the ghost reapers.", "Sent to stop Soul, he is secretly manipulated into killing ordinary townsfolk, Yu'er among them."]}
-      - {id: p05, claim: opinion, text: 说到底，他也只是一个被人牵着线的人；而这一仗，是替玉儿他们讨回来的。带着这两件事去听，这首曲子就好懂了。,
+      - {id: p05, en_dub: "He's a puppet on someone else's strings, and this fight avenges Yu'er. Keep both in mind and the track makes sense.", claim: opinion, text: 说到底，他也只是一个被人牵着线的人；而这一仗，是替玉儿他们讨回来的。带着这两件事去听，这首曲子就好懂了。,
          en: ["In the end he is just a man on someone else's strings, and this fight settles the debt for Yu'er and the others.", "Listen with those two things in mind and the track makes sense."]}
     music:
       - {src: A, sync: 27.3, at: end, lead: start, free: true}   # Jee, v4: phase 1 has to be playing by the Techno/Trance line, so the cutscene's riser lands on the section end
@@ -113,13 +113,13 @@ sections:
     pre: 1.0          # let the phase-1 downbeat land before the first word
     post: 0.4
     paras:
-      - {id: p06, claim: opinion, text: 很多人听完说这是 Techno，也有人说是 Trance。这两个词常被混着用，其实是两种思路。,
+      - {id: p06, en_dub: "Some call this techno, others trance. People mix the two up, but they're different ideas.", claim: opinion, text: 很多人听完说这是 Techno，也有人说是 Trance。这两个词常被混着用，其实是两种思路。,
          en: ["Many people call this techno; others say trance.", "The two words get mixed up, but they are two different ideas."]}
       - {id: p07, claim: official, pause_after: 4.3, text: Techno 生在上世纪八十年代的底特律，一座汽车城。它的地基是四拍底鼓：每一拍都踩一下大鼓，从头踩到尾。它几乎只用机器，声音冷、硬、一遍遍重复。听 Techno，听的是音色和律动，不是旋律。,
          en: ["Techno was born in 1980s Detroit, a car city.", "Its foundation is four on the floor: a kick on every beat, start to finish.", "It is almost all machines: cold, hard, repetitive.", "In techno you listen for timbre and groove, not melody."]}
-      - {id: p08, claim: official, text: Trance 是 Techno 传到欧洲后长出来的一支，名字的意思是“出神”。它保留了四拍的骨架，却把重心挪到了旋律上，琶音一圈圈地转。最典型的是 breakdown：把鼓整个抽掉，再一口气砸回来。,
+      - {id: p08, en_dub: "Trance grew out of techno once it reached Europe. It keeps the four-beat frame but puts melody first, arpeggios spinning round. Its signature is the breakdown: drums out, then everything slams back in.", claim: official, text: Trance 是 Techno 传到欧洲后长出来的一支，名字的意思是“出神”。它保留了四拍的骨架，却把重心挪到了旋律上，琶音一圈圈地转。最典型的是 breakdown：把鼓整个抽掉，再一口气砸回来。,
          en: ["Trance grew out of techno once it reached Europe, named for the state it puts you in.", "It keeps the four-beat frame but moves the weight to melody, arpeggios spinning round.", "Its signature is the breakdown: pull the drums out, then slam everything back in."]}
-      - {id: p09, claim: opinion, text: 而《冥火流星》有意思的地方在于，这两样它都有。,
+      - {id: p09, en_dub: "And Nether Flame Meteor has both.", claim: opinion, text: 而《冥火流星》有意思的地方在于，这两样它都有。,
          en: ["What makes Nether Flame Meteor interesting is that it has both."]}
     music:
       - {src: A, at: start}
@@ -157,13 +157,13 @@ sections:
     chapter: 转阶段
     pre: 5.5          # starts the bed at ~177 s so phase 1 audibly fades into the cutscene (2.0 cut in at the trough: -17.5 LU)
     paras:
-      - {id: p13, claim: official, confirmed_by: q8, text: 转阶段是一段过场。火流星被人点燃，整个人烧成了绿色。,
+      - {id: p13, en_dub: "The phase change is a cutscene. Fire Meteor is set ablaze, burning green.", claim: official, confirmed_by: q8, text: 转阶段是一段过场。火流星被人点燃，整个人烧成了绿色。,
          en: ["The phase change is a cutscene.", "Fire Meteor is set alight and burns green."]}
-      - {id: p16, claim: opinion, text: 这段过场玩家打断不了，作曲就可以照着画面，一秒一秒地把蓄力写进去。,
+      - {id: p16, en_dub: "Players can't interrupt it, so the build could be scored second by second.", claim: opinion, text: 这段过场玩家打断不了，作曲就可以照着画面，一秒一秒地把蓄力写进去。,
          en: ["The player can't interrupt this cutscene, so the composer can write the build second by second to the picture."]}
-      - {id: p14, claim: measured, text: 一阶段的音乐在过场里慢慢淡出，接着是二十多秒的铺垫：声音越来越亮、越来越响，像一个滤波器被一点点拧开。然后，声音突然塌下去半秒。再然后——“嗡”。,
+      - {id: p14, en_dub: "Phase one fades out, then comes twenty-odd seconds of build, brighter and louder, like a filter slowly opening. Then the sound caves in for half a second. And then: the drop.", dub_align: end, dub_offset: -0.5, claim: measured, text: 一阶段的音乐在过场里慢慢淡出，接着是二十多秒的铺垫：声音越来越亮、越来越响，像一个滤波器被一点点拧开。然后，声音突然塌下去半秒。再然后——“嗡”。,
          en: ["Phase one's music fades out in the cutscene, then comes twenty-odd seconds of build: brighter and louder, like a filter slowly opening.", "Then the sound suddenly caves in for half a second.", "And then: the drop."]}
-      - {id: p15, claim: measured, text: 这一下不是音效，是音乐本身，也是整场战斗最响的一刻。,
+      - {id: p15, en_dub: "Not a sound effect: it's the music, the loudest moment of the fight.", claim: measured, text: 这一下不是音效，是音乐本身，也是整场战斗最响的一刻。,
          en: ["That isn't a sound effect; it's the music itself, and the loudest moment of the whole fight."]}
     music:
       - {src: A, sync: 205.8, at: p14@嗡+0.1, lead: start, free: true}
@@ -193,11 +193,11 @@ sections:
     chapter: 一针比一针高
     align: {src: A, time: 222.3}   # first line lands just after the second stab (222.05)
     paras:
-      - {id: p19, claim: measured, text: 接着，一个很亮、很尖的合成器音色钻了进来：每一小节扎一下，一下比一下高，连着八下。,
+      - {id: p19, en_dub: "Then a bright, sharp synth cuts in: one stab every bar, each higher than the last, eight in a row.", claim: measured, text: 接着，一个很亮、很尖的合成器音色钻了进来：每一小节扎一下，一下比一下高，连着八下。,
          en: ["Then a bright, sharp synth sound cuts in: one stab every bar, each higher than the last, eight in a row."]}
-      - {id: p19b, claim: ear, text: 在我听来，它就像一根针，一下一下扎进耳朵里，把情绪一级一级往上顶。,
+      - {id: p19b, en_dub: "To my ear, it's a needle, jabbing again and again, ratcheting the tension up.", claim: ear, text: 在我听来，它就像一根针，一下一下扎进耳朵里，把情绪一级一级往上顶。,
          en: ["To my ear it's like a needle, stabbing into your ear again and again, pushing the tension up one step at a time."]}
-      - {id: p19c, claim: measured, text: 针扎完，更多合成器一层层叠上来，声音更亮、更满。,
+      - {id: p19c, en_dub: "Then more synths stack up, brighter and fuller.", claim: measured, text: 针扎完，更多合成器一层层叠上来，声音更亮、更满。,
          en: ["When the needles stop, more synths stack up layer by layer, brighter and fuller."]}
       - {id: p19d, claim: ear, text: 这些音色都捏得很到位，每一层都抓耳。在我听来，这就是 Techno 的本事：不靠旋律，光靠音色，也能把人一路往前推。,
          en: ["Every one of these sounds is shaped just right, and every layer grabs you.", "To my ear, that's what techno can do: no melody needed, timbre alone drives you forward."]}
@@ -212,7 +212,7 @@ sections:
   - id: s06c
     align: {src: A, time: 262.6}   # "撤掉" lands on the breakdown at 264.0
     paras:
-      - {id: p20, claim: measured, text: 然后，鼓和低音全部撤掉——Trance 式的 breakdown。,
+      - {id: p20, dub_offset: -2.6, claim: measured, text: 然后，鼓和低音全部撤掉——Trance 式的 breakdown。,
          en: ["Then the drums and bass drop out entirely: a trance-style breakdown."]}
     music:
       - {src: A, at: start}
@@ -223,11 +223,11 @@ sections:
     chapter: 胡琴接住
     align: {src: A, time: 270.672, before: 2.1}   # "可砸回来" lands on the slam after the breakdown (measured on the v5 take)
     paras:
-      - {id: p21, claim: ear, confirmed_by: q12, text: 按常理，情绪该落下来了。可砸回来的这一下，胡琴进来，把情绪稳稳接住；带着滑音和揉弦的旋律，第一次站到了最前面。,
+      - {id: p21, en_dub: "Normally, the tension would fall here. But as it slams back, the huqin catches it, and its sliding melody takes the lead.", dub_offset: -1.4, claim: ear, confirmed_by: q12, text: 按常理，情绪该落下来了。可砸回来的这一下，胡琴进来，把情绪稳稳接住；带着滑音和揉弦的旋律，第一次站到了最前面。,
          en: ["By rights, the tension should drop here.", "But when it slams back, the huqin comes in and catches it; a melody full of slides and vibrato steps to the front for the first time."]}
-      - {id: p22, claim: quote, confirmed_by: q13, text: 作曲人薄彩生说过，他的做法是以中式音乐为骨，西式音乐为肉；去掉中国乐器那一层，音乐就立不住。,
+      - {id: p22, en_dub: "Composer Bo Caisheng has said: Chinese music is the bones, Western music the flesh; without the Chinese instruments, the music can't stand.", claim: quote, confirmed_by: q13, text: 作曲人薄彩生说过，他的做法是以中式音乐为骨，西式音乐为肉；去掉中国乐器那一层，音乐就立不住。,
          en: ["Composer Bo Caisheng has said he uses Chinese music as the bones and Western music as the flesh; take away the Chinese instruments and the music can't stand."]}
-      - {id: p23, claim: opinion, text: 底鼓是机器，胡琴是人。合成器把情绪顶到最高，胡琴把它接住，再往下唱。这就是中国乐器的分量。,
+      - {id: p23, en_dub: "The kick is the machine, the huqin the human. Synths push the tension to the top; the huqin catches it and sings on. That's the weight of a Chinese instrument.", claim: opinion, text: 底鼓是机器，胡琴是人。合成器把情绪顶到最高，胡琴把它接住，再往下唱。这就是中国乐器的分量。,
          en: ["The kick is the machine, the huqin is the human.", "The synths push the tension to the top; the huqin catches it and keeps singing.", "That's the weight of a Chinese instrument."]}
     music:
       - {src: A, at: start}
@@ -243,9 +243,9 @@ sections:
     chapter: 回到夜之城
     pre: 3.0
     paras:
-      - {id: p24, claim: opinion, text: 再回到开头的夜之城。同一段音乐，放在赛博朋克的街头毫不违和，放回庞镇，也一样成立。,
+      - {id: p24, en_dub: "Back to Night City. The same music sits naturally on a cyberpunk street, and works just as well in Pang Town.", claim: opinion, text: 再回到开头的夜之城。同一段音乐，放在赛博朋克的街头毫不违和，放回庞镇，也一样成立。,
          en: ["Back to Night City from the opening.", "The same music sits naturally on a cyberpunk street, and it works just as well back in Pang Town."]}
-      - {id: p25, claim: opinion, text: 西式的肉，让它进得了夜之城；中式的骨，让它留在庞镇。,
+      - {id: p25, en_dub: "Western flesh gets it into Night City; Chinese bones keep it in Pang Town.", claim: opinion, text: 西式的肉，让它进得了夜之城；中式的骨，让它留在庞镇。,
          en: ["The Western flesh gets it into Night City; the Chinese bones keep it in Pang Town."]}
     music:
       - {src: A, in: 213.07, at: start, reuse: 二阶段开头没有胡琴的一段（底鼓和低音，之后是“针”），Jee v4：带胡琴的那段配赛博朋克不合适}
@@ -260,13 +260,13 @@ sections:
     pre: 0.3
     post: 3.5
     paras:
-      - {id: p29, claim: official, text: 唐代岑参写过一场边塞军宴：中军置酒饮归客，胡琴琵琶与羌笛。胡琴的“胡”，本来就是外来的意思。一千多年前，它也是从塞外传进中原的新声音。,
+      - {id: p29, en_dub: "Tang poet Cen Shen wrote of a frontier feast with huqin, pipa and Qiang flute. The 'hu' in huqin means foreign: a thousand years ago, it was the new sound from beyond the border.", claim: official, text: 唐代岑参写过一场边塞军宴：中军置酒饮归客，胡琴琵琶与羌笛。胡琴的“胡”，本来就是外来的意思。一千多年前，它也是从塞外传进中原的新声音。,
          en: ["The Tang poet Cen Shen wrote of a frontier banquet: wine in the commander's tent for the departing guest, with huqin, pipa and Qiang flute.", "The hu in huqin simply means foreign.", "Over a thousand years ago, it too was a new sound brought in from beyond the frontier."]}
-      - {id: p30, claim: opinion, text: 一千多年后，它成了中式的骨，又和底特律的底鼓、欧洲的 breakdown 站进了同一场仗。我理解的武侠朋克，就是这样：几种声音放在一起，谁也没压过谁。中西从来不是二选一，音乐本来就没有国界。,
+      - {id: p30, en_dub: "A thousand years later, it's the Chinese bones, sharing one fight with Detroit's kick and Europe's breakdown. That's wuxia-punk to me: different sounds side by side, none drowning out the rest. East or West was never the choice. Music has no borders.", claim: opinion, text: 一千多年后，它成了中式的骨，又和底特律的底鼓、欧洲的 breakdown 站进了同一场仗。我理解的武侠朋克，就是这样：几种声音放在一起，谁也没压过谁。中西从来不是二选一，音乐本来就没有国界。,
          en: ["A thousand years on, it has become the Chinese bones, standing in one fight with Detroit's kick and Europe's breakdown.", "That's what wuxia-punk means to me: different sounds side by side, none drowning out the others.", "East and West were never a choice of one; music has no borders."]}
-      - {id: p31, claim: opinion, text: 更难得的是，它还在讲故事：被操纵的人，配上机器的节奏；替人讨债的人，由胡琴开口。,
+      - {id: p31, en_dub: "And it tells the story: the puppet gets the machine's rhythm; the avenger speaks through the huqin.", claim: opinion, text: 更难得的是，它还在讲故事：被操纵的人，配上机器的节奏；替人讨债的人，由胡琴开口。,
          en: ["Rarer still, it tells the story: the man on strings gets the machine's rhythm, and the one settling the debt speaks through the huqin."]}
-      - {id: p32, claim: opinion, text: 国内能叫 3A 的游戏还屈指可数，一首 Boss 曲也代表不了全部。但《冥火流星》说明了一件事：中国的 3A 游戏，已经有能力用一首足够强的音乐，撑起一段叙事。,
+      - {id: p32, en_dub: "Chinese AAA games are still few, and one boss theme can't speak for them all. But Nether Flame Meteor proves Chinese games can now carry a story on the strength of their music.", claim: opinion, text: 国内能叫 3A 的游戏还屈指可数，一首 Boss 曲也代表不了全部。但《冥火流星》说明了一件事：中国的 3A 游戏，已经有能力用一首足够强的音乐，撑起一段叙事。,
          en: ["Games from China that can be called AAA are still few, and one boss theme can't speak for all of them.", "But Nether Flame Meteor shows one thing: Chinese AAA games can now hold up a story with music strong enough to carry it."]}
       - {id: p33, text: 更多游戏声音拆解，关注 SoundsGood。, en: ["More game audio breakdowns: follow SoundsGood."]}
     music:
@@ -339,3 +339,60 @@ pinned_comment: |
   1. 二阶段那段旋律，有人听成二胡，有人听成京胡、板胡。我们实测它的音域、揉弦和滑音都是胡琴的拉法，而且像几件乐器一起齐奏，所以视频里统一叫“胡琴”（拉弦乐器的统称）。如果你知道原声带的演奏署名，欢迎补充。
   2. 岑参诗里的“胡琴”泛指当时从西域、北方传来的乐器，不一定是今天的二胡；引用它只是想说，“胡”本来就是外来的意思。
   3. 一阶段更像 Trance、二阶段是 Techno，这是我们的分析和听感，欢迎讨论。
+
+# English cut (`--lang en`): a dub of the Chinese edit. Same picture, music and graphic timing; each paragraph's
+# en_dub (or en) lines are spoken in its Chinese paragraph's slot. Graphics overrides are by section and index.
+en_cut:
+  title: MingHuoLiuXing_EN
+  lufs: -14
+  owners: ["Game footage and music © S-GAME"]
+  ending: "More game audio breakdowns: follow SoundsGood."
+  speech: {voice: UgBBYS2sOqTuMpoF3BR0, speed: 1.0, target_cps: null, est_wps: 2.85, seeds: [7, 19]}
+  lexicon:
+    replace:
+      Bo Caisheng: Baw Tsai-shung
+      Cen Shen: Tsun Shun
+      "Yu'er": Yoo-ar
+      huqin: hoo-chin
+      Qiang: Chyahng
+      wuxia: woo-shyah
+      BPM: beats per minute
+      AAA: triple-A
+      "'hu'": "'hoo'"
+    listen: [Bo Caisheng, Cen Shen, "Yu'er", huqin, wuxia, Pang Town]
+  labels: {过场: Cutscene, 一阶段: Phase 1, 转阶段: Phase change, 二阶段: Phase 2, 针: Needles, 合成器叠加: Synth layers,
+           breakdown: Breakdown, 胡琴: Huqin, 第二轮: Second pass, 第三轮: Third pass}
+  gfx:
+    s01:
+      0: {text: Nether Flame Meteor, en: 冥火流星}
+    s02:
+      0: {text: Pang Town · Fire Meteor, en: 庞镇 · 火流星}
+    s03:
+      0: {title: "Techno: four on the floor", kicker: TECHNO · ILLUSTRATION, note: "A kick on every beat, almost nothing but rhythm",
+          rows: [{name: Kick, hits: [0, 4, 8, 12], hot: true}, {name: Hi-hat, hits: [2, 6, 10, 14]}]}
+      1: {title: "Trance: same frame, melody up front", kicker: TRANCE · ILLUSTRATION, note: "The kick stays; the arpeggio spins on top",
+          rows: [{name: Kick, hits: [0, 4, 8, 12]}, {name: Arpeggio, hits: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], hot: true}]}
+      2: {title: Two ideas, cols: [
+          {name: Techno, en: DETROIT · 1980S, points: ["Four on the floor, start to finish", Almost all machines, Driven by timbre and groove], foot: Groove},
+          {name: Trance, en: EUROPE · 1990S, points: [Keeps the four-beat frame, Melody comes first, "Breakdown: drums out, slam back"], foot: Melody}]}
+    s04:
+      0: {unit: BPM · PHASE 1}
+      1: {title: "Phase 1: closer to trance", kicker: PHASE 1 · 126 BPM · ILLUSTRATION, note: "Kick underneath, arpeggio pulling ahead",
+          rows: [{name: Kick, hits: [0, 4, 8, 12]}, {name: Arpeggio, hits: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], hot: true}]}
+    s05:
+      0: {title: Loudness through the phase change, kicker: LOUDNESS · MEASURED, unit: dB · 0.3 s window,
+          marks: [{at: 0.911, text: half-second dip}, {at: 0.94, text: the drop}]}
+    s06:
+      1: {title: "Phase 2: techno", kicker: PHASE 2 · 132 BPM · ILLUSTRATION, note: A kick on every beat, rows: [{name: Kick, hits: [0, 4, 8, 12], hot: true}]}
+    s06b:
+      0: {title: Each stab higher, kicker: 8 BARS · MEASURED, note: One stab per bar, foot: Eight in a row}
+    s07:
+      0: {text: "Chinese music as the bones, Western music as the flesh; take away the Chinese instruments and the music can't stand.", source: "Bo Caisheng, China Daily interview"}
+      1: {title: Three layers, kicker: LAYERS · MEASURED,
+          layers: [{name: Kick, spans: [[0, 1.4], [7.3, 38]]}, {name: Bass, spans: [[0, 1.4], [7.3, 38]]}, {name: Huqin, spans: [[7.3, 38]], hot: true}],
+          marks: [{t: 1.4, text: drums and bass drop out}, {t: 7.3, text: the huqin catches it}]}
+    s08:
+      0: {lines: [Western flesh ｜ Chinese bones], size: 56}
+    s10:
+      0: {text: "Wine for the departing guest in the commander's tent; huqin, pipa and Qiang flute.", source: "Cen Shen, Tang dynasty"}
+      1: {owners: ["Game footage and music © S-GAME"], line: "More game audio breakdowns: follow SoundsGood"}

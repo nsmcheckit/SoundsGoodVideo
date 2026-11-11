@@ -78,7 +78,8 @@ def deliver(ep, staging="/mnt/user-data/outputs"):
     out = Path(staging) / ep.id
     out.mkdir(parents=True, exist_ok=True)
     pairs = []
-    for rel, name in DELIVER_NAMES.items():
+    names = DELIVER_NAMES if ep.lang == "zh" else {k: v for k, v in DELIVER_NAMES.items() if k.endswith(".mp4")}
+    for rel, name in names.items():
         src = ep.build / (f"{ep.id}_{rel}" if rel.endswith(".mp4") else rel)
         if not src.exists():
             continue

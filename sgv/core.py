@@ -19,6 +19,7 @@ TTS_MODEL = "eleven_v3"
 TTS_SPEED = 1.3   # Jee, ep04: 1.2 (4.3 字/秒) felt slow
 # Measured at 1.2x on the lion-dance episode. The old 5.4 figure ran long every time.
 EST_CPS = 4.6
+EST_WPS = 2.7     # English narration, words per second, before any fitting
 
 
 def run(cmd):
@@ -81,22 +82,74 @@ def spoken_chars(s):
     return len(clean_text(rest)) + sum(max(1, round(len(w) / 3)) for w in latin)
 
 
-class Episode:
-    """An episode folder: episode.yaml, assets/, build/."""
+def localize(data, lang):
+    """The manifest as the <lang> cut sees it: narration from each paragraph's <lang> lines, graphics with their
+    <lang> overrides, and the <lang>_cut block (title, voice, loudness, lexicon, owners, ending) on top."""
+    import copy
+    d = copy.deepcopy(data)
+    cut = d.get(f"{lang}_cut") or {}
+    for k, v in cut.items():
+        d[k] = v
+    d.setdefault("lexicon", {})
+    if "lexicon" not in cut:
+        d["lexicon"] = {}
+    for s in d["sections"]:
+        if s.get(f"chapter_{lang}"):
+            s["chapter"] = s[f"chapter_{lang}"]
+        for p in s.get("paras") or []:
+            lines = p.get(f"{lang}_dub") or p.get(lang)   # spoken lines may be tighter than the subtitle lines
+            if not lines:
+                raise SystemExit(f"{p['id']} has no {lang} narration")
+            p["zh"] = p["text"]
+            p["text"] = " ".join(lines) if isinstance(lines, list) else lines
+            p.pop("tts", None)
+            if p.get(f"tts_{lang}"):
+                p["tts"] = p[f"tts_{lang}"]
+        by_index = (cut.get("gfx") or {}).get(s["id"]) or {}
+        for i, g in enumerate(s.get("gfx") or []):
+            over = g.pop(lang, None) or by_index.get(i)
+            if over:
+                g["params"] = {**(g.get("params") or {}), **over}
+    labels = cut.get("labels") or {}
+    for seg in (d.get("structure") or {}).get("segments") or []:
+        if seg.get(f"label_{lang}") is not None:
+            seg["label"] = seg[f"label_{lang}"]
+        elif seg.get("label") in labels:
+            seg["label"] = labels[seg["label"]]
+    return d
 
-    def __init__(self, folder):
+
+class Episode:
+    """An episode folder: episode.yaml, assets/, build/. A non-Chinese cut (lang="en") dubs the Chinese edit:
+    same picture, music and graphics timing, its own narration, subtitles, mix and outputs under build/<lang>/."""
+
+    def __init__(self, folder, lang="zh"):
         self.dir = Path(folder).resolve()
         self.file = self.dir / "episode.yaml"
+        self.lang = lang
         self.data = yaml.safe_load(self.file.read_text(encoding="utf-8"))
-        self.build = self.dir / "build"
+        self.base_build = self.dir / "build"
+        self.build = self.base_build if lang == "zh" else self.base_build / lang
         self.build.mkdir(parents=True, exist_ok=True)
         lex = yaml.safe_load((REPO / "sgv" / "lexicon.yaml").read_text(encoding="utf-8"))
         own = self.data.get("lexicon") or {}
-        self.lexicon = {
+        self.zh_lexicon = {
             "replace": {**(lex.get("replace") or {}), **(own.get("replace") or {})},
             "listen": sorted(set((lex.get("listen") or []) + (own.get("listen") or []))),
             "latin_ok": sorted(set((lex.get("latin_ok") or []) + (own.get("latin_ok") or []))),
         }
+        self.lexicon = self.zh_lexicon
+        if lang != "zh":
+            self.data = localize(self.data, lang)
+            own = self.data.get("lexicon") or {}
+            self.lexicon = {"replace": dict(own.get("replace") or {}), "listen": sorted(own.get("listen") or []),
+                            "latin_ok": []}
+            shared = self.build / "analysis"
+            if not shared.exists() and (self.base_build / "analysis").exists():
+                shared.symlink_to(self.base_build / "analysis", target_is_directory=True)
+
+    def zh(self):
+        return Episode(self.dir) if self.lang != "zh" else self
 
     @property
     def id(self):
@@ -137,9 +190,12 @@ class Episode:
     def approvals(self):
         return read_json(self.state_file) if self.state_file.exists() else {}
 
+    def _gate(self, gate):
+        return gate if self.lang == "zh" or gate == "listening" else f"{gate}_{self.lang}"
+
     def approve(self, gate, note=""):
         s = self.approvals()
-        s[gate] = {"note": note, "script_hash": self.script_hash()}
+        s[self._gate(gate)] = {"note": note, "script_hash": self.script_hash()}
         write_json(self.state_file, s)
 
     def script_hash(self):
@@ -147,7 +203,7 @@ class Episode:
 
     def approved(self, gate):
         """A script approval goes stale as soon as the words change."""
-        a = self.approvals().get(gate)
+        a = self.approvals().get(self._gate(gate))
         if not a:
             return False
         return gate != "script" or a.get("script_hash") == self.script_hash()

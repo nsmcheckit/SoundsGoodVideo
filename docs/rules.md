@@ -18,6 +18,7 @@
 | `timing.cold_open` | Nether Flame Meteor v4: the music sat alone 13 s before the first word; narration starts within about 3 s (override with `cold_open`) |
 | `voice.dropped` | Nether Flame Meteor v4: "国产 3A" came out as "干三A" and only warned; a lost syllable now fails, a misheard tone still warns |
 | `voice.pace` | Nether Flame Meteor v4: 4.3 字/秒 felt slow; below 4.5 fails, default speed raised to 1.3 (override with `min_cps`) |
+| `dub.overflow` | Nether Flame Meteor English cut: Chinese runs about 4.85 字/秒, so a straight translation overruns its slot; a paragraph may be sped up 12% at most, past that the English has to be cut |
 | `script.unconfirmed`, `script.ear_claim` | Suona and electric guitar confused; guqin or guzheng disputed in comments |
 | `script.ending`, `end.card`, `end.owners` | Series format and rights lines |
 | `license.pending` | Third-party footage needs a decision from Jee |

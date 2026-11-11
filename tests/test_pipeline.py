@@ -101,6 +101,26 @@ para_file.write_text(para_file.read_text(encoding="utf-8").replace("满能量", 
 e2 = Episode(e.dir)
 expect("script approval goes stale when words change", not e2.approved("script"))
 
+# English cut (ep04): a dub keeps the Chinese edit, speaks each paragraph's English in its Chinese slot,
+# and refuses a translation that runs past the next paragraph.
+def dub_case(mutate, name):
+    e, tl, _ = run_case(mutate, name)
+    en = Episode(e.dir, "en")
+    tl_en, _ = timeline.build(en)
+    return e, tl, en, tl_en
+
+
+e, tl, en, tl_en = dub_case(lambda m: m.update(en_cut={"gfx": {"open": {0: {"text": "NETHER"}}}, "labels": {"一阶段": "Phase 1"}})
+                            or para(m, "p04").update(en_dub=["A minute of kick: techno."]), "dub")
+expect("dub narration comes from the en lines", en.paras[0]["text"] == "The track starts at full energy.", en.paras[0]["text"])
+expect("en_dub lines win over subtitle lines", next(p for p in en.paras if p["id"] == "p04")["text"] == "A minute of kick: techno.")
+expect("dub graphics take their overrides", en.sections[0]["gfx"][0]["params"]["text"] == "NETHER")
+expect("dub keeps the Chinese edit", tl_en["total"] == tl["total"] and [g["t"] for g in tl_en["gfx"]] == [g["t"] for g in tl["gfx"]])
+expect("dub fits its slots", not any(x["rule"] == "dub.overflow" for x in tl_en["errors"]), tl_en["errors"])
+expect("dub needs its own script approval", e.approved("script") and not en.approved("script"))
+_, _, _, tl_en = dub_case(lambda m: para(m, "p01").update(en=["This translation keeps going " * 12 + "far past its slot."]), "dub")
+expect("stops dub.overflow", any(x["rule"] == "dub.overflow" for x in tl_en["errors"]))
+
 # ep04 v4: "国产 3A" came out as "干三A" and passed as a warning; a lost syllable must stop the export.
 e, tl, r = run_case(lambda m: None, "dropped")
 write_json(e.build / "vo" / "reading.json", {"report": [{"id": "p01", "ratio": 0.97, "heard": "感三A还屈指可数",

@@ -76,7 +76,84 @@ def _display_map(display, spoken_chars):
     return mapping
 
 
+MAX_EN = 44
+STYLE_DUB = {"h": {"size": 44, "mv": 74}, "v": {"size": 50, "mv": 360}}
+
+
+def sentences_en(text):
+    return [s.strip() for s in re.findall(r".+?(?:[.!?]+[\"”’)]?(?=\s|$)|$)", text) if s.strip()]
+
+
+def chunks_en(sentence):
+    """Clauses joined up to one comfortable line; a clause that is still too long breaks at a space."""
+    parts = re.findall(r".+?(?:[,;:—–]+\s*|$)", sentence)
+    out, cur = [], ""
+    for p in parts:
+        if cur and len(cur + p) > MAX_EN:
+            out.append(cur.strip())
+            cur = p
+        else:
+            cur += p
+    if cur.strip():
+        out.append(cur.strip())
+    merged = []
+    for c in out:
+        # a short tail ("a car city.") rides with the clause before it when the two still fit one line
+        if merged and min(len(merged[-1]), len(c)) < 16 and len(merged[-1]) + 1 + len(c) <= MAX_EN + 8:
+            merged[-1] += " " + c
+        else:
+            merged.append(c)
+    out = merged
+    final = []
+    for c in out:
+        while len(c) > MAX_EN + 10:
+            k = c.rfind(" ", 0, MAX_EN)
+            k = k if k > 0 else MAX_EN
+            final.append(c[:k].strip())
+            c = c[k:].strip()
+        final.append(c)
+    return final
+
+
+def two_lines_en(line):
+    """Portrait: a long line splits at the space nearest the middle."""
+    spaces = [m.start() for m in re.finditer(" ", line)]
+    if not spaces:
+        return line
+    k = min(spaces, key=lambda i: abs(i - len(line) / 2))
+    return line[:k] + r"\N" + line[k + 1:]
+
+
+def events_dub(ep, tl):
+    vo = {p["id"]: p for p in read_json(ep.build / "vo" / "paras.json")} if (ep.build / "vo" / "paras.json").exists() else None
+    if vo is None:
+        from .timeline import estimated_vo
+        vo = estimated_vo(ep)
+    at = {v["id"]: v["t"] for v in tl["vo"]}
+    ev = []
+    for p in ep.paras:
+        v = vo[p["id"]]
+        text = p["text"].replace("\n", " ")
+        m = _display_map(text, v["chars"])
+        pos = 0
+        for sent in sentences_en(text):
+            for c in chunks_en(sent):
+                j = text.find(c, pos)
+                k = j + len(c) - 1
+                pos = j + len(c)
+                a = at[p["id"]] + v["chars"][m[j]][1]
+                b = at[p["id"]] + v["chars"][m[k]][2]
+                ev.append([a - 0.05, b + 0.15, c, ""])
+    ev.sort(key=lambda e: e[0])
+    for a, b in zip(ev, ev[1:]):
+        if b[0] < a[1]:
+            a[1] = b[0] - 0.02
+    return ev
+
+
 def events(ep, tl):
+    if ep.lang != "zh":
+        return events_dub(ep, tl)
     vo = {p["id"]: p for p in read_json(ep.build / "vo" / "paras.json")} if (ep.build / "vo" / "paras.json").exists() else None
     if vo is None:
         from .timeline import estimated_vo
@@ -109,6 +186,8 @@ def events(ep, tl):
 
 
 def write(ep, tl, orient):
+    if ep.lang != "zh":
+        return write_dub(ep, tl, orient)
     st = STYLE[orient]
     head = f"""[Script Info]
 ScriptType: v4.00+
@@ -130,6 +209,33 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
             zh = two_lines(zh)
         tail = f"\\N{{\\fnInter\\fs{st['en']}\\b0\\c&HD8D8D8&\\bord1.6}}{en}" if en else ""
         lines.append(f"Dialogue: 0,{fmt(s)},{fmt(e)},Sub,,0,0,0,,{zh}{tail}\n")
+    path = ep.build / f"subs_{orient}.ass"
+    path.write_text("".join(lines), encoding="utf-8")
+    return path
+
+
+def write_dub(ep, tl, orient):
+    """Translated cut: one line of the cut's own language, no second line."""
+    st, base = STYLE_DUB[orient], STYLE[orient]
+    head = f"""[Script Info]
+ScriptType: v4.00+
+PlayResX: {base['w']}
+PlayResY: {base['h']}
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Align
+Style: Sub,Inter,{st['size']},&H00FFFFFF,&H00FFFFFF,&H00000000,&H80000000,-1,0,0,0,100,100,0.5,0,1,2.2,1.5,2,80,80,{st['mv']},1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+"""
+    lines = [head]
+    for s, e, line, _ in events(ep, tl):
+        if orient == "v" and len(line) > 28:
+            line = two_lines_en(line)
+        lines.append(f"Dialogue: 0,{fmt(s)},{fmt(e)},Sub,,0,0,0,,{line}\n")
     path = ep.build / f"subs_{orient}.ass"
     path.write_text("".join(lines), encoding="utf-8")
     return path

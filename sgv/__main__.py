@@ -15,8 +15,9 @@ def main():
     ap.add_argument("--orient", default="h,v", help="render: h, v or h,v")
     ap.add_argument("--seeds", help="voice: comma-separated seeds")
     ap.add_argument("--force", action="store_true", help="render: export even with failed checks (marked DRAFT)")
+    ap.add_argument("--lang", default="zh", help="zh (the edit) or en (a dub of it: own narration, subtitles, mix)")
     a = ap.parse_args()
-    ep = Episode(a.episode)
+    ep = Episode(a.episode, a.lang)
     globals()["cmd_" + a.command](ep, a)
 
 
