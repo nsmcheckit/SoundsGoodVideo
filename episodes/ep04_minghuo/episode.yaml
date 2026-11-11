@@ -390,7 +390,7 @@ en_cut:
       0: {text: "Chinese music as the bones, Western music as the flesh; take away the Chinese instruments and the music can't stand.", source: "Bo Caisheng, China Daily interview"}
       1: {title: Three layers, kicker: LAYERS · MEASURED,
           layers: [{name: Kick, spans: [[0, 1.4], [7.3, 38]]}, {name: Bass, spans: [[0, 1.4], [7.3, 38]]}, {name: Huqin, spans: [[7.3, 38]], hot: true}],
-          marks: [{t: 1.4, text: drums out}, {t: 7.3, text: huqin in}]}   # full phrases collided on the 38 s axis
+          marks: [{t: 7.3, text: the huqin catches it}]}   # two labels 6 s apart collide on the portrait axis; the bars already show the drums stopping
     s08:
       0: {lines: [Western flesh ｜ Chinese bones], size: 56}
     s10:
