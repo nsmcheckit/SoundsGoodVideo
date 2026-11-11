@@ -17,6 +17,7 @@ from .core import ASR_MODEL, SR, TTS_MODEL, TTS_SPEED, VOICE_ZH, clean_text, pro
 def _config(ep):
     s = ep.data.get("speech") or {}
     return {"voice": s.get("voice", VOICE_ZH), "model": s.get("model", TTS_MODEL), "speed": float(s.get("speed", TTS_SPEED)),
+            "target_cps": s.get("target_cps", TARGET_CPS), "max_speed": float(s.get("max_speed", MAX_SPEED)),
             "seeds": s.get("seeds", [7, 19])}
 
 
@@ -98,6 +99,15 @@ def _sandhi(tones):
     return out
 
 
+def _contraction(a_base, i1, i2, b_base, j1, j2):
+    """这一 / 那一 / 哪一 run together as zhèi / nèi / něi in ordinary speech; that is not a dropped word.
+    (ep04 v5: every take said 这一下 and 那一层 that way and the export check refused all of them.)"""
+    exp, got = list(a_base[i1:i2]), list(b_base[j1:j2])
+    if exp == ["yi"] and not got and i1 > 0 and a_base[i1 - 1] in ("zhe", "na"):
+        return True
+    return len(exp) == 2 and exp[1] == "yi" and exp[0] in ("zhe", "na") and got in (["zhei"], ["nei"], ["zhe"], ["na"])
+
+
 def compare_reading(expected, heard):
     """Compares by pronunciation, so a homophone typed by the recogniser is not a false alarm.
 
@@ -113,6 +123,9 @@ def compare_reading(expected, heard):
     issues, matched = [], 0
     for tag, i1, i2, j1, j2 in sm.get_opcodes():
         if tag != "equal":
+            if _contraction(a_base, i1, i2, b_base, j1, j2):
+                matched += j2 - j1
+                continue
             issues.append({"expected": " ".join(a[i1:i2]), "heard": " ".join(b[j1:j2])})
             continue
         for i, j in zip(range(i1, i2), range(j1, j2)):
@@ -135,6 +148,39 @@ def _quietest(x, t0, t1, frame=0.01):
     k = (b - a) // n
     energy = (x[a: a + k * n].reshape(k, n) ** 2).mean(1)
     return (a + int(np.argmin(energy)) * n + n // 2) / SR
+
+
+# Jee, ep04: 4.3 字/秒 felt slow. Takes differ a lot in natural pace (3.3 to 4.0 字/秒 raw on one script), so a fixed
+# speed-up leaves some seeds dragging; each take is sped up to the same target instead, within what still sounds natural.
+TARGET_CPS = 4.85
+MAX_SPEED = 1.42
+
+
+def _raw_cps(ep, base):
+    """Characters per second of a take before any speed-up, measured the way pace.json measures the cut."""
+    A = read_json(base.with_suffix(".json"))["alignment"]
+    ch, st, en = A["characters"], A["character_start_times_seconds"], A["character_end_times_seconds"]
+    text, pos, dur, voiced = "".join(ch), 0, 0.0, 0
+    for p in ep.paras:
+        s = ep.spoken(p)
+        i = text.find(s, pos)
+        if i < 0:
+            return None
+        pos = i + len(s)
+        words = [k for k in range(i, pos) if re.match(r"\w", ch[k])]
+        dur += en[words[-1]] - st[words[0]]
+        voiced += spoken_chars(s)
+    return voiced / dur if dur else None
+
+
+def take_speed(ep, base):
+    """The speed-up for this take, and whether it had to stop short of the target pace."""
+    cfg = _config(ep)
+    raw = _raw_cps(ep, base) if cfg["target_cps"] else None
+    if not raw:
+        return cfg["speed"], False
+    want = float(cfg["target_cps"]) / raw
+    return round(min(max(want, 1.0), cfg["max_speed"]), 3), want > cfg["max_speed"]
 
 
 def _cut(ep, base, speed):
@@ -192,24 +238,45 @@ def score_take(ep, paras, engine):
     return total / max(1, sum(len(p["text"]) for p in paras)), report
 
 
+def hard_errors(report):
+    """Lines the export check would refuse: far off the script, or with a syllable missing."""
+    return sum(1 for row in report if row["ratio"] < 0.82
+               or any(len(i["heard"].split()) < len(i["expected"].split()) for i in row["issues"]))
+
+
+def _pace(paras):
+    return sum(spoken_chars(p["text"]) for p in paras) / max(1e-6, sum(p["dur"] for p in paras))
+
+
 def build(ep, seeds=None):
     """Generates takes, scores each one and installs the best as the episode narration."""
     bases = generate(ep, seeds)
-    speed = _config(ep)["speed"]
     engine = asr_engine()
     results = []
     for b in bases:
+        speed, short = take_speed(ep, b)
         paras = _cut(ep, b, speed)
+        target, cap = _config(ep)["target_cps"], _config(ep)["max_speed"]
+        cps = _pace(paras)
+        if target and not short and abs(cps - target) > 0.03 * target:
+            # The cut adds a little air around each paragraph, so correct once against the measured pace.
+            want = speed * float(target) / cps
+            speed, short = round(min(max(want, 1.0), cap), 3), want > cap
+            paras = _cut(ep, b, speed)
         score, report = score_take(ep, paras, engine)
         results.append({"take": b.name, "score": round(score, 4), "seconds": round(sum(p["dur"] for p in paras), 1),
-                        "paras": paras, "report": report})
-    best = max(results, key=lambda r: r["score"])
+                        "speed": speed, "short": short, "paras": paras, "report": report})
+    for r in results:
+        r["hard"] = hard_errors(r["report"])
+    # A take that swallows a syllable loses to a slightly lower-scoring one that does not (ep04 v5: seed 7 scored
+    # higher but said "这下" for "这一下"); voice.dropped would refuse to export it anyway.
+    best = min(results, key=lambda r: (r["hard"], r["short"], -r["score"]))
     write_json(ep.build / "vo" / "paras.json", best["paras"])
     write_json(ep.build / "vo" / "reading.json", {
         "take": best["take"], "score": best["score"], "report": best["report"],
-        "others": [{"take": r["take"], "score": r["score"], "seconds": r["seconds"]} for r in results]})
-    voiced = sum(spoken_chars(p["text"]) for p in best["paras"])
-    write_json(ep.build / "vo" / "pace.json", {"chars_per_second": round(voiced / best["seconds"], 2), "seconds": best["seconds"]})
+        "speed": best["speed"],
+        "others": [{"take": r["take"], "score": r["score"], "hard": r["hard"], "speed": r["speed"], "seconds": r["seconds"]} for r in results]})
+    write_json(ep.build / "vo" / "pace.json", {"chars_per_second": round(_pace(best["paras"]), 2), "seconds": best["seconds"], "speed": best["speed"]})
     return best
 
 
@@ -239,4 +306,4 @@ def duration_check(ep):
     return sum(p["dur"] for p in read_json(f)) if f.exists() else None
 
 
-__all__ = ["build", "generate", "install_placeholder", "compare_reading", "probe_duration"]
+__all__ = ["build", "generate", "install_placeholder", "compare_reading", "hard_errors", "probe_duration"]

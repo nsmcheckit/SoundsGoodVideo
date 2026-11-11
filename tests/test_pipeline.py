@@ -11,7 +11,7 @@ from sgv import gfx, qa, timeline  # noqa: E402
 from sgv.core import Episode, read_json, write_json  # noqa: E402
 from sgv.mix import _source_wav  # noqa: E402
 from sgv.measure import analyze  # noqa: E402
-from sgv.voice import compare_reading, install_placeholder  # noqa: E402
+from sgv.voice import compare_reading, hard_errors, install_placeholder  # noqa: E402
 
 fails = []
 def expect(name, ok, detail=""):
@@ -110,6 +110,9 @@ write_json(e.build / "vo" / "reading.json", {"report": [{"id": "p01", "ratio": 0
 expect("a misheard tone stays a warning", not fired(qa.run_all(e, tl), "voice.dropped"))
 write_json(e.build / "vo" / "pace.json", {"chars_per_second": 4.29, "seconds": 254.1})
 expect("stops voice.pace", fired(qa.run_all(e, tl), "voice.pace"))
+swallowed = [{"id": "p15", "ratio": 0.98, "issues": [{"expected": "yi1", "heard": ""}]}]
+clean = [{"id": "p15", "ratio": 0.97, "issues": [{"expected": "cen2 shen1", "heard": "ceng2 can1"}]}]
+expect("take choice counts swallowed syllables", hard_errors(swallowed) == 1 and hard_errors(clean) == 0)
 
 a, issues = compare_reading("大衩", "大差")
 wrong, none = compare_reading("丑角", "愁角")
@@ -118,6 +121,11 @@ same, none = compare_reading("是", "事")
 expect("reading check accepts exact homophones", same == 1.0, same)
 sandhi, issues = compare_reading("底鼓踩了将近一分钟", "低谷踩了将近一分钟")
 expect("reading check allows third-tone sandhi heard as first tone", sandhi == 1.0 and not issues, issues)
+r1, i1 = compare_reading("这一下不是音效", "这下不是音效")
+r2, i2 = compare_reading("去掉中国乐器那一层", "去掉中国乐器内层")
+expect("reading check accepts 这一/那一 run together", not i1 and not i2, (i1, i2))
+r3, i3 = compare_reading("庞镇第一战", "庞镇第战")
+expect("reading check still catches a dropped 一 elsewhere", bool(i3), i3)
 missing, issues = compare_reading("底鼓踩了", "踩了")
 expect("reading check still catches a dropped word", missing < 1.0 and issues, issues)
 

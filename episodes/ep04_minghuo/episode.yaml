@@ -1,9 +1,9 @@
 id: ep04_minghuo
 title: 冥火流星
 folder: 冥火流星            # Jee's folder under Documents/SoundsGood; finished files go to <folder>/成片
-speech: {speed: 1.3, est_cps: 4.65}   # Jee, v4: 1.2x (4.3 字/秒) felt slow
-target_seconds: 285
-target_tolerance: 0.05     # Jee: keep it under five minutes
+speech: {target_cps: 4.85, est_cps: 4.85, seeds: [7, 19, 23, 41]}   # Jee, v4: 4.3 字/秒 felt slow; each take is sped up to 4.85
+target_seconds: 270
+target_tolerance: 0.1      # Jee: keep it under five minutes (243–297 s)
 owners:
   - 游戏画面与音乐版权归 S-GAME 所有
 
@@ -12,7 +12,7 @@ lexicon:
     "126": 一百二十六
     "132": 一百三十二
     中国的 3A: 中国的三A
-    国产的 3A: 国产的三A
+    能叫 3A: 能叫三A
     岑参: 岑深
   listen: [冥火, 胡琴, 鬼差, 岑参, 饮归客, 羌笛]
   latin_ok: [G]
@@ -221,7 +221,7 @@ sections:
 
   - id: s07
     chapter: 胡琴接住
-    align: {src: A, time: 270.672, before: 2.9}   # "可砸回来" lands on the slam after the breakdown
+    align: {src: A, time: 270.672, before: 2.1}   # "可砸回来" lands on the slam after the breakdown (measured on the v5 take)
     paras:
       - {id: p21, claim: ear, confirmed_by: q12, text: 按常理，情绪该落下来了。可砸回来的这一下，胡琴进来，把情绪稳稳接住；带着滑音和揉弦的旋律，第一次站到了最前面。,
          en: ["By rights, the tension should drop here.", "But when it slams back, the huqin comes in and catches it; a melody full of slides and vibrato steps to the front for the first time."]}
@@ -266,8 +266,8 @@ sections:
          en: ["A thousand years on, it has become the Chinese bones, standing in one fight with Detroit's kick and Europe's breakdown.", "That's what wuxia-punk means to me: different sounds side by side, none drowning out the others.", "East and West were never a choice of one; music has no borders."]}
       - {id: p31, claim: opinion, text: 更难得的是，它还在讲故事：被操纵的人，配上机器的节奏；替人讨债的人，由胡琴开口。,
          en: ["Rarer still, it tells the story: the man on strings gets the machine's rhythm, and the one settling the debt speaks through the huqin."]}
-      - {id: p32, claim: opinion, text: 国产的 3A 游戏还屈指可数，一首 Boss 曲也代表不了全部。但《冥火流星》说明了一件事：中国的 3A 游戏，已经有能力用一首足够强的音乐，撑起一段叙事。,
-         en: ["Chinese AAA games are still few, and one boss theme can't speak for all of them.", "But Nether Flame Meteor shows one thing: Chinese AAA games can now hold up a story with music strong enough to carry it."]}
+      - {id: p32, claim: opinion, text: 国内能叫 3A 的游戏还屈指可数，一首 Boss 曲也代表不了全部。但《冥火流星》说明了一件事：中国的 3A 游戏，已经有能力用一首足够强的音乐，撑起一段叙事。,
+         en: ["Games from China that can be called AAA are still few, and one boss theme can't speak for all of them.", "But Nether Flame Meteor shows one thing: Chinese AAA games can now hold up a story with music strong enough to carry it."]}
       - {id: p33, text: 更多游戏声音拆解，关注 SoundsGood。, en: ["More game audio breakdowns: follow SoundsGood."]}
     music:
       - {src: A, in: 365.215, at: start}   # the second huqin pass under the poem
