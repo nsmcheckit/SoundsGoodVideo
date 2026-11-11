@@ -118,6 +118,13 @@ expect("dub graphics take their overrides", en.sections[0]["gfx"][0]["params"]["
 expect("dub keeps the Chinese edit", tl_en["total"] == tl["total"] and [g["t"] for g in tl_en["gfx"]] == [g["t"] for g in tl["gfx"]])
 expect("dub fits its slots", not any(x["rule"] == "dub.overflow" for x in tl_en["errors"]), tl_en["errors"])
 expect("dub needs its own script approval", e.approved("script") and not en.approved("script"))
+from sgv import subs  # noqa: E402
+for o in ("h", "v"):
+    # ep04 English cut: a truncated Format line made libass drop the style, so subtitles sat tiny in the corner.
+    lines = subs.write(en, tl_en, o).read_text(encoding="utf-8").splitlines()
+    fmt = next(x for x in lines if x.startswith("Format: Name")).split(":", 1)[1].split(",")
+    sty = next(x for x in lines if x.startswith("Style:")).split(":", 1)[1].split(",")
+    expect(f"dub subtitle style matches its format ({o})", len(fmt) == len(sty), (len(fmt), len(sty)))
 _, _, _, tl_en = dub_case(lambda m: para(m, "p01").update(en=["This translation keeps going " * 12 + "far past its slot."]), "dub")
 expect("stops dub.overflow", any(x["rule"] == "dub.overflow" for x in tl_en["errors"]))
 
