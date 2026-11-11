@@ -185,7 +185,7 @@ sections:
 
   - id: s06b
     chapter: 一针比一针高
-    align: {src: A, time: 222.0}   # first line lands on the second stab
+    align: {src: A, time: 222.3}   # first line lands just after the second stab (222.05)
     paras:
       - {id: p19, claim: measured, text: 接着，一个很亮、很尖的合成器音色钻了进来：每一小节扎一下，一下比一下高，连着八下。,
          en: ["Then a bright, sharp synth sound cuts in: one stab every bar, each higher than the last, eight in a row."]}
@@ -200,7 +200,7 @@ sections:
     video:
       - {src: A01, follow: A, at: start}
     gfx:
-      - {type: needles, at: p19-2.1, until: p19+13.0, full: true, params: {title: 一针比一针高, kicker: 8 BARS · 实测, note: 每小节扎一下, foot: 连着八下,
+      - {type: needles, at: p19-2.4, until: p19+12.7, full: true, params: {title: 一针比一针高, kicker: 8 BARS · 实测, note: 每小节扎一下, foot: 连着八下,
          values: [0, 2, 3, 5, 6, 7, 8, 10], bar: 1.818, lead: 0.4}}   # starting pitch of each stab in semitones, measured C#6 → B6
 
   - id: s06c
