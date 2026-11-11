@@ -128,5 +128,16 @@ bbox_case({"lines": ["压字幕"], "size": 80, "y": 950}, "layout.subtitle_clash
 bbox_case({"lines": ["太靠上"], "size": 80, "y": 120}, "layout.safe_zone", "v")
 bbox_case({"lines": ["这一行字非常非常非常非常非常非常非常长这一行字非常非常非常非常长"], "size": 120, "y": 400}, "layout.offscreen", "h")
 
+# ep04 portrait subtitles broke "Tech|no" across two lines; wrapping must never cut inside a Latin word or a number.
+from sgv.subs import chunks, two_lines  # noqa: E402
+import re  # noqa: E402
+for zh in ["Trance 是 Techno 传到欧洲后长出来的一支", "速度从 126 提到 132 每一拍都踩着底鼓", "最典型的是 breakdown 把鼓整个抽掉再砸回来"]:
+    out = two_lines(zh)
+    expect(f"subs.word_split v: {zh[:12]}", not re.search(r"[A-Za-z0-9]\\N[A-Za-z0-9]", out), out)
+long = "Trance 是 Techno 传到欧洲后长出来的一支名字的意思是出神它保留了四拍的骨架"
+pieces = chunks(long)
+expect("subs.word_split chunks", all(not (a[-1:].isascii() and a[-1:].isalnum() and b[:1].isascii() and b[:1].isalnum())
+                                     for a, b in zip(pieces, pieces[1:])), str(pieces))
+
 print(f"\n{len(fails)} failed" if fails else "\nall passed")
 sys.exit(1 if fails else 0)

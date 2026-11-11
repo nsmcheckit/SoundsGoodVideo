@@ -17,6 +17,24 @@ def sentences(text):
     return [s for s in re.findall(r".+?(?:[。！？…]+[”’」』]?|$)", text.replace("\n", "")) if s.strip()]
 
 
+def _snap(s, i):
+    """The cut nearest to i that does not fall inside a Latin word or a number ("Tech|no" moves to "Techno|")."""
+    def ok(k):
+        return 0 < k < len(s) and not (s[k - 1].isascii() and s[k - 1].isalnum() and s[k].isascii() and s[k].isalnum())
+    for d in range(len(s)):
+        for k in (i - d, i + d):
+            if ok(k):
+                return k
+    return i
+
+
+def two_lines(zh):
+    """Portrait subtitles: one long line becomes two, at the punctuation nearest the middle, never inside a word."""
+    cuts = [m.end() for m in re.finditer(r"[，、：；]", zh) if 4 < m.end() < len(zh) - 3]
+    cut = min(cuts, key=lambda c: abs(c - len(zh) / 2)) if cuts else _snap(zh, len(zh) // 2)
+    return zh[:cut].rstrip() + r"\N" + zh[cut:].lstrip()
+
+
 def chunks(sentence):
     """Splits a sentence at punctuation until each piece fits on a subtitle line."""
     parts = [p for p in re.findall(r".+?(?:[，、；：。！？…]+[”’」』]?|$)", sentence) if p.strip()]
@@ -32,8 +50,9 @@ def chunks(sentence):
     final = []
     for c in out:
         while len(clean_text(c)) > MAX_ZH + 6:
-            final.append(c[: MAX_ZH])
-            c = c[MAX_ZH:]
+            k = _snap(c, MAX_ZH)
+            final.append(c[:k].rstrip())
+            c = c[k:].lstrip()
         final.append(c)
     return final
 
@@ -108,9 +127,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
     lines = [head]
     for s, e, zh, en in events(ep, tl):
         if orient == "v" and len(zh) > 16:
-            cuts = [m.end() for m in re.finditer(r"[，、：；]", zh) if 4 < m.end() < len(zh) - 3]
-            cut = min(cuts, key=lambda c: abs(c - len(zh) / 2)) if cuts else len(zh) // 2
-            zh = zh[:cut] + r"\N" + zh[cut:]
+            zh = two_lines(zh)
         tail = f"\\N{{\\fnInter\\fs{st['en']}\\b0\\c&HD8D8D8&\\bord1.6}}{en}" if en else ""
         lines.append(f"Dialogue: 0,{fmt(s)},{fmt(e)},Sub,,0,0,0,,{zh}{tail}\n")
     path = ep.build / f"subs_{orient}.ass"
