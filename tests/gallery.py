@@ -17,6 +17,8 @@ SCENES = [
         {"name": "底鼓", "spans": [[0, 20]]}, {"name": "低音", "spans": [[0, 12], [15, 20]]}, {"name": "胡琴", "spans": [[10, 20]], "hot": True}], "marks": [{"t": 10, "text": "胡琴开口"}]}, 12),
     ("steps", {"_full": 1, "title": "四拍底鼓", "kicker": "FOUR ON THE FLOOR", "bpm": 132, "note": "每一拍都踩一下", "rows": [{"name": "底鼓", "hits": [0, 4, 8, 12], "hot": True}, {"name": "踩镲", "hits": [2, 6, 10, 14]}]}, 8),
     ("curve", {"_full": 1, "title": "转阶段的响度", "kicker": "LOUDNESS", "unit": "LUFS", "values": [-24, -23, -22, -20, -18, -16, -13, -11, -40, -42, -6, -7, -8, -7], "marks": [{"at": 0.62, "text": "半秒静音"}, {"at": 0.78, "text": "嗡"}]}, 7),
+    ("needles", {"_full": 1, "title": "一针比一针高", "kicker": "8 BARS · 实测", "note": "每小节扎一下", "foot": "连着八下",
+                 "values": [0, 2, 3, 5, 6, 7, 8, 10], "bar": 1.818, "lead": 0.4}, 16),
     ("number", {"from": 126, "to": 132, "unit": "BPM · 每分钟拍数"}, 4),
     ("loops", {"_full": 1, "title": "同一段循环，一轮比一轮轻", "kicker": "LOOP", "note": "最狠的那一下，只给你一次", "bars": [{"label": "第一轮", "v": 0.95, "value": "-9"}, {"label": "第二轮", "v": 0.6, "value": "-17"}, {"label": "第三轮", "v": 0.58, "value": "-17"}]}, 8),
     ("roles", {"_full": 1, "title": "三种声音，三个人", "kicker": "THREE VOICES", "rows": [{"name": "锣鼓与唢呐", "desc": "舞狮尊主烈焰，传统", "seal": "狮"}, {"name": "合成器与 808", "desc": "梦差，机关术的力量", "seal": "差"}, {"name": "电吉他", "desc": "魂，新锐而叛逆", "seal": "魂"}]}, 8),

@@ -125,6 +125,22 @@ SC.curve=(t,D,P)=>{if(P._full)bg();const A=fadeio(t,D);const y0=V?420:140;headin
     ln(px,py-14,px,py-70,{a:A*q,color:C.red,w:2});box(px-6,py-6,12,12,{fill:C.red,stroke:null,a:A*q});txt(k.text,px,py-84,{size:V?30:32,f:SERIF,w:700,color:C.cream,align:'center',a:A*q,shadow:10});});
   if(P.unit)txt(P.unit,x1,bot+40,{size:24,f:LAT,w:500,color:C.gold,align:'right',a:A});};
 
+// ep04 one-off: one needle per bar, each stabbing in on its downbeat and landing higher than the last.
+SC.needles=(t,D,P)=>{if(P._full)bg();const A=fadeio(t,D);const y0=V?420:140;heading(P,t,y0);
+  const d=P.values,n=d.length,bar=P.bar||1.818,lead=P.lead||0,mar=V?80:260,x0=mar,x1=W-mar,bot=V?1240:H-250,top=y0+(V?190:150);
+  const lo=Math.min(...d),hi=Math.max(...d),floor=V?150:110;const yp=v=>bot-floor-(v-lo)/(hi-lo+1e-6)*(bot-top-floor);const xp=i=>x0+(i+.5)*(x1-x0)/n;
+  ln(x0,bot,x1,bot,{a:A*.5});const last=lead+(n-1)*bar;
+  if(P.note)txt(P.note,W/2,y0+(V?90:76),{size:V?34:36,f:SERIF,w:700,color:C.cream,align:'center',a:A*O(seg(t,.3,.9))});
+  let prev=null;
+  d.forEach((v,i)=>{const on=lead+i*bar,x=xp(i),yt=yp(v),hw=V?5:6;
+    if(t<on){ln(x,bot,x,bot-16,{a:A*.35,w:2});return;}
+    const p=O(seg(t,on,on+.12)),y=bot+(yt-bot)*p,fresh=1-O(seg(t,on+.08,on+.7));SIG.push('nd',i,rnd(y),rnd(fresh));
+    X.save();X.beginPath();X.moveTo(x-hw,bot);X.lineTo(x+hw,bot);X.lineTo(x,y);X.closePath();X.globalAlpha=A;X.fillStyle=C.gold;X.fill();
+    if(fresh>.01){X.globalAlpha=A*fresh;X.fillStyle=C.red;X.fill();}X.restore();
+    box(x-6,y-6,12,12,{fill:C.cream,stroke:null,a:A*(.45+.55*fresh),r:6});
+    if(prev)ln(prev[0],prev[1],x,y,{color:C.goldL,w:1.5,a:A*.5*p,dash:[6,8]});prev=[x,y];});
+  if(P.foot)txt(P.foot,W/2,bot+50,{size:30,f:SERIF,w:700,color:C.goldL,align:'center',a:A*O(seg(t,last+.3,last+.9))});};
+
 SC.number=(t,D,P)=>{if(P._full)bg();const A=fadeio(t,D);const y=V?470:H*.3;const p=IO(seg(t,.3,1.1));const v=P.from+(P.to-P.from)*p;const size=V?150:180;
   box(W/2-(V?360:440),y-size-40,V?720:880,size+130,{fill:'rgba(7,6,5,.72)',stroke:null,a:A});corners(W/2-(V?360:440),y-size-40,V?720:880,size+130,{a:A,p:O(seg(t,0,.5))});
   txt(v.toFixed(P.digits||0),W/2,y,{size,f:LAT,w:800,color:C.goldL,align:'center',a:A});txt(P.unit||'',W/2,y+58,{size:V?34:36,f:SERIF,w:700,color:C.cream,align:'center',sp:4,a:A});};
