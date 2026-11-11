@@ -116,7 +116,7 @@ SC.steps=(t,D,P)=>{if(P._full)bg();const A=fadeio(t,D);const y0=V?(P._full?620:4
   if(P.note)txt(P.note,W/2,top+rows.length*(rh+60)+(V?30:40),{size:V?36:40,f:SERIF,w:700,color:C.goldL,align:'center',a:A*O(seg(t,1,1.5))});};
 
 SC.curve=(t,D,P)=>{if(P._full)bg();const A=fadeio(t,D);const y0=V?420:140;heading(P,t,y0);
-  const mar=V?60:170,x0=mar,x1=W-mar,top=y0+(V?90:70),bot=V?top+720:H-170;const d=P.values;const lo=P.min!=null?P.min:Math.min(...d),hi=P.max!=null?P.max:Math.max(...d);
+  const mar=V?60:170,x0=mar,x1=W-mar,top=y0+(V?90:70),bot=V?top+720:H-230;const d=P.values;const lo=P.min!=null?P.min:Math.min(...d),hi=P.max!=null?P.max:Math.max(...d);
   const xp=i=>x0+i/(d.length-1)*(x1-x0),yp=v=>bot-(v-lo)/(hi-lo+1e-6)*(bot-top);
   ln(x0,bot,x1,bot,{a:A*.5});for(let g=0;g<=4;g++){const y=top+g*(bot-top)/4;ln(x0,y,x1,y,{color:'rgba(217,180,108,.14)',w:1,a:A});}
   const p=IO(seg(t,.3,D-.8));const m=p*(d.length-1);SIG.push('cv',rnd(m));X.save();X.globalAlpha=A;X.strokeStyle=C.goldL;X.lineWidth=3;X.lineJoin='round';X.beginPath();
