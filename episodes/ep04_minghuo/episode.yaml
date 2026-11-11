@@ -278,11 +278,9 @@ sections:
       - {type: end, at: p33, until: end, full: true, params: {owners: [游戏画面与音乐版权归 S-GAME 所有]}}
 
 cover:
-  images: [assets/cover_nightcity.png, assets/cover_pangtown.png]   # 夜之城 | 庞镇: the opening experiment, frames at B01 2.0 s and A01 203.0 s
+  images: [assets/cover_fire_meteor.png]   # Jee, v5: one close-up, no cyberpunk. A01 183.10 s (no subtitles), 1.25x push-in, graded
   fx: 0.5
-  fy: 0.45
-  fx2: 0.45
-  fy2: 0.4
+  fy: 0.3
   seal: 胡
   zh: {title: 冥火流星, sub: Techno × 胡琴, kicker: BOSS 战音乐拆解, game: 影之刃零 · 火流星}
   en: {title: FIRE METEOR, sub: TECHNO × HUQIN, kicker: BOSS THEME BREAKDOWN, game: PHANTOM BLADE ZERO, seal: ""}   # the long Latin title runs into the seal on 3:4
