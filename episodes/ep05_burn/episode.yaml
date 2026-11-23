@@ -13,14 +13,15 @@ lexicon:
     GTA6: GTA 六
     《BURN》: 《Burn》
     三分贝: 三分贝
+    '808': 八零八
   listen: [Lucia, Jason, Home Sweet Home, Rob Nelson, Rockstar North, Travis Scott]
-  latin_ok: [GTA, Travis, Scott, Burn, BURN, Lucia, Jason, Rockstar, North, Rob, Nelson, Home, Sweet, SoundsGood]
+  latin_ok: [GTA, Travis, Scott, Burn, BURN, Lucia, Jason, Rockstar, North, Rob, Nelson, Home, Sweet, SoundsGood, auto-tune, trap, hi-hat]
 
 sources:
   music:
     A: {path: assets/A01_game.mp4, label: 实机录像原声, hard_boundaries: [7.15, 334.3]}   # 7.15 频道片头结束；334.3 逃出后换成另一段音乐
   video:
-    A01: {path: assets/A01_game.mp4, license: pending, note: "第三方实录（YouTube 频道 Agent Tyler Gaming），用不用、怎么署名由 Jee 决定"}
+    A01: {path: assets/A01_game.mp4, license: jee-confirmed, note: "第三方实录（YouTube 频道 Agent Tyler Gaming），用不用、怎么署名由 Jee 决定"}
 
 structure:
   source: A
@@ -49,12 +50,10 @@ sections:
     pre: 1.0
     post: 0.8
     paras:
-      - {id: p01, claim: opinion, text: 《GTA6》发售三天，评论区里刷屏的不是哪辆车、哪把枪，是一首歌。,
-         en: ["Three days after GTA 6 launched, what's flooding the comments isn't a car or a gun. It's a song."]}
-      - {id: p02, claim: official, text: Travis Scott 的《BURN》。专辑里没有，电台里也没有，整个游戏只在一个任务里能听到。,
-         en: ["Travis Scott's BURN.", "It's not on the album or the radio; you only hear it in one mission."]}
-      - {id: p03, claim: quote, text: 点赞最多的一条评论只有一句：整个任务，就是一部电影。,
-         en: ["The top comment is a single line: this whole mission was a movie."]}
+      - {id: p01, claim: opinion, text: 《GTA6》发售三天，这首 Travis Scott 的歌，专辑里没有，电台里也没有，整个游戏只在一个任务里能听到。,
+         en: ["Three days after GTA 6 launched, this Travis Scott song isn't on any album or station; you only hear it in one mission."]}
+      - {id: p03, claim: quote, text: 点赞最多的一条评论：整个任务，就是一部电影。,
+         en: ["The top comment: this whole mission was a movie."]}
     music:
       - {src: A, in: 142.5, at: start, free: true, reuse: 开场用第二遍副歌配评论墙，后面讲声音时用的是第一遍}
     video:
@@ -97,7 +96,7 @@ sections:
     pre: 0.3
     post: 5.5          # 让第一遍副歌出来
     paras:
-      - {id: p09, claim: ear, text: 在我听来，他最适合这里的是声音：厚厚的自动调音，加上很大的混响，人声像是隔着烟飘过来的，字听不太清，情绪先到了。,
+      - {id: p09, claim: ear, text: 在我听来，他最适合这里的是声音：厚厚的 auto-tune，加上很大的混响，人声像是隔着烟飘过来的，字听不太清，情绪先到了。,
          en: ["To my ear, what fits here is his voice: thick Auto-Tune and a huge reverb, as if it's drifting through smoke; you can't quite catch the words, but the feeling lands first."]}
       - {id: p10, claim: official, text: Lucia 这时候刚受了伤，眼前发花，满耳朵是火声和警笛。,
          en: ["Lucia has just been hurt; her vision swims, and all she can hear is fire and sirens."]}
@@ -111,7 +110,9 @@ sections:
     pre: 0.2
     paras:
       - {id: p11, claim: opinion, text: 副歌翻来覆去就一个词：Burn。房子真的在烧，可这首歌一点也不慌，像一个失去了一切的人，反倒不怕了。,
-         en: ["The chorus says one thing, over and over: burn it down.", "The house really is burning, yet the song doesn't panic at all; it sounds like someone with nothing left, and so nothing left to fear."]}
+         en: ["The chorus keeps coming back to one word: Burn.", "The house really is burning, yet the song doesn't panic at all; it sounds like someone who has lost everything, and so has nothing left to fear."]}
+      - {id: p12, claim: ear, text: 在我听来，它是 trap 的底子，却把 trap 的鼓拿掉了。前大半首听不到密密的 hi-hat，只剩又沉又长的 808 在底下走，上面铺一层迷幻的合成器。只有低音在压、没有鼓在催，像极了警匪片里的暗藏玄机。,
+         en: ["To my ear, it's built on trap, with the trap drums taken out.", "For most of the song there are no rapid hi-hats, just a deep, long 808 underneath and a layer of hazy synths on top.", "Only the bass pressing, no drums pushing, like the hidden tension in a crime thriller."]}
       - {id: p13, claim: opinion, text: 潜行本来是最安静的玩法。这首歌一进来，你趴在草丛里，心跳却跟着低音一下一下往上顶。,
          en: ["Stealth is usually the quietest way to play.", "With this song on, you're lying in the bushes while your heartbeat climbs with the bass."]}
     music:
@@ -160,7 +161,7 @@ sections:
       - {id: p17, claim: opinion, text: 每个人逃的路线都不一样，记住的却是同一首歌。,
          en: ["Everyone escapes a different way, but they all remember the same song."]}
       - {id: p18, claim: opinion, text: 这就是 GTA6 中的音频电影化叙事：让一首歌，替主角把话说出来。,
-         en: ["GTA has been learning from film for years; here it learned the hardest trick: letting a song speak for the protagonist."]}
+         en: ["This is cinematic storytelling through audio in GTA 6: letting a song speak for the protagonist."]}
       - {id: p19, claim: opinion, text: 可惜这首歌到现在还没正式发行，想听，只能回游戏里再逃一遍。,
          en: ["Too bad it still hasn't been released; to hear it, you'll have to escape all over again."]}
       - {id: p20, text: 更多游戏声音拆解，关注 SoundsGood。, en: ["More game audio breakdowns: follow SoundsGood."]}
@@ -171,3 +172,66 @@ sections:
     gfx:
       - {type: big, at: p17, dur: 4.6, params: {lines: [路线不一样 ｜ 记住的是同一首歌], size: 58, script: 'different roads, same song', stickers: [{image: assets/stickers/police.png, side: left, scale: .72, caption: no way home}, {image: assets/stickers/bike.png, side: right, scale: .6, caption: ride it out}]}}   # photo stickers cut from A01 at 73 s and 290 s, no characters
       - {type: end, at: p20, until: end, full: true, params: {owners: [游戏画面与音乐版权归 Rockstar Games 及相关权利人所有]}}
+
+cover:
+  images: [assets/cover_searchlight.png]   # A01 3:16 helicopter searchlight over the yards, right side only (no character, no HUD), 1.6x, graded
+  fx: 0.55
+  fy: 0.35
+  zh: {title: [一首歌道尽 GTA6, 的音频电影化叙事], sub: Travis Scott, kicker: 游戏音乐拆解, game: GTA6 · 第一章 Home Sweet Home}   # Jee 11-22: title wording
+  en: {title: [ONE SONG CARRIES, GTA 6'S CINEMATIC SOUND], sub: Travis Scott, kicker: GAME MUSIC BREAKDOWN, game: GTA 6 · CHAPTER ONE · HOME SWEET HOME}
+
+publish:
+  B站:
+    titles:
+      - GTA6 最被夸的不是车也不是枪，是一首没发行的歌
+      - 让一首歌替主角说话：GTA6《BURN》为什么让人起鸡皮疙瘩
+      - 家在烧，歌在唱：GTA6 第一章结尾的《BURN》
+    body: |
+      《GTA6》第一章结尾的任务 Home Sweet Home，Lucia 的家烧起来了，Travis Scott 的《BURN》跟着她一路逃。这期拆这首歌：为什么是 Travis Scott，那层隔着烟的人声，trap 底子却拿掉了鼓，以及它怎么一直跟着玩家走。
+
+      章节
+      {chapters}
+
+      “在我听来”的部分是个人听感；Rob Nelson 原话出自其采访（IT之家转述），《堡垒之夜》演唱会人数来自 ESPN 报道。
+      实机录像：YouTube 频道 Agent Tyler Gaming。
+      {owners}
+    tags: [GTA6, 侠盗猎车手6, Travis Scott, BURN, 游戏音乐, 游戏配乐, 电影化叙事, Home Sweet Home, SoundsGood]
+  抖音:
+    titles:
+      - GTA6 最被夸的，是一首没发行的歌
+      - 家在烧，歌在唱：GTA6 第一章结尾
+      - 让一首歌替主角说话，这就是 GTA6
+    body: |
+      GTA6 第一章结尾，Travis Scott 的《BURN》为什么这么贴？
+      {owners}
+    tags: ["#GTA6", "#TravisScott", "#游戏音乐", "#游戏配乐", "#SoundsGood"]
+  小红书:
+    titles:
+      - GTA6 最被夸的不是车，是一首歌
+      - 家在烧，歌在唱｜GTA6《BURN》音乐拆解
+      - 让一首歌替主角说话：GTA6 的音频电影化叙事
+    body: |
+      GTA6 第一章结尾，Lucia 的家着火了，门外全是警察。Travis Scott 的《BURN》一直跟着她逃：隔着烟的人声，只剩 808 在压的低音，来电时往后让一步，被发现时又压上来一层鼓。这就是游戏音乐的叙事。
+      {owners}
+    tags: [GTA6, TravisScott, 游戏音乐, 游戏配乐, 音频设计, 电影化叙事]
+  YouTube:
+    titles:
+      - "The Most Praised Thing in GTA 6 Is an Unreleased Song | BURN Breakdown"
+      - "How Travis Scott's BURN Speaks for Lucia | GTA 6 Music Breakdown"
+      - "The House Burns, the Song Plays: GTA 6 Chapter One's Ending"
+    body: |
+      GTA 6, chapter one, Home Sweet Home. Lucia's home is on fire and the police are outside; Travis Scott's BURN follows her the whole way. Why Travis Scott, the voice that drifts through smoke, a trap bed with the drums taken out, and a song that stays with the player.
+
+      Chapters
+      {chapters}
+
+      "To my ear" parts are personal listening. Gameplay recording: Agent Tyler Gaming on YouTube.
+      Game footage and music © Rockstar Games and the respective rights holders.
+    tags: [GTA 6, GTA VI, Travis Scott, BURN, game music, soundtrack, Home Sweet Home, Rockstar, SoundsGood]
+
+pinned_comment: |
+  几个可能有争议的点，先说明：
+  1. “整个游戏只在一个任务里能听到”来自攻略站和媒体的整理，R 星没有官方说明；如果你在别处听到过，欢迎补充。
+  2. “trap 的底子、拿掉了鼓”是我的听感：前大半首测不到规律的 hi-hat，低频一直是 808 在走，4:45 前后才叠进另一层鼓。
+  3. “最懂游戏的说唱歌手”是个人观点，依据是他在《堡垒之夜》的演唱会（ESPN 报道约 1230 万人同时在线）。
+

@@ -167,14 +167,14 @@ function ccard(c,i,x,y,w,o){const{a=1,k=1,hero=false}=o;const m=V&&!hero?1.32:1;
   X.restore();return h;}
 SC.comments=(t,D,P)=>{const A=fadeio(t,D,.4,.4);const CARD=TH==='gta'?gcard:ccard;if(TH==='gta')gdim(A,.6);else box(0,0,W,H,{fill:'rgba(7,6,5,.58)',stroke:null,a:A});
   const L=P.comments||[],n=L.length,step=P.step||.42,t0=P.t0||.35;
-  if(V){const cw=W-120,wt=430,wb=1560,gap=18;const hs=L.map((c,i)=>CARD(c,i,0,0,cw,{a:0}));const Y=[];let acc=0;hs.forEach(h=>{Y.push(acc);acc+=h+gap;});
+  if(V){const cw=W-120,wt=430,wb=1290,gap=18;const hs=L.map((c,i)=>CARD(c,i,0,0,cw,{a:0}));const Y=[];let acc=0;hs.forEach(h=>{Y.push(acc);acc+=h+gap;});
     const tgt=j=>Math.max(0,Y[j]+hs[j]-(wb-wt));let sc=0;
     for(let j=0;j<n;j++){const ts=t0+j*step;if(t<ts)break;const q=IO(seg(t,ts,ts+.35));sc=(j?tgt(j-1):0)+(tgt(j)-(j?tgt(j-1):0))*q;}
-    L.forEach((c,i)=>{const ts=t0+i*step;if(t<ts)return;const q=seg(t,ts,ts+.35);const y=wt+Y[i]-sc;const fadeTop=cl((y+hs[i]-wt)/140);
+    L.forEach((c,i)=>{const ts=t0+i*step;if(t<ts)return;const q=seg(t,ts,ts+.35);const y=wt+Y[i]-sc;const fadeTop=cl((y-(wt-140))/140);if(y+hs[i]>wb+4||fadeTop<=0)return;
       c.rot=0;CARD(c,i,60+(1-O(q))*40,y,cw,{a:A*O(q)*fadeTop*(c.big?1:.92),k:TH==='gta'?DROP(seg(t,ts,ts+.3)):1});});}
-  else{const cw=430,cols=[50,520,990,1460],top=200,bottom=905;const nc=cols.length,rows=Math.ceil(n/nc);
+  else{const cw=430,cols=[50,520,990,1460],top=200,bottom=TH==='gta'?850:905;const nc=cols.length,rows=Math.ceil(n/nc);
     L.forEach((c,j)=>{const i=j;const ts=t0+j*step;if(t<ts)return;const q=seg(t,ts,ts+.38);const col=[0,2,1,3][j%4];const row=Math.floor(j/nc);
-      const jx=(rr(i+1)-.5)*40,jy=(rr(i+7)-.5)*40;const x=cols[col]+jx,y0=top+(rows>1?row/(rows-1):0)*(bottom-top-190)+jy;const y=y0+(1-O(q))*60-(t-ts)*4;
+      const jx=(rr(i+1)-.5)*40,jy=(rr(i+7)-.5)*40;const x=cols[col]+jx,y0=top+(rows>1?row/(rows-1):0)*(bottom-top-190)+jy;const y=y0+(TH==='gta'?0:(1-O(q))*60)-(t-ts)*4;
       c.rot=(rr(i+3)-.5)*(TH==='gta'?7:4);CARD(c,i,x,y,cw,{a:A*O(q)*(c.big?1:.9),k:TH==='gta'?DROP(seg(t,ts,ts+.3)):BK(q)});});}
   if(P.stats&&TH==='gta'){gstats(P.stats,t,A);}
   else if(P.stats){const s=P.stats,y=V?300:96;const q=O(seg(t,.6,1.2));const p=IO(seg(t,.8,2.6));
@@ -319,7 +319,7 @@ function ghero(t,D,P){const A=fadeio(t,D,.35,.4);gdim(A,.7);const q=seg(t,0,.32)
 
 const GX={};
 GX.wm=()=>{const y=V?290:70;const x=W-(V?56:64);txt('SOUNDS GOOD',x,y,{size:26,f:DISP,w:400,color:G.white,align:'right',sp:3,a:.92,shadow:8});};
-GX.tag=(t,D,P)=>{const A=fadeio(t,D);const x=V?56:70,y=V?330:130;
+GX.tag=(t,D,P)=>{const A=fadeio(t,D);const x=V?56:70,y=V?352:130;
   const en=(P.en||'').toLowerCase().replace(/\b\w/g,m=>m.toUpperCase());
   const q=seg(t,.05,.3);ttl(P.text,x,y+(1-O(q))*-14,{size:V?46:44,a:A*O(q)});
   if(en)hand(en,x-4,y-(V?54:52),{size:V?44:42,a:A,p:seg(t,.2,.6)});
@@ -338,9 +338,9 @@ GX.big=(t,D,P)=>{if(P._full)bg();const A=fadeio(t,D,.25,.3);const parts=[];(P.li
   const bandH=parts.length*lh+size*.9;const by=cy-bandH/2;const wq=IO(seg(t,0,.35));
   X.save();X.globalAlpha=A*.9;X.beginPath();X.rect(0,by,W*wq,bandH);X.clip();X.fillStyle='rgba(8,8,9,.78)';X.fillRect(0,by,W,bandH);X.globalAlpha=A*.55;tex('black',0,by,W,bandH);X.restore();
   ln(0,by,W*wq,by,{color:G.white,w:2*S,a:A*.9});ln(W*(1-wq),by+bandH,W,by+bandH,{color:G.white,w:2*S,a:A*.9});
-  const sts=P.stickers||[];const sh=V?560:520;
+  const sts=P.stickers||[];const sh=V?460:520;
   sts.forEach((s,i)=>{const left=(s.side||(i%2?'right':'left'))==='left';const d=.3+.15*i;const q=seg(t,d,d+.3);
-    const sx=left?(V?210:250):(V?W-210:W-250),sy=V?by+bandH+sh*.5+70:cy+30*S;sticker(s.image,sx+(left?-1:1)*(1-O(q))*120,sy,sh*(s.scale||1),{a:A*O(q),rot:(left?-1:1)*.05,k:DROP(q),label:s.label,caption:s.caption,cp:seg(t,d+.4,d+1)});});
+    const sx=left?(V?225:275):(V?W-235:W-300),sy=V?by+bandH+sh*.5+70:cy+30*S;sticker(s.image,sx+(left?-1:1)*(1-O(q))*(V?12:40),sy,sh*(s.scale||1),{a:A*O(q),rot:(left?-1:1)*.05,k:DROP(q),label:s.label,caption:s.caption,cp:seg(t,d+.4,d+1)});});
   parts.forEach((s,i)=>{const d=.15+(P.step||.4)*i;const q=seg(t,d,d+.28);const y=by+size*.45+(i+.72)*lh-lh*.08;
     rot(W/2,y-size*.4,0,DROP(q),()=>ttl(s,W/2,y,{size,align:'center',color:G.white,a:A*O(q)}));});
   if(P.script)hand(P.script,W/2+(V?60:30),by+bandH-size*.12,{size:(V?52:60),align:'center',a:A,rot:-.07,p:seg(t,.9,1.6)});};
@@ -348,9 +348,24 @@ GX.end=(t,D,P)=>{bg();const A=fadeio(t,D,.6,.6);const m=V?40:56;frame(m,m,W-2*m,
   const cy=V?H*.4:H*.42;const q=seg(t,.2,.5);
   rot(W/2,cy,0,DROP(q),()=>ttl('SOUNDS GOOD',W/2,cy+(V?50:60),{size:V?150:210,f:DISP,w:400,align:'center',sp:V?2:4,a:A*O(q)}));
   hand('game audio, decoded',W/2+(V?40:110),cy-(V?95:125),{size:V?64:76,align:'center',a:A,rot:-.08,p:seg(t,.5,1.2)});
-  const ph=V?250:230,py=H-m-ph+12*S;X.save();X.beginPath();X.rect(m,m,W-2*m,H-2*m);X.clip();paper(m-30,py,W-2*m+60,ph+60,{a:A*O(seg(t,.6,1)),torn:true,seed:9});X.restore();
+  const ph=V?250:230,py=V?1640-ph:H-m-ph-6;paper(m+3,py,W-2*m-6,ph,{a:A*O(seg(t,.6,1)),torn:true,seed:9});
   txt(P.line||'更多游戏声音拆解，关注 SoundsGood',W/2,py+(V?100:90),{size:V?40:42,w:900,color:G.ink,align:'center',a:A*O(seg(t,.8,1.3))});
   (P.owners||[]).forEach((s,i)=>txt(s,W/2,py+(V?160:150)+i*30,{size:V?20:22,w:500,color:'#5A5466',align:'center',a:A*O(seg(t,1,1.5))}));};
+
+// Cover in the deck style: graded still, thin white frame, kicker in yellow, title in white with the purple line, a handwritten line across it.
+GX.cover=(t,D,P)=>{X.fillStyle=G.black;X.fillRect(0,0,W,H);const land=W>H;const u=land?Math.min(W/1920,H/1080):W/1080*1.15;
+  const imgs=P.images||[];if(imgs[0])cover(imgs[0],0,0,W,H,{fx:P.fx??.5,fy:P.fy??.4});
+  const g=X.createLinearGradient(0,0,0,H);g.addColorStop(0,'rgba(5,5,6,.55)');g.addColorStop(.25,'rgba(5,5,6,.05)');g.addColorStop(.5,'rgba(5,5,6,.15)');g.addColorStop(1,'rgba(5,5,6,.92)');X.fillStyle=g;X.fillRect(0,0,W,H);
+  const m=Math.round(Math.min(W,H)*.035);frame(m,m,W-2*m,H-2*m,{lw:Math.max(2,3*u)});
+  const px=m+34*u,py=m+70*u;txt(P.kicker||'',px,py,{size:40*u,w:900,color:G.yellow});if(P.game)txt(P.game,px,py+50*u,{size:28*u,w:700,color:G.white,a:.9});
+  txt('SOUNDS GOOD',W-m-34*u,py,{size:36*u,f:DISP,color:G.white,align:'right',sp:3*u});
+  // Title may be several lines; each line is sized down until the longest fits inside the frame.
+  const lines=Array.isArray(P.title)?P.title:[P.title];const latin=lines.every(l=>/^[\x00-\x7F]+$/.test(l));const tf=latin?DISP:SANS,tw=latin?400:900;
+  const maxW=W-2*m-90*u;let ts=(lines.length>1?(land?150:130):(land?340:300))*u;const widest=Math.max(...lines.map(l=>width(l,{size:ts,f:tf,w:tw,sp:2*u})));if(widest>maxW)ts*=maxW/widest;
+  const lh=ts*1.2;const by=H-m-(land?90:130)*u;const top=by-(lines.length-1)*lh;
+  lines.forEach((l,i)=>ttl(l,W/2,top+i*lh,{size:ts,f:tf,w:tw,align:'center',sp:2*u}));
+  if(P.sub)hand(P.sub,W/2-(land?40:20)*u,top-ts*1.02,{size:(land?82:70)*u,align:'center',rot:-.07});
+  if(P.line)txt(P.line,W/2,by+(land?70:80)*u,{size:(land?40:38)*u,w:900,color:G.white,align:'center',shadow:12});};
 
 const THEMES={ink:{C:C0,SC:{}},gta:{C:{bg:G.black,gold:G.yellow,goldL:G.white,cream:G.white,red:G.purple,ink:G.ink},SC:GX}};
 function setTheme(n){n=n||'ink';if(!THEMES[n])throw new Error('unknown theme '+n);TH=n;Object.assign(C,THEMES[n].C);}
