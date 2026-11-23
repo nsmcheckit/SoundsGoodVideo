@@ -52,9 +52,9 @@ sections:
     post: 0.8
     paras:
       - {id: p01, claim: opinion, text: 《GTA6》发售三天，这首 Travis Scott 的歌，专辑里没有，电台里也没有，整个游戏只在一个任务里能听到。,
-         en: ["Three days after GTA 6 launched, this Travis Scott song isn't on any album or station; you only hear it in one mission."]}
+         en: ["Three days after GTA 6 launched, this Travis Scott song isn't on any album or station; you only hear it in one mission."], en_dub: ["Three days into GTA 6: a Travis Scott song on no album, heard in one mission."]}
       - {id: p03, claim: quote, text: 点赞最多的一条评论：整个任务，就是一部电影。,
-         en: ["The top comment: this whole mission was a movie."]}
+         en: ["The top comment: this whole mission was a movie."], en_dub: ["Top comment: this whole mission was a movie."]}
     music:
       - {src: A, in: 142.5, at: start, free: true, reuse: 开场用第二遍副歌配评论墙，后面讲声音时用的是第一遍}
     video:
@@ -68,7 +68,7 @@ sections:
     pre: 0.8
     paras:
       - {id: p04, claim: official, text: 第一章快结束时，Lucia 回到她和 Jason 的家。房子已经烧起来了，门外全是警察。这个任务，叫 Home Sweet Home。,
-         en: ["Near the end of Chapter One, Lucia goes back to the home she shares with Jason.", "It's already on fire, and police are everywhere.", "The mission is called Home Sweet Home."]}
+         en: ["Near the end of Chapter One, Lucia goes back to the home she shares with Jason.", "It's already on fire, and police are everywhere.", "The mission is called Home Sweet Home."], en_dub: ["Late in Chapter One, Lucia returns to the home she shares with Jason.", "It's burning, police outside.", "The mission: Home Sweet Home."]}
     music:
       - {src: A, in: 45.22, at: start, reuse: 回到逃跑的前半段；开场那段是第二遍副歌。入点让第一遍副歌落在第 04 段说完之后}
     video:
@@ -81,10 +81,10 @@ sections:
     pre: 0.4
     paras:
       - {id: p06, claim: quote, text: Rockstar North 的联合负责人 Rob Nelson 说过，他们做一款新游戏，很多时候是先有一首歌，方向才定下来。,
-         en: ["Rockstar North co-head Rob Nelson has said that for a new game, there's often a song first, and the direction follows."]}
+         en: ["Rockstar North co-head Rob Nelson has said that for a new game, there's often a song first, and the direction follows."], en_dub: ["Rockstar North's Rob Nelson says a new game often starts with a song; the direction follows."]}
       - {id: p07, claim: official, text: 这一段，他们找了 Travis Scott。他在《堡垒之夜》里开过一场演唱会，一千两百多万人同时在线。,
-         en: ["For this stretch, they went to Travis Scott.", "He once played a concert inside Fortnite, with more than twelve million players online at once."]}
-      - {id: p08, claim: opinion, text: 在我看来，他大概是最懂游戏的说唱歌手。, en: ["To me, he may be the rapper who understands games best."]}
+         en: ["For this stretch, they went to Travis Scott.", "He once played a concert inside Fortnite, with more than twelve million players online at once."], en_dub: ["So they called Travis Scott.", "His Fortnite concert drew over twelve million players at once."]}
+      - {id: p08, claim: opinion, text: 在我看来，他大概是最懂游戏的说唱歌手。, en: ["To me, he may be the rapper who understands games best."], en_dub: ["To me, no rapper gets games better."]}
     music:
       - {src: A, at: start}
     video:
@@ -98,9 +98,9 @@ sections:
     post: 5.5          # 让第一遍副歌出来
     paras:
       - {id: p09, claim: ear, text: 在我听来，他最适合这里的是声音：厚厚的 auto-tune，加上很大的混响，人声像是隔着烟飘过来的，字听不太清，情绪先到了。,
-         en: ["To my ear, what fits here is his voice: thick Auto-Tune and a huge reverb, as if it's drifting through smoke; you can't quite catch the words, but the feeling lands first."]}
+         en: ["To my ear, what fits here is his voice: thick Auto-Tune and a huge reverb, as if it's drifting through smoke; you can't quite catch the words, but the feeling lands first."], en_dub: ["To my ear, it's the voice: thick Auto-Tune, huge reverb, drifting like smoke; you miss the words, but the feeling lands first."]}
       - {id: p10, claim: official, text: Lucia 这时候刚受了伤，眼前发花，满耳朵是火声和警笛。,
-         en: ["Lucia has just been hurt; her vision swims, and all she can hear is fire and sirens."]}
+         en: ["Lucia has just been hurt; her vision swims, and all she can hear is fire and sirens."], en_dub: ["Lucia's just been hurt; her vision swims, and she hears only fire and sirens."]}
     music:
       - {src: A, at: start}
     video:
@@ -111,11 +111,11 @@ sections:
     pre: 0.2
     paras:
       - {id: p11, claim: opinion, text: 副歌翻来覆去就一个词：Burn。房子真的在烧，可这首歌一点也不慌，像一个失去了一切的人，反倒不怕了。,
-         en: ["The chorus keeps coming back to one word: Burn.", "The house really is burning, yet the song doesn't panic at all; it sounds like someone who has lost everything, and so has nothing left to fear."]}
+         en: ["The chorus keeps coming back to one word: Burn.", "The house really is burning, yet the song doesn't panic at all; it sounds like someone who has lost everything, and so has nothing left to fear."], en_dub: ["The chorus circles one word: Burn.", "The house is burning, yet the song stays calm, like someone with nothing left to lose."]}
       - {id: p12, claim: ear, text: 在我听来，它是 trap 的底子，却把 trap 的鼓拿掉了。前大半首听不到密密的 hi-hat，只剩又沉又长的 808 在底下走，上面铺一层迷幻的合成器。只有低音在压、没有鼓在催，像极了警匪片里的暗藏玄机。,
-         en: ["To my ear, it's built on trap, with the trap drums taken out.", "For most of the song there are no rapid hi-hats, just a deep, long 808 underneath and a layer of hazy synths on top.", "Only the bass pressing, no drums pushing, like the hidden tension in a crime thriller."]}
+         en: ["To my ear, it's built on trap, with the trap drums taken out.", "For most of the song there are no rapid hi-hats, just a deep, long 808 underneath and a layer of hazy synths on top.", "Only the bass pressing, no drums pushing, like the hidden tension in a crime thriller."], en_dub: ["To my ear, it's trap with the drums pulled out.", "For most of it, no rattling hi-hats, just a long, deep 808 underneath and hazy synths on top.", "Only bass pressing, no drums pushing, like the hidden tension in a crime thriller."]}
       - {id: p13, claim: opinion, text: 潜行本来是最安静的玩法。这首歌一进来，你趴在草丛里，心跳却跟着低音一下一下往上顶。,
-         en: ["Stealth is usually the quietest way to play.", "With this song on, you're lying in the bushes while your heartbeat climbs with the bass."]}
+         en: ["Stealth is usually the quietest way to play.", "With this song on, you're lying in the bushes while your heartbeat climbs with the bass."], en_dub: ["Stealth is the quietest way to play.", "With this on, you're lying in the grass while your heart climbs with the bass."]}
     music:
       - {src: A, at: start}
     video:
@@ -126,7 +126,7 @@ sections:
     pre: 0.4
     paras:
       - {id: p14, claim: ear, confirmed_by: q2, text: 它还一直跟着你。后半段人声退场，伴奏一圈圈地转，你跑多久，它就陪多久。,
-         en: ["And it stays with you.", "Later the vocals drop out and the beat keeps circling; however long you run, it runs with you."]}
+         en: ["And it stays with you.", "Later the vocals drop out and the beat keeps circling; however long you run, it runs with you."], en_dub: ["It stays with you.", "The vocals drop, the beat loops, and it runs as long as you do."]}
     music:
       - {src: A, in: 164.5, at: start}
     video:
@@ -137,7 +137,7 @@ sections:
     post: 7.0          # 让朋友那句 police everywhere... 原样出来，音乐在下面让路
     paras:
       - {id: p15, claim: ear, confirmed_by: q4, text: 朋友打来电话，它往后让了一步。,
-         en: ["When a friend calls, it steps back."]}
+         en: ["When a friend calls, it steps back."], en_dub: ["A friend calls; it steps back."]}
     music:
       - {src: A, in: 182.84, at: start}   # p15 说完（约 185.8）后电话接通（187.3）
     video:
@@ -160,11 +160,11 @@ sections:
     post: 6.0          # 片尾卡下留着警察无线电“车辆已经不见了”
     paras:
       - {id: p17, claim: opinion, text: 每个人逃的路线都不一样，记住的却是同一首歌。,
-         en: ["Everyone escapes a different way, but they all remember the same song."]}
+         en: ["Everyone escapes a different way, but they all remember the same song."], en_dub: ["Everyone runs a different route, but remembers the same song."]}
       - {id: p18, claim: opinion, text: 这就是 GTA6 中的音频电影化叙事：让一首歌，替主角把话说出来。,
-         en: ["This is cinematic storytelling through audio in GTA 6: letting a song speak for the protagonist."]}
+         en: ["This is cinematic storytelling through audio in GTA 6: letting a song speak for the protagonist."], en_dub: ["This is GTA 6's cinematic storytelling in sound: letting a song speak for the protagonist."]}
       - {id: p19, claim: opinion, text: 可惜这首歌到现在还没正式发行，想听，只能回游戏里再逃一遍。,
-         en: ["Too bad it still hasn't been released; to hear it, you'll have to escape all over again."]}
+         en: ["Too bad it still hasn't been released; to hear it, you'll have to escape all over again."], en_dub: ["Sadly it's still unreleased.", "To hear it, you'll have to run it again."]}
       - {id: p20, text: 更多游戏声音拆解，关注 SoundsGood。, en: ["More game audio breakdowns: follow SoundsGood."]}
     music:
       - {src: A, in: 302.0, at: start}
@@ -196,7 +196,7 @@ publish:
       “在我听来”的部分是个人听感；Rob Nelson 原话出自其采访（IT之家转述），《堡垒之夜》演唱会人数来自 ESPN 报道。
       实机录像：YouTube 频道 Agent Tyler Gaming。
       {owners}
-    tags: [GTA6, 侠盗猎车手6, Travis Scott, BURN, 游戏音乐, 游戏配乐, 电影化叙事, Home Sweet Home, SoundsGood]
+    tags: [GTA6, 侠盗猎车手6, Travis Scott, BURN, 游戏音乐, 游戏配乐, 音频设计, 电影化叙事, R星, SoundsGood]   # Jee 11-22; spares: 游戏声音拆解, Home Sweet Home, 说唱
   抖音:
     titles:
       - GTA6 最被夸的，是一首没发行的歌
@@ -214,7 +214,7 @@ publish:
     body: |
       GTA6 第一章结尾，Lucia 的家着火了，门外全是警察。Travis Scott 的《BURN》一直跟着她逃：隔着烟的人声，只剩 808 在压的低音，来电时往后让一步，被发现时又压上来一层鼓。这就是游戏音乐的叙事。
       {owners}
-    tags: [GTA6, TravisScott, 游戏音乐, 游戏配乐, 音频设计, 电影化叙事]
+    tags: [GTA6, 侠盗猎车手6, TravisScott, 游戏音乐, 游戏配乐, 音频设计, 电影化叙事, R星, 游戏音乐分享, 说唱]
   YouTube:
     titles:
       - "The Most Praised Thing in GTA 6 Is an Unreleased Song | BURN Breakdown"
@@ -236,3 +236,57 @@ pinned_comment: |
   2. “trap 的底子、拿掉了鼓”是我的听感：前大半首测不到规律的 hi-hat，低频一直是 808 在走，4:45 前后才叠进另一层鼓。
   3. “最懂游戏的说唱歌手”是个人观点，依据是他在《堡垒之夜》的演唱会（ESPN 报道约 1230 万人同时在线）。
 
+# English cut (Jee 11-22): same edit, English narration, subtitles and graphics
+en_cut:
+  title: BURN_EN
+  lufs: -14
+  owners: [Game footage and music © Rockstar Games and the respective rights holders]
+  ending: 'More game audio breakdowns: follow SoundsGood.'
+  speech:
+    voice: UgBBYS2sOqTuMpoF3BR0
+    speed: 1.0
+    target_cps: null
+    est_wps: 2.85
+    seeds: [7, 19]
+  lexicon:
+    replace: {'808': eight-oh-eight, GTA 6: G T A six}
+    listen: [Lucia, Jason, Travis Scott, Rob Nelson, Rockstar North, Home Sweet Home, Auto-Tune]
+  labels: {过场: Cutscene, 逃出火场: Escape the fire, 两遍副歌: Two choruses, 只剩伴奏: Beat only, 电话: Phone call, 潜行: Stealth, 被发现: Spotted}
+  gfx:
+    s01:
+      0:
+        comments:
+        - {user: '@m•••58', zh: 'The suspense, the fear, the music…', likes: 2.1K, big: true, ago: 2 days ago}
+        - {user: '@p•••05', zh: my whole body was buzzing, likes: '961', big: true, ago: 2 days ago}
+        - {user: '@T•••ac', zh: deserves a raise, likes: '314', big: false, ago: 2 days ago}
+        - {user: '@I•••45', zh: this mission solos any gta 5 heists, likes: '942', big: true, ago: 2 days ago}
+        - {user: '@L•••20', zh: low key sad af, likes: '413', big: false, ago: 2 days ago}
+        - {user: '@o•••58', zh: from a 10/10 to a 20/10, likes: '698', big: true, ago: 2 days ago}
+        - {user: '@c•••rl', zh: such memorable soundtracks, likes: '379', big: false, ago: 2 days ago}
+        - {user: '@a•••82', zh: it was all to make the mission even more dramatic, likes: '323', big: false, ago: 2 days ago}
+        - {user: '@H•••rd', zh: goosebumps on a mission like this, likes: '322', big: false, ago: 2 days ago}
+        - {user: '@c•••21', zh: WHY IS THIS NOT ON SPOTIFY, likes: '144', big: false, ago: 2 days ago}
+        - {user: '@S•••yo', zh: genuinely peak atmosphere, likes: '237', big: false, ago: 2 days ago}
+        - {user: '@D•••bi', zh: I had chills through this entire mission, likes: '174', big: false, ago: 2 days ago}
+        - {user: '@P•••ve', zh: a house you build together burn down, likes: '41', big: false, ago: 2 days ago}
+        - {user: '@T•••ez', zh: The sound of cops intercom hit soo hard, likes: '14', big: false, ago: 2 days ago}
+        stats:
+          label: Most-viewed re-upload · 2 days
+          asof: YouTube figures as of Nov 22, 2026
+          items:
+          - {to: 574000, fmt: k, digits: 0, unit: views}
+          - {to: 14721, fmt: k, digits: 1, unit: likes}
+          - {to: 461, unit: comments}
+      1:
+        comment: {user: '@d•••87', zh: This whole mission was a f***ing movie, likes: 2.9K, ago: 2 days ago}
+    s02:
+      0: {text: Chapter One · Home Sweet Home, en: ''}
+    s03:
+      0: {text: 'At first it may be only a vague image; more often, a song is what pulls the creative direction together.', source: 'Rob Nelson, co-head of Rockstar North (interview, paraphrased)'}
+    s09:
+      0:
+        lines: [Different roads | same song]
+        script: ''
+      1:
+        line: 'More game audio breakdowns: follow SoundsGood'
+        owners: [Game footage and music © Rockstar Games and the respective rights holders]
