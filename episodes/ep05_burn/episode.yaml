@@ -1,0 +1,192 @@
+id: ep05_burn
+title: BURN
+folder: GTA6-BURN          # Jee's folder under Documents/SoundsGood; finished files go to <folder>/成片
+speech: {target_cps: 4.85, est_cps: 4.85, seeds: [7, 19, 23, 41]}
+target_seconds: 210
+target_tolerance: 0.12     # 快闪：三分半以内
+owners:
+  - 游戏画面与音乐版权归 Rockstar Games 及相关权利人所有
+
+lexicon:
+  replace:
+    GTA6: GTA 六
+    《BURN》: 《Burn》
+    三分贝: 三分贝
+  listen: [Lucia, Jason, Home Sweet Home, Rob Nelson, Rockstar North, Travis Scott]
+  latin_ok: [GTA, Travis, Scott, Burn, BURN, Lucia, Jason, Rockstar, North, Rob, Nelson, Home, Sweet, SoundsGood]
+
+sources:
+  music:
+    A: {path: assets/A01_game.mp4, label: 实机录像原声, hard_boundaries: [7.15, 334.3]}   # 7.15 频道片头结束；334.3 逃出后换成另一段音乐
+  video:
+    A01: {path: assets/A01_game.mp4, license: pending, note: "第三方实录（YouTube 频道 Agent Tyler Gaming），用不用、怎么署名由 Jee 决定"}
+
+structure:
+  source: A
+  segments:
+    - {start: 7.15, end: 36.0, label: 过场}
+    - {start: 36.0, end: 92.5, label: 逃出火场}
+    - {start: 92.5, end: 158.0, label: 两遍副歌}
+    - {start: 158.0, end: 187.0, label: 只剩伴奏}
+    - {start: 187.0, end: 197.0, label: 电话}
+    - {start: 197.0, end: 267.0, label: 潜行}
+    - {start: 267.0, end: 330.0, label: 被发现}
+
+listening:
+  - {id: q1, src: A, label: 实机原声, in: 84.0, out: 98.0, question: 这段里，副歌第一次唱出 burn this shit down 的时候，屏幕右下角是不是几乎同时弹出朋友 Andy 的短信“Call me”？,
+     context: "第 05 段。实测：短信大约在 1:27 弹出，那句歌词大约在 1:30 唱出来。", options: [是，几乎同时, 差得有点远，不算对上, 这句不是副歌第一次出现]}
+  - {id: q2, src: A, label: 实机原声, in: 150.0, out: 186.0, question: 大约 2:38 以后，歌里还有没有人声？是不是只剩伴奏在循环？,
+     context: 第 07 段最后一句“到后半段人声退场，只剩鼓和低音一圈一圈地转”。, options: [没有人声了，就是伴奏在循环, 还有人声, 伴奏变了，不是同一段在循环]}
+  - {id: q3, src: A, label: 实机原声, in: 255.0, out: 300.0, question: 大约 4:27 被警察发现以后，音乐本身有没有变猛（鼓更密、更响）？还是只是多了警笛、喊话和引擎声？,
+     context: "第 09 段。实测：被发现后打击乐那一层响了约 3 dB，但分不开是音乐还是音效。", options: [音乐本身变猛了, 音乐没变，是音效多了, 听不出来]}
+  - {id: q4, src: A, label: 实机原声, in: 182.0, out: 205.0, question: Lucia 给朋友打电话这段，音乐是不是明显往后退了、给对白让路？,
+     context: "第 08 段。实测：通话期间整段响度从约 -18.3 掉到约 -21.9 LUFS。", options: [是，音乐明显退后, 音乐没变，只是整体变化, 听不出来]}
+
+sections:
+  - id: s01
+    chapter: 开场
+    pre: 1.0
+    post: 0.6
+    paras:
+      - {id: p01, claim: opinion, text: 《GTA6》发售三天，评论区里刷屏的，不是哪辆车，也不是哪把枪，而是一首歌。,
+         en: ["Three days after GTA 6 launched, the comments aren't flooded with cars or guns, but with a song."]}
+      - {id: p02, claim: official, text: Travis Scott 的《BURN》。它不在官方专辑里，也不在电台里，整个游戏只有一个任务能听到。,
+         en: ["Travis Scott's BURN.", "It isn't on the official album or the radio; you can only hear it in one mission."]}
+      - {id: p03, claim: quote, text: 播放量最高的那条搬运视频底下，点赞最多的评论只有一句：整个任务，就是一部电影。,
+         en: ["Under the most-viewed upload, the top comment is one line: this whole mission was a movie."]}
+    music:
+      - {src: A, in: 142.5, at: start, free: true, reuse: 开场用第二遍副歌配评论墙，后面讲到副歌时用的是第一遍}
+    video:
+      - {src: A01, follow: A, at: start}
+    gfx:
+      - {type: comments, at: start, until: end, params: {}}   # 一次性场景，参数见 gfx_comments.yaml
+
+  - id: s02
+    chapter: 逃出去
+    pre: 0.6
+    paras:
+      - {id: p04, claim: official, text: 这段发生在第一章快结束的时候。Lucia 回到和 Jason 一起住的家，房子已经烧了起来，外面全是警察。她只剩一件事要做：逃出去。,
+         en: ["This comes near the end of Chapter One.", "Lucia returns to the home she shares with Jason; it's already on fire, and police are everywhere.", "She has one thing left to do: get out."]}
+    music:
+      - {src: A, in: 36.0, at: start, reuse: 回到逃跑开始的地方，开场那段是第二遍副歌}
+    video:
+      - {src: A01, follow: A, at: start}
+    gfx:
+      - {type: tag, at: start+0.3, dur: 4.0, params: {text: 第一章 · Home Sweet Home, en: CHAPTER ONE}}
+
+  - id: s03
+    chapter: 你亲手布置的家
+    pre: 0.3
+    paras:
+      - {id: p05, claim: opinion, text: 前面那么多任务，你在给这个家买菜、修房子、添家具，往藏钱的地方一点点存钱。,
+         en: ["For mission after mission, you've been buying groceries for this home, fixing it up, furnishing it, stashing money away bit by bit."]}
+      - {id: p06, claim: quote, text: 有玩家说，那些无聊的任务原来都是为了这一刻：你亲手经营的家，在一首叫《BURN》的歌里烧掉了。,
+         en: ["As one player put it, all those boring errands were for this moment: the home you built burns down to a song called BURN."]}
+      - {id: p07, claim: official, text: 而这个任务的名字，叫 Home Sweet Home。, en: ["And the mission is called Home Sweet Home."]}
+    music:
+      - {src: A, at: start}
+    video:
+      - {src: A01, follow: A, at: start}
+
+  - id: s04
+    chapter: 围绕一首歌
+    pre: 0.3
+    paras:
+      - {id: p08, claim: quote, text: Rockstar North 的联合负责人 Rob Nelson 说过，开发一款新游戏，团队最初往往只有一个模糊的意象，更多时候，是围绕一首歌来凝聚方向。,
+         en: ["Rockstar North co-studio head Rob Nelson has said a new game often starts as a vague image, and more often than not the team rallies around a song."]}
+    music:
+      - {src: A, at: start}
+    video:
+      - {src: A01, follow: A, at: start}
+    gfx:
+      - {type: quote, at: p08@开发, until: end, params: {text: 最初可能只是一个模糊的意象，更多时候，我们会围绕一首歌来凝聚创作方向。, source: Rob Nelson，Rockstar North 联合负责人（TroisCouleurs 采访）}}
+
+  - id: s05
+    chapter: 歌和短信
+    align: {src: A, time: 87.0, before: 4.0}   # 短信约 87 秒弹出，副歌约 90 秒唱出
+    post: 3.2
+    paras:
+      - {id: p09, claim: measured, confirmed_by: q1, text: 在这份录像里，副歌第一次唱出来的时候，Lucia 的朋友几乎同时发来短信：给我打电话。,
+         en: ["In this recording, just as the chorus first hits, Lucia's friend texts her: call me."]}
+    music:
+      - {src: A, at: start}
+    video:
+      - {src: A01, follow: A, at: start}
+
+  - id: s06
+    chapter: 游戏没有剪辑师
+    pre: 0.3
+    paras:
+      - {id: p10, claim: opinion, text: 这种对点，在电影里是剪辑台上的事：画面剪好了，音乐按秒对上去。,
+         en: ["In film, a hit like that happens in the edit: the picture is cut, then the music is laid in to the second."]}
+      - {id: p11, claim: opinion, text: 可游戏没有剪辑师。你不知道玩家会在草丛里趴多久，会不会被发现，会从哪条路跑掉。,
+         en: ["But games have no editor.", "You never know how long a player will lie in the bushes, whether they'll be seen, or which way they'll run."]}
+      - {id: p12, claim: opinion, text: 所以游戏里的电影感，难的不是选对一首歌，而是让这首歌跟得上玩家。,
+         en: ["So the hard part of feeling cinematic in a game isn't picking the right song; it's making the song keep up with the player."]}
+    music:
+      - {src: A, at: start}
+    video:
+      - {src: A01, follow: A, at: start}
+    gfx:
+      - {type: big, at: p12, dur: 5.0, params: {lines: [选对一首歌 ｜ 让歌跟得上玩家], size: 60}}
+
+  - id: s07
+    chapter: 一直在转
+    pre: 0.4
+    paras:
+      - {id: p13, claim: quote, text: 这段逃跑没有固定长度：有人一路没被发现就溜走了，也有人被直升机追了好几分钟。,
+         en: ["This escape has no fixed length: some players slip away unseen, others get chased by a helicopter for minutes."]}
+      - {id: p14, claim: quote, text: 有媒体注意到，可玩的这一段里，《BURN》一直在循环。, en: ["As one outlet noticed, BURN loops through the playable stretch."]}
+      - {id: p15, claim: ear, confirmed_by: q2, text: 在我听来，到后半段人声退场，只剩鼓和低音一圈圈地转，陪你耗着。,
+         en: ["To my ear, the vocals drop out later on, leaving drums and bass going round and round, waiting it out with you."]}
+    music:
+      - {src: A, in: 164.2, at: start}
+    video:
+      - {src: A01, follow: A, at: start}
+
+  - id: s08
+    chapter: 给电话让路
+    pre: 0.4
+    paras:
+      - {id: p16, claim: official, pause_after: 10.0, text: 过了一会儿，Lucia 给朋友回了电话。, en: ["A little later, Lucia calls her friend back."]}   # 停 9 秒，让 Andy 那句“police everywhere... I'm scared”原样出来
+      - {id: p17, claim: measured, confirmed_by: q4, text: 这十几秒里，整段声音的响度反而掉了大约三分贝：音乐往后退，把电话里的对白推到了最前面。,
+         en: ["For those ten-odd seconds the overall loudness actually drops by about three decibels: the music steps back and puts the call up front."]}
+      - {id: p18, claim: opinion, text: 台词要听得清，音乐就得让路，这是电影混音最基本的规矩。GTA6 把它用在了一段随时会被玩家打乱的玩法里。,
+         en: ["Dialogue has to be heard, so music makes way: that's the most basic rule of film mixing.", "GTA 6 applies it to gameplay the player can upend at any moment."]}
+    music:
+      - {src: A, in: 182.84, at: start}   # p16 说完时（约 186.5 秒），187.3 秒电话接通
+    video:
+      - {src: A01, follow: A, at: start}
+    gfx:
+      - {type: curve, at: p17, until: p18, full: true, params: {title: 打电话时的响度, kicker: LOUDNESS · 实测, unit: LUFS · 0.5 秒窗口,
+         values: [-18.4, -18.3, -18.3, -18.3, -18.4, -18.3, -18.4, -18.4, -18.3, -18.2, -18.6, -19.4, -20.0, -20.5, -21.4, -22.7, -22.4, -21.8, -21.5, -21.4, -21.7, -21.7, -21.9, -22.0, -22.1, -22.3, -22.0, -22.3, -22.1, -22.2, -21.8, -21.5, -21.4, -20.9, -20.6, -20.4, -20.5, -20.4, -20.4, -20.3, -20.0, -19.8, -19.6, -19.3, -18.9, -18.6, -18.5],
+         marks: [{at: 0.24, text: 电话接通}, {at: 0.73, text: 挂断}]}}
+
+  - id: s09
+    chapter: 被发现以后
+    pre: 3.2          # 先让警察那句“stop, do not move”出来
+    paras:
+      - {id: p19, claim: quote, text: 还有玩家说，被警察发现以后，音乐会变得更猛。, en: ["Players also say the music gets harder once the police spot you."]}
+      - {id: p20, claim: ear, confirmed_by: q3, text: 在我听来确实是这样，鼓一下子顶了上来。如果是真的，它就不只是一首插曲，而是一段会跟着你的处境变化的配乐。,
+         en: ["To my ear it does: the drums push right up.", "If so, it isn't just a needle drop; it's a score that changes with your situation."]}
+    music:
+      - {src: A, in: 264.0, at: start}
+    video:
+      - {src: A01, follow: A, at: start}
+
+  - id: s10
+    chapter: 收尾
+    pre: 0.3
+    post: 6.0          # 片尾卡下面留着警察无线电“vehicle is nowhere in sight”
+    paras:
+      - {id: p21, claim: opinion, text: 选一首好歌不难，难的是在一个没有剪辑师的地方，让它听起来像剪过一样。GTA6 在这一段做到了。,
+         en: ["Picking a great song isn't hard; making it sound edited where there's no editor is.", "GTA 6 pulls it off here."]}
+      - {id: p22, claim: opinion, text: 有点讽刺的是，为了避开版权，很多主播打开了静音授权音乐。我翻了不少实机视频，这一段大多是安静的；而这首歌到现在也还没有正式发行。,
+         en: ["The irony: to avoid copyright claims, many streamers turn on Mute Licensed Music.", "In most of the gameplay videos I found, this stretch is silent, and the song still hasn't been released."]}
+      - {id: p23, text: 更多游戏声音拆解，关注 SoundsGood。, en: ["More game audio breakdowns: follow SoundsGood."]}
+    music:
+      - {src: A, in: 296.0, at: start}
+    video:
+      - {src: A01, follow: A, at: start}
+    gfx:
+      - {type: end, at: p23, until: end, full: true, params: {owners: [游戏画面与音乐版权归 Rockstar Games 及相关权利人所有]}}
