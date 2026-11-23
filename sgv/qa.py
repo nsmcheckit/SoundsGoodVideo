@@ -297,11 +297,12 @@ def check_mix(ep, tl, r):
     if m["true_peak_db"] is not None and m["true_peak_db"] > -1.0:
         r.fail("mix.peak", f"峰值 {m['true_peak_db']} dB，超过 -1 dB")
     o = m.get("vo_over_bed_db")
-    if o is not None and not 7.0 <= o <= 16.0:
-        r.fail("mix.vo_balance", f"口播比背景高 {o} dB，已确认的范围是 7–16 dB")
+    # Jee, ep05: at 13 dB over the bed (16 dB in the vocal band) the music could not be heard; 8.5 / 11.9 was the fix.
+    if o is not None and not 6.0 <= o <= 11.0:
+        r.fail("mix.vo_balance", f"口播比背景高 {o} dB，已确认的范围是 6–11 dB")
     v = m.get("vocal_band_margin_db")
-    if v is not None and v > 15.0:
-        r.warn("mix.vocal_masking", f"125 Hz–2 kHz 口播比背景高 {v} dB，原声人声可能被盖住")
+    if v is not None and v > 13.0:
+        r.fail("mix.vocal_masking", f"125 Hz–2 kHz 口播比背景高 {v} dB，音乐和原声人声会被盖住（上限 13 dB）")
     for s in m["cut_steps"]:
         if not s["clip"] and abs(s["step_lu"]) > 5.0:
             r.warn("mix.cut_jump", f"剪辑点前后响度跳了 {s['step_lu']} LU", s["t"])

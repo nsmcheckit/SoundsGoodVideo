@@ -3,6 +3,7 @@ title: BURN
 folder: GTA6-BURN          # Jee's folder under Documents/SoundsGood; finished files go to <folder>/成片
 theme: gta                    # look of the graphics, follows the game (sgv/gfx.py THEMES): Jee 11-22, GTA style, not the Phantom Blade Zero ink look
 speech: {target_cps: 4.85, est_cps: 4.85, seeds: [7, 19, 23, 41]}
+mix: {bed_target: -15.5, duck: [-9.0, -6.0, -9.0], vo_trim: -1.5}   # Jee 11-22: music up, narration down, so the song is heard
 target_seconds: 130
 target_tolerance: 0.15     # Jee v2：短一点，让大家感受这首歌
 owners:
@@ -177,8 +178,8 @@ cover:
   images: [assets/cover_searchlight.png]   # A01 3:16 helicopter searchlight over the yards, right side only (no character, no HUD), 1.6x, graded
   fx: 0.55
   fy: 0.35
-  zh: {title: [一首歌道尽 GTA6, 的音频电影化叙事], sub: Travis Scott, kicker: 游戏音乐拆解, game: GTA6 · 第一章 Home Sweet Home}   # Jee 11-22: title wording
-  en: {title: [ONE SONG CARRIES, GTA 6'S CINEMATIC SOUND], sub: Travis Scott, kicker: GAME MUSIC BREAKDOWN, game: GTA 6 · CHAPTER ONE · HOME SWEET HOME}
+  zh: {title: Travis Scott - Burn, kicker: 游戏音乐拆解, game: GTA6 · 第一章 Home Sweet Home}   # Jee 11-22: short title
+  en: {title: Travis Scott - Burn, kicker: GAME MUSIC BREAKDOWN, game: GTA 6 · CHAPTER ONE · HOME SWEET HOME}
 
 publish:
   B站:

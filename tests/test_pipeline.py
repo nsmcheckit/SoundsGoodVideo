@@ -94,6 +94,13 @@ for rule, mutate in CASES.items():
     _, _, r = run_case(mutate, "case")
     expect("stops " + rule, fired(r, rule), [i["rule"] for i in r.fails])
 
+# ep05: an episode can set its own mix balance; the defaults stay for the rest.
+from sgv.mix import settings  # noqa: E402
+e_mix, _, _ = run_case(lambda m: m.update(mix={"bed_target": -15.5, "duck": [-9, -6, -9], "vo_trim": -1.5}), "case")
+expect("mix balance comes from the manifest", settings(e_mix) == {"bed_target": -15.5, "duck": [-9.0, -6.0, -9.0], "vo_trim": -1.5}, settings(e_mix))
+e_def, _, _ = run_case(lambda m: None, "case")
+expect("mix balance defaults", settings(e_def)["duck"] == [-12.0, -8.0, -12.0], settings(e_def))
+
 _, _, r = run_case(lambda m: m.update(theme="pbz"), "case")
 expect("stops style.theme (unknown look)", fired(r, "style.theme"), [i["rule"] for i in r.fails])
 

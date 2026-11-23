@@ -17,6 +17,14 @@ BED_REF = -18.0
 VO_LUFS = -16.0
 BED_TARGET = -17.0
 DUCK_LOW, DUCK_MID, DUCK_HIGH = -12.0, -8.0, -12.0
+VO_TRIM = -0.5
+
+
+def settings(ep):
+    """Per-episode balance. Jee, ep05: a song-led episode wants the music up and the narration down (mix: in episode.yaml)."""
+    m = ep.data.get("mix") or {}
+    duck = m.get("duck") or [DUCK_LOW, DUCK_MID, DUCK_HIGH]
+    return {"bed_target": float(m.get("bed_target", BED_TARGET)), "duck": [float(x) for x in duck], "vo_trim": float(m.get("vo_trim", VO_TRIM))}
 SPLIT_LOW, SPLIT_HIGH = 250, 2500
 
 
@@ -153,12 +161,13 @@ def _rms_db(x):
 
 def mix(ep, tl=None, lufs=-16.0, out_name="mix.wav"):
     tl = tl or read_json(ep.build / "timeline.json")
+    cfg = settings(ep)
     bed, clip_mask = build_bed(ep, tl)
     vo = build_vo(ep, tl)
     N = len(vo)
     hop = int(0.1 * SR)
     L = _short_term(bed, hop)
-    correction = np.clip((BED_TARGET - L) * 0.55, -6, 5)
+    correction = np.clip((cfg["bed_target"] - L) * 0.55, -6, 5)
     correction[L < -55] = 0
     correction[clip_mask[::hop][: len(correction)]] = 0
     win = min(31, len(correction) - (1 - len(correction) % 2))
@@ -170,8 +179,9 @@ def mix(ep, tl=None, lufs=-16.0, out_name="mix.wav"):
     hi = ss.sosfiltfilt(ss.butter(4, SPLIT_HIGH, "hp", fs=SR, output="sos"), bed, axis=0)
     mid = bed - lo - hi
     lv, dn = level[:, None], amount[:, None]
-    ducked = (lo * db(lv + DUCK_LOW * dn) + mid * db(lv + DUCK_MID * dn) + hi * db(lv + DUCK_HIGH * dn)).astype(np.float32)
-    voice = vo * float(db(-0.5))
+    dl, dm, dh = cfg["duck"]
+    ducked = (lo * db(lv + dl * dn) + mid * db(lv + dm * dn) + hi * db(lv + dh * dn)).astype(np.float32)
+    voice = vo * float(db(cfg["vo_trim"]))
     raw = ducked + np.stack([voice, voice], 1)
     build = ep.build / "audio"
     build.mkdir(parents=True, exist_ok=True)

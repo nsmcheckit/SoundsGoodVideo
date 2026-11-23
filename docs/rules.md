@@ -27,4 +27,4 @@
 
 `voice.reading` matches syllables first and tones second. A third tone spoken as a second tone before another third tone (底鼓 → dí gǔ) is allowed to come back as a first tone, because the recogniser cannot tell them apart and prefers the commoner word (低谷). Checked on 2026-11-10 by pitch: the take rose about 2 semitones, like the reference 底鼓 and 笛鼓 readings, while 低谷 stayed level or fell.
 
-Thresholds for `mix.vocal_masking` have not been calibrated against an approved mix yet. Treat it as a prompt to listen.
+Calibrated on ep05 (Jee: "音乐响度再调大一点，人声稍降低"): narration 13 dB over the bed and 16 dB in the 125 Hz–2 kHz band buried the song; 8.5 dB and 11.9 dB was the fix. `mix.vo_balance` now stops outside 6–11 dB and `mix.vocal_masking` stops above 13 dB. Per-episode balance lives in `mix: {bed_target, duck: [low, mid, high], vo_trim}`.
