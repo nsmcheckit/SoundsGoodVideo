@@ -271,7 +271,7 @@ function clip(x,y,a){if(a<=.003)return;X.save();X.globalAlpha=a;const h=56*S,w=1
   X.beginPath();X.roundRect(x-w/2,y-h*.55,w,h,w/2);X.stroke();X.beginPath();X.roundRect(x-w*.27,y-h*.55+5*S,w*.54,h*.78,w*.27);X.stroke();X.restore();}
 // A cut-out image with a thick white border, like a sticker. Without its image it shows a dashed slot (preview only).
 const STK={};
-function sticker(key,x,y,hgt,o={}){const{a=1,rot=0,k=1,label=''}=o;if(a<=.003)return;const im=IMG[key];
+function sticker(key,x,y,hgt,o={}){const{a=1,rot=0,k=1,label='',caption='',cp=1}=o;if(a<=.003)return;const im=IMG[key];
   if(!im){SIG.push('slot',key,rnd(x),rnd(y),rnd(a),rnd(k));const w=hgt*.62;X.save();X.globalAlpha=a*.85;X.translate(x,y);X.rotate(rot);X.scale(k,k);
     X.setLineDash([14*S,10*S]);X.strokeStyle=G.white;X.lineWidth=3*S;X.beginPath();X.roundRect(-w/2,-hgt/2,w,hgt,26*S);X.stroke();X.setLineDash([]);
     X.font=`700 ${30*S}px ${SANS}`;X.fillStyle=G.white;X.textAlign='center';X.fillText('人物贴纸',0,-6*S);X.font=`700 ${34*S}px ${HAND}`;X.fillStyle=G.yellow;X.fillText(label||key,0,34*S);X.restore();
@@ -282,7 +282,8 @@ function sticker(key,x,y,hgt,o={}){const{a=1,rot=0,k=1,label=''}=o;if(a<=.003)re
     q.globalCompositeOperation='source-in';q.fillStyle='#FFFFFF';q.fillRect(0,0,c.width,c.height);q.globalCompositeOperation='source-over';q.drawImage(im,2*bw,2*bw,w,hgt);STK[id]=c;}
   SIG.push('stk',key,rnd(x),rnd(y),rnd(a),rnd(k),rnd(rot));X.save();X.globalAlpha=a;X.translate(x,y);X.rotate(rot);X.scale(k,k);
   X.shadowColor='rgba(0,0,0,.55)';X.shadowBlur=24*S;X.shadowOffsetY=10*S;X.drawImage(c,-c.width/2,-c.height/2);X.restore();
-  BB.push([Math.round(x-c.width/2),Math.round(y-c.height/2),Math.round(x+c.width/2),Math.round(y+c.height/2)]);}
+  BB.push([Math.round(x-c.width/2),Math.round(y-c.height/2),Math.round(x+c.width/2),Math.round(y+c.height/2)]);
+  if(caption)hand(caption,x,y+c.height/2+42*S,{size:40*S,align:'center',a,rot:-.04,p:cp});}
 function rot(cx,cy,ang,k,fn){X.save();X.translate(cx,cy);X.rotate(ang);X.scale(k,k);X.translate(-cx,-cy);fn();X.restore();}
 
 // YouTube-style comment card on black with a thin white frame.
@@ -339,10 +340,10 @@ GX.big=(t,D,P)=>{if(P._full)bg();const A=fadeio(t,D,.25,.3);const parts=[];(P.li
   ln(0,by,W*wq,by,{color:G.white,w:2*S,a:A*.9});ln(W*(1-wq),by+bandH,W,by+bandH,{color:G.white,w:2*S,a:A*.9});
   const sts=P.stickers||[];const sh=V?560:520;
   sts.forEach((s,i)=>{const left=(s.side||(i%2?'right':'left'))==='left';const d=.3+.15*i;const q=seg(t,d,d+.3);
-    const sx=left?(V?210:250):(V?W-210:W-250),sy=V?by+bandH+sh*.5+70:cy+30*S;sticker(s.image,sx+(left?-1:1)*(1-O(q))*120,sy,sh*(s.scale||1),{a:A*O(q),rot:(left?-1:1)*.05,k:DROP(q),label:s.label});});
+    const sx=left?(V?210:250):(V?W-210:W-250),sy=V?by+bandH+sh*.5+70:cy+30*S;sticker(s.image,sx+(left?-1:1)*(1-O(q))*120,sy,sh*(s.scale||1),{a:A*O(q),rot:(left?-1:1)*.05,k:DROP(q),label:s.label,caption:s.caption,cp:seg(t,d+.4,d+1)});});
   parts.forEach((s,i)=>{const d=.15+(P.step||.4)*i;const q=seg(t,d,d+.28);const y=by+size*.45+(i+.72)*lh-lh*.08;
     rot(W/2,y-size*.4,0,DROP(q),()=>ttl(s,W/2,y,{size,align:'center',color:G.white,a:A*O(q)}));});
-  if(P.script)hand(P.script,W/2+(V?60:220),by+bandH-size*.12,{size:(V?52:60),align:'center',a:A,rot:-.07,p:seg(t,.9,1.6)});};
+  if(P.script)hand(P.script,W/2+(V?60:30),by+bandH-size*.12,{size:(V?52:60),align:'center',a:A,rot:-.07,p:seg(t,.9,1.6)});};
 GX.end=(t,D,P)=>{bg();const A=fadeio(t,D,.6,.6);const m=V?40:56;frame(m,m,W-2*m,H-2*m,{a:A*.9,p:IO(seg(t,0,.8))});
   const cy=V?H*.4:H*.42;const q=seg(t,.2,.5);
   rot(W/2,cy,0,DROP(q),()=>ttl('SOUNDS GOOD',W/2,cy+(V?50:60),{size:V?150:210,f:DISP,w:400,align:'center',sp:V?2:4,a:A*O(q)}));
