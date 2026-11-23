@@ -175,9 +175,9 @@ sections:
       - {type: end, at: p20, until: end, full: true, params: {owners: [游戏画面与音乐版权归 Rockstar Games 及相关权利人所有]}}
 
 cover:
-  images: [assets/cover_searchlight.png]   # A01 3:16 helicopter searchlight over the yards, right side only (no character, no HUD), 1.6x, graded
-  fx: 0.55
-  fy: 0.35
+  images: [assets/cover_explosion.png]   # Jee 11-22: the frame where the blast throws Lucia out; from the Mission #21 4K playthrough Jee licensed, 1:45.6, letterbox cropped, graded toward orange
+  fx: 0.32
+  fy: 0.45
   zh: {title: Travis Scott - Burn, kicker: 游戏音乐拆解, game: GTA6 · 第一章 Home Sweet Home}   # Jee 11-22: short title
   en: {title: Travis Scott - Burn, kicker: GAME MUSIC BREAKDOWN, game: GTA 6 · CHAPTER ONE · HOME SWEET HOME}
 
