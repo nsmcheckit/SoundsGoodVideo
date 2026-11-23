@@ -1,6 +1,7 @@
 id: ep04_minghuo
 title: 冥火流星
 folder: 冥火流星            # Jee's folder under Documents/SoundsGood; finished files go to <folder>/成片
+theme: ink                    # look of the graphics, follows the game (sgv/gfx.py THEMES)
 speech: {target_cps: 4.85, est_cps: 4.85, seeds: [7, 19, 23, 41]}   # Jee, v4: 4.3 字/秒 felt slow; each take is sped up to 4.85
 target_seconds: 270
 target_tolerance: 0.1      # Jee: keep it under five minutes (243–297 s)

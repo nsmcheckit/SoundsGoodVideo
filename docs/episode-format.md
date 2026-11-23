@@ -55,6 +55,8 @@ sections:
 
 **Anchors** for `at` and `until`: `start`, `end`, a paragraph id, a phrase in a paragraph (`p03@胡琴`), each with an optional offset (`p03+1.2`).
 
+**Look**: `theme:` at the top of episode.yaml picks the look of every scene, the watermark, the song-structure strip and the covers. It follows the game, never the last episode (`style.theme` stops a manifest without one). `ink`: gold wireframe, cream serif, vermilion seals (Phantom Blade Zero). `gta`: night blue, sunset violet-pink-peach fills with deco arches, pink brush script, white sticker type with hard shadows, yellow doodles, torn paper; scenes slap in and settle. A new game with neither look gets its own theme in `sgv/gfx/engine.html` (`THEMES`, plus `sgv/gfx.py` THEMES and STRIP). Scenes a theme does not redraw fall back to the base scene in the theme's colours.
+
 **Scenes**: `tag` `ask` `title` `big` `stamps` `quote` `compare` `layers` `steps` `curve` `number` `spectro` `loops` `roles` `end`. Add `full: true` for a full-screen scene. One-off scenes go in `sgv/gfx/engine.html`; keep one or two per episode so the series does not turn into a template.
 
 **Exceptions** must state a reason: `reuse: "..."` to replay source material, `through: "..."` to cross a switch point. `free: true` lets a cut ignore the bar grid. `lock: true` keeps a music entry at its exact anchor.

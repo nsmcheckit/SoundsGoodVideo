@@ -87,10 +87,25 @@ CASES = {
     "end.owners": lambda m: m["owners"].append("别的版权方"),
     "license.pending": lambda m: m["sources"]["video"]["A02"].update(license="pending"),
     "layout.over_full": lambda m: section(m, "open")["gfx"][1].update({"until": "end+1.0"}),
+    "style.theme": lambda m: m.pop("theme"),
 }
 for rule, mutate in CASES.items():
     _, _, r = run_case(mutate, "case")
     expect("stops " + rule, fired(r, rule), [i["rule"] for i in r.fails])
+
+_, _, r = run_case(lambda m: m.update(theme="pbz"), "case")
+expect("stops style.theme (unknown look)", fired(r, "style.theme"), [i["rule"] for i in r.fails])
+
+# ep05: every declared look draws each scene, and the look actually changes the picture.
+with gfx.Stage() as st:
+    sigs = {}
+    for th in gfx.THEMES:
+        for kind, prm in [("tag", {"text": "第一章 · 测试", "en": "CHAPTER ONE"}), ("big", {"lines": ["甲 ｜ 乙"]}), ("quote", {"text": "一句引语。", "source": "某人"}), ("end", {}), ("wm", {})]:
+            for w, h in [(1920, 1080), (1080, 1920)]:
+                res = st.frame(kind, {**prm, "_theme": th}, 1.5, 4.0, w, h)
+                sigs.setdefault(th, []).append(res["sig"])
+    expect("every theme draws every ep05 scene", all(len(v) == 10 for v in sigs.values()))
+    expect("themes look different", len({tuple(v) for v in sigs.values()}) == len(gfx.THEMES))
 
 _, tl, r = run_case(lambda m: section(m, "body")["music"][0].update({"in": 40.0, "through": "the switch is the point of this shot"}), "case")
 expect("a stated reason can cross a switch", not fired(r, "music.switch"))

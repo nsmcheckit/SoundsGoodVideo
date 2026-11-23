@@ -7,7 +7,7 @@ COVERS = {"zh_16x9": (1920, 1080), "zh_4x3": (1600, 1200), "zh_3x4": (1080, 1440
 
 
 def covers(ep):
-    from .gfx import Stage
+    from .gfx import Stage, theme
     spec = ep.data.get("cover")
     if not spec:
         return []
@@ -18,7 +18,7 @@ def covers(ep):
         st.load_images({k: ep.path(k) for k in spec["images"]})
         for name, (w, h) in COVERS.items():
             lang = name[:2]
-            params = {**spec, **(spec.get(lang) or {})}
+            params = {**spec, **(spec.get(lang) or {}), "_theme": theme(ep)}
             st.frame("cover", params, 1.0, 10.0, w, h)
             p = folder / f"{name}.png"
             p.write_bytes(st.png())

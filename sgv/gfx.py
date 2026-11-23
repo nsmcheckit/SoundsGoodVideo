@@ -24,6 +24,7 @@ class Stage:
         self.browser = self.pw.chromium.launch()
         self.page = self.browser.new_page()
         self.page.goto(ENGINE.as_uri())
+        self.page.evaluate("() => window.fontsReady()")
         return self
 
     def __exit__(self, *a):
@@ -53,8 +54,23 @@ def _images(ep, params):
     return {k: ep.path(k) for k in keys}
 
 
+# Looks the engine can draw (THEMES in engine.html). ink: gold wireframe, cream serif, vermilion seals (Phantom Blade Zero).
+# gta: night blue, sunset violet-pink-peach with deco arches, pink brush script, sticker type, torn paper.
+THEMES = ("ink", "gta")
+
+
+def theme(ep):
+    """The look of an episode follows its game; every scene, the watermark, the map strip and the covers take it."""
+    return ep.data.get("theme") or "ink"
+
+
+# Map-strip colours per theme: (bar, label).
+STRIP = {"ink": ((217, 180, 108), (255, 241, 214)), "gta": ((245, 139, 194), (255, 255, 255))}
+
+
 def render_scene(stage, ep, item, orient, out_dir):
     params = dict(item["params"])
+    params["_theme"] = theme(ep)
     if item["full"]:
         params["_full"] = True
     images = _images(ep, params)
@@ -100,6 +116,7 @@ def _merge(boxes):
 
 def render_static(stage, kind, params, orient, path):
     w, h = SIZES[orient]
+    params = dict(params)
     stage.frame(kind, params, 1.0, 10.0, w, h)
     Path(path).write_bytes(stage.png())
 
@@ -112,7 +129,8 @@ def map_strip(ep, tl, orient, out_dir):
         return None, None
     W = {"h": 1720, "v": 960}[orient]
     H = 58
-    key = digest(json.dumps(st, sort_keys=True, ensure_ascii=False), json.dumps(tl["map"], sort_keys=True), tl["total"], orient, "v2")
+    bar, label = STRIP.get(theme(ep), STRIP["ink"])
+    key = digest(json.dumps(st, sort_keys=True, ensure_ascii=False), json.dumps(tl["map"], sort_keys=True), tl["total"], orient, "v2", theme(ep))
     out = out_dir / f"map_{key}.mov"
     pos = {"h": ((1920 - W) // 2, 1014), "v": ((1080 - W) // 2, 1335)}[orient]
     if out.exists():
@@ -125,10 +143,10 @@ def map_strip(ep, tl, orient, out_dir):
         d = ImageDraw.Draw(im)
         for s in segs:
             x0, x1 = int(s["start"] / length * W) + 1, int(s["end"] / length * W) - 1
-            color = (217, 180, 108, 235) if bright else (217, 180, 108, 78)
+            color = (*bar, 235) if bright else (*bar, 78)
             d.rectangle([x0, H - 12, x1, H - 4], fill=color)
             d.text((x0 + 2, H - 40), s.get("label", ""), font=font,
-                   fill=(255, 241, 214, 240 if bright else 110), stroke_width=1, stroke_fill=(0, 0, 0, 170))
+                   fill=(*label, 240 if bright else 110), stroke_width=1, stroke_fill=(0, 0, 0, 170))
         return np.array(im)
     dim, lit = strip(False), strip(True)
     n = to_frames(tl["total"])
@@ -174,8 +192,8 @@ def render_all(ep, tl, orient):
         for item in tl["gfx"]:
             mov, bb = render_scene(st, ep, item, orient, out_dir)
             result[item["id"]], boxes[item["id"]] = str(mov), bb
-        wm = out_dir / "wm.png"
-        render_static(st, "wm", {}, orient, wm)
+        wm = out_dir / f"wm_{theme(ep)}.png"
+        render_static(st, "wm", {"_theme": theme(ep)}, orient, wm)
     mp = map_strip(ep, tl, orient, out_dir)
     write_json(ep.build / f"bbox_{orient}.json", boxes)
     return {"scenes": result, "wm": str(wm), "map": str(mp[0]) if mp[0] else None, "map_pos": mp[1]}

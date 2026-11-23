@@ -62,7 +62,7 @@ def make_video(folder, name, hue, seconds=80):
 
 
 MANIFEST = {
-    "id": "t01", "title": "测试曲", "target_seconds": 40, "target_tolerance": 0.5,
+    "id": "t01", "title": "测试曲", "theme": "ink", "target_seconds": 40, "target_tolerance": 0.5,
     "owners": ["测试画面与音乐版权归 SoundsGood 所有"],
     "sources": {"music": {"A": {"path": "assets/music.wav", "hard_boundaries": [45.714]}},
                 "video": {"A01": {"path": "assets/a01.mp4"}, "A02": {"path": "assets/a02.mp4"}, "B01": {"path": "assets/b01.mp4"}}},

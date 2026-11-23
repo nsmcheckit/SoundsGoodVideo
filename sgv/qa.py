@@ -125,6 +125,16 @@ def check_script(ep, r):
             r.fail("subs.en_count", f"{p['id']} 有 {n} 句中文，却有 {len(en)} 句英文")
 
 
+def check_style(ep, r):
+    """Jee, ep05: "画风和动效都按 GTA 的风格来，不要按之前影之刃零的风格". Each episode names its look; no silent default."""
+    from .gfx import THEMES
+    name = ep.data.get("theme")
+    if not name:
+        r.fail("style.theme", f"episode.yaml 没写 theme：画风跟着这期的游戏定，不沿用上一期（现有：{'、'.join(THEMES)}；没有合适的就先在 engine.html 加一套）")
+    elif name not in THEMES:
+        r.fail("style.theme", f"theme「{name}」在 engine.html 里还没有（现有：{'、'.join(THEMES)}）")
+
+
 def check_timeline(ep, tl, r):
     for e in tl.get("errors", []):
         r.fail(e["rule"], e["msg"], e.get("t"))
@@ -328,6 +338,7 @@ def run_all(ep, tl=None):
     tl = tl or read_json(ep.build / "timeline.json")
     r = Report()
     check_script(ep, r)
+    check_style(ep, r)
     check_timeline(ep, tl, r)
     check_reading(ep, r)
     check_mix(ep, tl, r)
