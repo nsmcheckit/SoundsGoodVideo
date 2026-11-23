@@ -88,6 +88,7 @@ CASES = {
     "license.pending": lambda m: m["sources"]["video"]["A02"].update(license="pending"),
     "layout.over_full": lambda m: section(m, "open")["gfx"][1].update({"until": "end+1.0"}),
     "style.theme": lambda m: m.pop("theme"),
+    "style.sticker": lambda m: section(m, "open")["gfx"].append({"type": "big", "at": "p01", "dur": 1.0, "params": {"lines": ["甲"], "stickers": [{"image": "assets/stickers/nobody.png", "label": "Nobody"}]}}),
 }
 for rule, mutate in CASES.items():
     _, _, r = run_case(mutate, "case")

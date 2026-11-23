@@ -14,7 +14,7 @@ SIZES = {"h": (1920, 1080), "v": (1080, 1920)}
 
 
 def engine_key():
-    return digest(ENGINE.read_text(encoding="utf-8"))
+    return digest(ENGINE.read_text(encoding="utf-8"), *[file_key(f) for f in sorted((ENGINE.parent / "tex").glob("*.jpg"))])
 
 
 class Stage:
@@ -25,6 +25,8 @@ class Stage:
         self.page = self.browser.new_page()
         self.page.goto(ENGINE.as_uri())
         self.page.evaluate("() => window.fontsReady()")
+        tex = {f.stem: "data:image/jpeg;base64," + base64.b64encode(f.read_bytes()).decode() for f in sorted((ENGINE.parent / "tex").glob("*.jpg"))}
+        self.page.evaluate("m => window.loadTex(m)", tex)
         return self
 
     def __exit__(self, *a):
@@ -51,11 +53,17 @@ def _images(ep, params):
     if params.get("image"):
         keys.append(params["image"])
     keys += params.get("images") or []
-    return {k: ep.path(k) for k in keys}
+    found = {k: ep.path(k) for k in keys}
+    # Character stickers are optional while drafting: a missing one draws as a dashed slot, and qa style.sticker stops delivery.
+    for s in params.get("stickers") or []:
+        if ep.path(s["image"]).exists():
+            found[s["image"]] = ep.path(s["image"])
+    return found
 
 
 # Looks the engine can draw (THEMES in engine.html). ink: gold wireframe, cream serif, vermilion seals (Phantom Blade Zero).
-# gta: night blue, sunset violet-pink-peach with deco arches, pink brush script, sticker type, torn paper.
+# gta: black crumpled ground, thin white frames, white titles with a purple offset line, yellow marker handwriting,
+# crumpled paper notes on wire clips, torn paper, white-bordered character stickers (Jee's reference: a GTA6 fan deck).
 THEMES = ("ink", "gta")
 
 

@@ -169,5 +169,5 @@ sections:
     video:
       - {src: A01, follow: A, at: start}
     gfx:
-      - {type: big, at: p17, dur: 4.6, params: {lines: [路线不一样 ｜ 记住的是同一首歌], size: 58}}
+      - {type: big, at: p17, dur: 4.6, params: {lines: [路线不一样 ｜ 记住的是同一首歌], size: 58, script: 'different roads, same song', stickers: [{image: assets/stickers/lucia.png, side: left, label: Lucia}, {image: assets/stickers/jason.png, side: right, label: Jason}]}}   # stickers: cut-outs Jee supplies
       - {type: end, at: p20, until: end, full: true, params: {owners: [游戏画面与音乐版权归 Rockstar Games 及相关权利人所有]}}

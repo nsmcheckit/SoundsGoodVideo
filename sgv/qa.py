@@ -133,6 +133,12 @@ def check_style(ep, r):
         r.fail("style.theme", f"episode.yaml 没写 theme：画风跟着这期的游戏定，不沿用上一期（现有：{'、'.join(THEMES)}；没有合适的就先在 engine.html 加一套）")
     elif name not in THEMES:
         r.fail("style.theme", f"theme「{name}」在 engine.html 里还没有（现有：{'、'.join(THEMES)}）")
+    # Jee, ep05: character stickers beside the floating words. Until their cut-outs exist the frame shows an empty slot.
+    for s in ep.sections:
+        for g in s.get("gfx") or []:
+            for st in (g.get("params") or {}).get("stickers") or []:
+                if not ep.path(st["image"]).exists():
+                    r.fail("style.sticker", f"{s['id']} 的人物贴纸还没放：{st['image']}（{st.get('label', '')}）")
 
 
 def check_timeline(ep, tl, r):
